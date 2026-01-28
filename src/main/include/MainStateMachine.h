@@ -21,6 +21,8 @@
 #include "Drivetrain.h"                // Drivetrain state machine class
                                        //    definition
 
+#include "Shooter.h"                   // Shooter state machine class
+
 // *------------------------------------------------*
 // * Top Level (Main) State Machine Enumerated Type *
 // *------------------------------------------------*
@@ -31,6 +33,11 @@ namespace RobotMain
    {
       STATE_START = 0,
       STATE_IDLE = 1,
+
+      // BLC - Shooter states
+      STATE_SHOOTER_LOW_POWER_SHOOT,
+      STATE_SHOOTER_HIGH_POWER_SHOOT,
+
       STATE_ERROR = 99
    };
 
@@ -68,6 +75,9 @@ class MainStateMachine
 
       // State Machine Object Instances.
       Drivetrain m_Drivetrain;
+
+      // BLC- Shooter State Machine Object
+      Shooter m_Shooter;
 };
 
 #endif // MAIN_STATE_MACHINE_H_

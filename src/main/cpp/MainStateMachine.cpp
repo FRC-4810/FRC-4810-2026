@@ -104,6 +104,7 @@ void MainStateMachine::Initialize(
 
    m_pRobotIO = p_pRobotIO;
    m_Drivetrain.Initialize( p_pRobotIO );
+   m_Shooter.Initialize( p_pRobotIO );
 }
 
 //-------------------------------------------------------------------
@@ -139,6 +140,7 @@ void MainStateMachine::Execute()
 
          // Call the subsystem execute methods to allow them to advance
          // through the idle and start states.
+         m_Shooter.Execute();
 
 
          // printf( "Main - Advancing To Idle State\n" );
@@ -155,6 +157,27 @@ void MainStateMachine::Execute()
       else if ( m_eState == RobotMain::eState::STATE_IDLE )
       {
          
+         // BLC - Shooter inputs
+
+         // Operator "A" Button pressed - low power shoot
+         if ( m_pRobotIO->m_OperatorController.GetAButton() )
+         {
+            m_Shooter.LowPowerShoot();
+
+            m_Shooter.Execute();
+
+            m_eState = RobotMain::eState::STATE_SHOOTER_LOW_POWER_SHOOT;
+         }
+
+         // Operator "Y" Button pressed - high power shoot
+         else if ( m_pRobotIO->m_OperatorController.GetYButton() )
+         {
+            m_Shooter.HighPowerShoot();
+
+            m_Shooter.Execute();
+
+            m_eState = RobotMain::eState::STATE_SHOOTER_HIGH_POWER_SHOOT;
+         }
       }
 
       // *===================================================================*
@@ -165,7 +188,45 @@ void MainStateMachine::Execute()
 
       // Code to be added
 
+      // BLC - Shooter states
 
+      // *-----------------------*
+      // * Low Power Shoot State *
+      // *-----------------------*
+      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_LOW_POWER_SHOOT )
+      {
+         // Stop on button release
+         if ( !m_pRobotIO->m_OperatorController.GetAButton() )
+         {
+            m_Shooter.Stop();
+         }
+
+         m_Shooter.Execute();
+
+         if ( m_Shooter.isIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *------------------------*
+      // * High Power Shoot State *
+      // *------------------------*
+      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_LOW_POWER_SHOOT )
+      {
+         // Stop on button release
+         if ( !m_pRobotIO->m_OperatorController.GetYButton() )
+         {
+            m_Shooter.Stop();
+         }
+
+         m_Shooter.Execute();
+
+         if ( m_Shooter.isIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
 
 
       // *-------------------------*
