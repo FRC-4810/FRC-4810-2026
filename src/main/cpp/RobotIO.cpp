@@ -99,7 +99,7 @@ void RobotIO::RobotInit()
    turretMotorConfigs.MotionMagic.MotionMagicExpo_kV = ctre::unit::volts_per_turn_per_second_t(0.12);          //Leave as default
    turretMotorConfigs.MotionMagic.MotionMagicExpo_kA = ctre::unit::volts_per_turn_per_second_squared_t(0.1);   //Leave as default
 
-
+   m_TurretMotor.GetConfigurator().Apply(turretMotorConfigs);
 
    
    
