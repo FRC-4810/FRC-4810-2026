@@ -61,5 +61,12 @@ class RobotIO
       frc::XboxController m_DriveController{ 0 };
       frc::XboxController m_OperatorController{ 1 };
 
+
+      // *******************
+      // * Turret Hardware *
+      // *******************
+      hardware::TalonFX m_TurretMotor{ 16 };       // Configure ID once all hardware is known
+      frc::DigitalInput m_TurretLimitSwitch{ 0 };  //  Configure ID once all hardware is known
+
       
 };

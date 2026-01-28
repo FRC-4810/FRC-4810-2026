@@ -68,6 +68,40 @@ void RobotIO::RobotInit()
 
    // Done in SwerveModule.cpp 
 
+   // *--------------------------------*
+   // * Turret Hardware Initialization *
+   // *--------------------------------*
+   configs::TalonFXConfiguration turretMotorConfigs{};
+
+   turretMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 35_A );  //Check with electrical for fuse - shooter must be on 40A
+   turretMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+
+   turretMotorConfigs.Feedback.WithFeedbackSensorSource(signals::FeedbackSensorSourceValue::RotorSensor);
+   turretMotorConfigs.Feedback.WithRotorToSensorRatio(1.0);
+   turretMotorConfigs.Feedback.WithSensorToMechanismRatio(10.0);     //Check with design team - rotor to gear ratio turret
+
+   turretMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::CounterClockwise_Positive);    //Check if this is the right directio
+
+   turretMotorConfigs.Voltage.WithPeakForwardVoltage(11_V);
+   turretMotorConfigs.Voltage.WithPeakReverseVoltage(-11_V);
+
+   //Slot 0 Configs - makesure m_request uses slot 0
+   configs::Slot0Configs turretSlot0{};
+   turretSlot0.kP = 25.0;  //Tune Configs
+   turretSlot0.kI = 0.0;   //Tune Configs
+   turretSlot0.kD = 0.0;   //Tune Configs
+   turretSlot0.kV = 0.66;  //Tune Configs
+   turretSlot0.kS = 0.13;   //Tune Configs
+   turretMotorConfigs.WithSlot0(turretSlot0);
+
+   turretMotorConfigs.MotionMagic.MotionMagicCruiseVelocity = 0.75_tps;    //Tune this with turret and Tuner
+   turretMotorConfigs.MotionMagic.MotionMagicAcceleration = 5_tr_per_s_sq; //Tune this with turret and Tuner
+   turretMotorConfigs.MotionMagic.MotionMagicExpo_kV = ctre::unit::volts_per_turn_per_second_t(0.12);          //Leave as default
+   turretMotorConfigs.MotionMagic.MotionMagicExpo_kA = ctre::unit::volts_per_turn_per_second_squared_t(0.1);   //Leave as default
+
+
+
+   
    
 }
 
