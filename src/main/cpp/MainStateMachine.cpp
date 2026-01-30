@@ -90,6 +90,8 @@ MainStateMachine::MainStateMachine()
    m_eState = RobotMain::eState::STATE_START;
 
    m_eDriveState = RobotMain::eDriveState::STATE_NORMAL; //Default to normal drive state
+
+   m_dTurretTargetPosition = 0;
 }
 
 //-------------------------------------------------------------------
@@ -104,6 +106,7 @@ void MainStateMachine::Initialize(
 
    m_pRobotIO = p_pRobotIO;
    m_Drivetrain.Initialize( p_pRobotIO );
+   m_Turret.Initialize( p_pRobotIO, &m_dTurretTargetPosition );
 }
 
 //-------------------------------------------------------------------

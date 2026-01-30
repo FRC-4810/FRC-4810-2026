@@ -21,6 +21,8 @@
 #include "Drivetrain.h"                // Drivetrain state machine class
                                        //    definition
 
+#include "Turret.h"
+
 // *------------------------------------------------*
 // * Top Level (Main) State Machine Enumerated Type *
 // *------------------------------------------------*
@@ -68,6 +70,10 @@ class MainStateMachine
 
       // State Machine Object Instances.
       Drivetrain m_Drivetrain;
+      Turret m_Turret;
+
+      double m_dTurretTargetPosition;
+      
 };
 
 #endif // MAIN_STATE_MACHINE_H_
