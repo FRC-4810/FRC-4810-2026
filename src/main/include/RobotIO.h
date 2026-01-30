@@ -53,7 +53,8 @@ class RobotIO
       void UpdateInputStatus();
 
       // Accessor Methods.
-
+      inline bool GetTurretLimitSwitch()
+         { return(m_TurretLimitSwitch.Get()); }
       
 
       // Xbox Controllers
