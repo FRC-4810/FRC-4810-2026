@@ -73,7 +73,4 @@ private:
     frc::Timer *m_pTimeoutTimer;
     
     RobotIO *m_pRobotIO;
-
-    // Add Motor Configs here
-
 };

@@ -16,7 +16,6 @@ void Shooter::Initialize( RobotIO *p_pRobotIO )
 
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
-
 }
 
 void Shooter::Execute()
@@ -46,15 +45,15 @@ void Shooter::Execute()
 
             if ( m_eCommand == shooter::eCommand::COMMAND_LOW_POWER_SHOOT )
             {
-                // Enable coast mode on shooter motors
 
                 // Set speed on shooter motors
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( shooter::dLowPowerRampUpSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
-                // Set state to shoot
+                // Set state to low power ramp up
                 m_eState = shooter::eState::STATE_LOW_POWER_RAMP_UP;
 
             }
@@ -64,15 +63,15 @@ void Shooter::Execute()
 
             else if ( m_eCommand == shooter::eCommand::COMMAND_HIGH_POWER_SHOOT )
             {
-                // Enable coast mode on shooter motors
 
                 // Set speed on shooter motors
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( shooter::dHighPowerRampUpSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
-                // Set state to shoot
+                // Set state to high power ramp up
                 m_eState = shooter::eState::STATE_HIGH_POWER_RAMP_UP;
 
             }
@@ -101,8 +100,7 @@ void Shooter::Execute()
             if ( m_eCommand == shooter::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
                 // Stop shooter motors
-
-                // Enable brake mode
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( 0 );
 
                 // Reset State and Command
                 m_eState = shooter::eState::STATE_IDLE;
@@ -113,12 +111,8 @@ void Shooter::Execute()
             // * Motor Velocity Reached *
             // *------------------------*
 
-            else if ( /*Motor Velocity*/  >= shooter::dLowPowerVelocitySetpoint )
+            else if ( m_pRobotIO->GetShooterSpeed()  >= shooter::dLowPowerVelocitySetpoint )
             {
-                // Enable coast mode on feeder motors
-
-                // Set speed on feeder motors
-
                 // Transition to shoot state
                 m_eState = shooter::eState::STATE_SHOOT;
             }
@@ -141,8 +135,7 @@ void Shooter::Execute()
             if ( m_eCommand == shooter::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
                 // Stop shooter motors
-
-                // Enable brake mode
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( 0 );
 
                 // Reset State and Command
                 m_eState = shooter::eState::STATE_IDLE;
@@ -153,12 +146,8 @@ void Shooter::Execute()
             // * Motor Velocity Reached *
             // *------------------------*
 
-            else if ( /*Motor Velocity*/  >= shooter::dHighPowerVelocitySetpoint )
+            else if ( m_pRobotIO->GetShooterSpeed()  >= shooter::dHighPowerVelocitySetpoint )
             {
-                // Enable coast mode on feeder motors
-
-                // Set speed on feeder motors
-
                 // Transition to shoot state
                 m_eState = shooter::eState::STATE_SHOOT;
             }
@@ -179,9 +168,8 @@ void Shooter::Execute()
 
             if ( m_eCommand == shooter::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
-                // Stop shooter and feeder motors
-
-                // Enable brake mode
+                /// Stop shooter motors
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( 0 );
 
                 // Reset State and Command
                 m_eState = shooter::eState::STATE_IDLE;
