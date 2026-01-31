@@ -54,12 +54,22 @@ class RobotIO
 
       // Accessor Methods.
 
-      
+      //-GMS
+      inline double GetShooterSpeed()
+      {
+         return( m_LeftShooterMotor_Master.GetVelocity().GetValueAsDouble() );
+      }
 
       // Xbox Controllers
 
       frc::XboxController m_DriveController{ 0 };
       frc::XboxController m_OperatorController{ 1 };
 
+
+      // ******************************  -GMS
+      // * Shooter Subsystem Hardware *
+      // ******************************
+      hardware::TalonFX m_LeftShooterMotor_Master{ 18 };       // Check CAN ID's with rest of Robot Hardware
+      hardware::TalonFX m_RightShooterMotor_Follower{ 19 };    // Check CAN ID's with rest of Robot Hardware
       
 };
