@@ -166,7 +166,7 @@ void MainStateMachine::Execute()
 
             m_Shooter.Execute();
 
-            m_eState = RobotMain::eState::STATE_SHOOTER_LOW_POWER_SHOOT;
+            m_eState = RobotMain::eState::STATE_SHOOTER_LOW_POWER_RAMP;
          }
 
          // Operator "Y" Button pressed - high power shoot
@@ -176,7 +176,7 @@ void MainStateMachine::Execute()
 
             m_Shooter.Execute();
 
-            m_eState = RobotMain::eState::STATE_SHOOTER_HIGH_POWER_SHOOT;
+            m_eState = RobotMain::eState::STATE_SHOOTER_HIGH_POWER_RAMP;
          }
       }
 
@@ -190,16 +190,21 @@ void MainStateMachine::Execute()
 
       // BLC - Shooter states
 
-      // *-----------------------*
-      // * Low Power Shoot State *
-      // *-----------------------*
-      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_LOW_POWER_SHOOT )
+      // *----------------------*
+      // * Low Power Ramp State *
+      // *----------------------*
+      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_LOW_POWER_RAMP )
       {
          // Stop on button release
          if ( !m_pRobotIO->m_OperatorController.GetAButton() )
          {
             m_Shooter.Stop();
          }
+         // If shooter motors are at velocity, transition to magazine loading state
+         else if ( m_Shooter.isShooting() )
+         {
+            m_eState = RobotMain::eState::STATE_MAGAZINE_LOAD_SHOOTER;
+         }
 
          m_Shooter.Execute();
 
@@ -209,16 +214,22 @@ void MainStateMachine::Execute()
          }
       }
 
-      // *------------------------*
-      // * High Power Shoot State *
-      // *------------------------*
-      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_LOW_POWER_SHOOT )
+      // *-----------------------*
+      // * High Power Ramp State *
+      // *-----------------------*
+      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_LOW_POWER_RAMP )
       {
          // Stop on button release
          if ( !m_pRobotIO->m_OperatorController.GetYButton() )
          {
             m_Shooter.Stop();
          }
+         // If shooter motors are at velocity, transition to magazine loading state
+         else if ( m_Shooter.isShooting() )
+         {
+
+            m_eState = RobotMain::eState::STATE_MAGAZINE_LOAD_SHOOTER;
+         }
 
          m_Shooter.Execute();
 
@@ -227,7 +238,6 @@ void MainStateMachine::Execute()
             m_eState = RobotMain::eState::STATE_IDLE;
          }
       }
-
 
       // *-------------------------*
       // * Asynchronous Operations *
