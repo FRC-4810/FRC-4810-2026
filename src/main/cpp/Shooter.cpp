@@ -172,7 +172,7 @@ void Shooter::Execute()
         {
             // Check Timeout Timer
             bool bIsTimedOut = false;
-            if ( (double)m_pTimeoutTimer->Get() >= shooter::dRampUpTimeout )
+            if ( (double)m_pTimeoutTimer->Get() >= shooter::dShootTimeout )
             {
                 bIsTimedOut = true;
             }

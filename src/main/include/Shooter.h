@@ -25,6 +25,7 @@ namespace shooter
 
     // Timeout Constants
     static constexpr double dRampUpTimeout = 4.0;
+    static constexpr double dShootTimeout = 30.0;
 
     // Motor Speed Constants
     static constexpr double dLowPowerRampUpSpeed = 0.3;
@@ -70,7 +71,7 @@ private:
     shooter::eCommand m_eCommand;
 
     frc::Timer *m_pTimeoutTimer;
-
+    
     RobotIO *m_pRobotIO;
 
     // Add Motor Configs here
