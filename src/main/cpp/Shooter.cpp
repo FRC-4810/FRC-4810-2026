@@ -78,7 +78,8 @@ void Shooter::Execute()
 
             // Unrecognized command
 
-            else if ( m_eCommand != shooter::eCommand::COMMAND_NONE || m_eCommand != shooter::eCommand::COMMAND_STOP )
+            //else if ( m_eCommand != shooter::eCommand::COMMAND_NONE || m_eCommand != shooter::eCommand::COMMAND_STOP ) < -GMS This should be AND, not OR
+            else if ( m_eCommand != shooter::eCommand::COMMAND_NONE && m_eCommand != shooter::eCommand::COMMAND_STOP )
             {
                 printf("Shooter.cpp: unrecognized command\n");
             }
