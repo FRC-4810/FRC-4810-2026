@@ -78,6 +78,7 @@ void RobotIO::RobotInit()
 
    turretMotorConfigs.Feedback.WithFeedbackSensorSource(signals::FeedbackSensorSourceValue::RotorSensor);
    turretMotorConfigs.Feedback.WithRotorToSensorRatio(1.0);
+   //-TODO - Update value
    turretMotorConfigs.Feedback.WithSensorToMechanismRatio(10.0);     //Check with design team - rotor to gear ratio turret
 
    turretMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::CounterClockwise_Positive);    //Check if this is the right directio
@@ -87,6 +88,7 @@ void RobotIO::RobotInit()
 
    //Slot 0 Configs - makesure m_request uses slot 0
    configs::Slot0Configs turretSlot0{};
+   //-TODO - Tune PID and Feedforward
    turretSlot0.kP = 25.0;  //Tune Configs
    turretSlot0.kI = 0.0;   //Tune Configs
    turretSlot0.kD = 0.0;   //Tune Configs
@@ -94,6 +96,7 @@ void RobotIO::RobotInit()
    turretSlot0.kS = 0.13;   //Tune Configs
    turretMotorConfigs.WithSlot0(turretSlot0);
 
+   //-TODO - Tune Motion Magic Setpoints
    turretMotorConfigs.MotionMagic.MotionMagicCruiseVelocity = 0.75_tps;    //Tune this with turret and Tuner
    turretMotorConfigs.MotionMagic.MotionMagicAcceleration = 5_tr_per_s_sq; //Tune this with turret and Tuner
    turretMotorConfigs.MotionMagic.MotionMagicExpo_kV = ctre::unit::volts_per_turn_per_second_t(0.12);          //Leave as default
