@@ -21,6 +21,7 @@
 
 //#include "ctre/Phoenix.h"              //-GMS - Old Phoenix 5 controls
 #include <ctre/phoenix6/TalonFX.hpp>
+#include <ctre/phoenix6/TalonFXS.hpp>  //-GMS - For Minion
 
 //-JJB #include <units/units.h>        // Catch-all.  Use individual headers
 #include "units/velocity.h"            // For velocity calculations
@@ -53,6 +54,11 @@ class RobotIO
       void UpdateInputStatus();
 
       // Accessor Methods.
+      inline bool IsHopperEmpty()
+         { return( m_EmptyPhotoeye.Get() ); }
+         
+      inline bool IsHopperFull()
+         { return( m_FullPhotoeye.Get() ); }
 
       
 
@@ -61,5 +67,13 @@ class RobotIO
       frc::XboxController m_DriveController{ 0 };
       frc::XboxController m_OperatorController{ 1 };
 
+      // *********************
+      // * Magazine Hardware *
+      // *********************
+      hardware::TalonFXS m_FeederMotor{ 16 };   //-GMS TODO - CHECK THIS. TalonFXS? TalonSRX? Other?
+      hardware::TalonFXS m_KickerMotor{ 17 };
+
+      frc::DigitalInput m_EmptyPhotoeye{ 2 };   //Bottom of hopper Photoeye
+      frc::DigitalInput m_FullPhotoeye{ 3 };    //Top of hopper Photoeye
       
 };
