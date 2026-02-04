@@ -72,19 +72,25 @@ void RobotIO::RobotInit()
    // * Magazine Hardware Initialization *
    // *----------------------------------*
    
+   configs::TalonFXSConfiguration feederMotorConfigs{};
+   
+   feederMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );  //TODO - Check fuse on Minion
+   feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::CounterClockwise_Positive); //TODO - Check this
+   feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
 
    configs::TalonFXSConfiguration kickerMotorConfigs{};
    
    kickerMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
-   
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );  //TODO - Check fuse on Minion
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
-
    kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::CounterClockwise_Positive); //TODO - Check this
-
    kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);   //TODO - Do we want this in coast or brake?
 
-   m_KickerMotor.GetConfigurator().Apply(kickerMotorConfigs);   
+   m_KickerMotor.GetConfigurator().Apply(kickerMotorConfigs);
 }
 
 //-------------------------------------------------------------------
