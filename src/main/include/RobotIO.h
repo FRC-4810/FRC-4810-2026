@@ -21,6 +21,7 @@
 
 //#include "ctre/Phoenix.h"              //-GMS - Old Phoenix 5 controls
 #include <ctre/phoenix6/TalonFX.hpp>
+#include <ctre/phoenix6/TalonFXS.hpp>
 
 //-JJB #include <units/units.h>        // Catch-all.  Use individual headers
 #include "units/velocity.h"            // For velocity calculations
@@ -66,7 +67,7 @@ class RobotIO
       // *******************
       // * Turret Hardware *
       // *******************
-      hardware::TalonFX m_TurretMotor{ 16 };       // Configure ID once all hardware is known
+      hardware::TalonFXS m_TurretMotor{ 16 };       // Configure ID once all hardware is known
       frc::DigitalInput m_TurretLimitSwitch{ 0 };  //  Configure ID once all hardware is known
 
       

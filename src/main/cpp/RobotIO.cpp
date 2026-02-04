@@ -71,15 +71,13 @@ void RobotIO::RobotInit()
    // *--------------------------------*
    // * Turret Hardware Initialization *
    // *--------------------------------*
-   configs::TalonFXConfiguration turretMotorConfigs{};
+   configs::TalonFXSConfiguration turretMotorConfigs{};
 
    turretMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 35_A );  //Check with electrical for fuse - shooter must be on 40A
    turretMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
 
-   turretMotorConfigs.Feedback.WithFeedbackSensorSource(signals::FeedbackSensorSourceValue::RotorSensor);
-   turretMotorConfigs.Feedback.WithRotorToSensorRatio(1.0);
    //-TODO - Update value
-   turretMotorConfigs.Feedback.WithSensorToMechanismRatio(10.0);     //Check with design team - rotor to gear ratio turret
+   turretMotorConfigs.ExternalFeedback.WithSensorToMechanismRatio(10.0);     //Check with design team - rotor to gear ratio turret
 
    turretMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::CounterClockwise_Positive);    //Check if this is the right directio
 
