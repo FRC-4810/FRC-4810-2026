@@ -84,6 +84,8 @@ void RobotIO::RobotInit()
    turretMotorConfigs.Voltage.WithPeakForwardVoltage(11_V);
    turretMotorConfigs.Voltage.WithPeakReverseVoltage(-11_V);
 
+   turretMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Brake);
+
    //Slot 0 Configs - makesure m_request uses slot 0
    configs::Slot0Configs turretSlot0{};
    //-TODO - Tune PID and Feedforward

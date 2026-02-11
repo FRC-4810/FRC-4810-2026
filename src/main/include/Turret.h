@@ -11,9 +11,10 @@ namespace turret
         STATE_START = 0,
         STATE_IDLE = 1,
         STATE_HOMING = 2,       //Home is far left rotation
-        STATE_MANUAL_LEFT = 3,  //Left is towards Home
-        STATE_MANUAL_RIGHT = 4, //Right is away from Home
-        STATE_AUTO_MOVE = 7,    //Automatically move to m_dTurretSetpoint
+        STATE_DEBOUNCE = 3,
+        STATE_MANUAL_LEFT = 4,  //Left is towards Home
+        STATE_MANUAL_RIGHT = 5, //Right is away from Home
+        STATE_AUTO_MOVE = 6,    //Automatically move to m_dTurretSetpoint
         STATE_ERROR = 99
     };
 
@@ -31,6 +32,7 @@ namespace turret
     static constexpr double dHomingTimeout = 10.0;
     static constexpr double dManualMoveTimeout = 10.0;
     static constexpr double dAutoMoveTimeout = 10.0;    //We may get rid of this when we add tracking
+    static constexpr double dDebounceTimeout = 2.0;
 
     // Motor Speed Constants
     static constexpr double dHomingSpeed = -0.25;
@@ -103,6 +105,8 @@ private:
     RobotIO *m_pRobotIO;
 
     frc::Timer *m_pTimeoutTimer;
+
+    configs::MotorOutputConfigs m_MotorConfigs;
 
     //Motion Magic configs
     controls::MotionMagicVoltage m_Request{0_tr};

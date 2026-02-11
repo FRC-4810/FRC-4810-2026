@@ -19,6 +19,8 @@ void Turret::Initialize( RobotIO *p_pRobotIO, double *p_pTurretSetpoint )
     m_pTimeoutTimer->Reset();
 
     m_Request.WithSlot(0);
+
+    m_pRobotIO->m_TurretMotor.GetConfigurator().Refresh(m_MotorConfigs);
 }
 
 void Turret::UpdateInputStatus()
@@ -49,7 +51,22 @@ void Turret::Execute()
             // *--------------*
             if(m_eCommand == turret::COMMAND_HOME)
             {
-                //Homing logic
+                if(m_pRobotIO->GetTurretLimitSwitch())
+                {
+                    m_pRobotIO->m_TurretMotor.SetPosition(0_tr);
+                    m_eCommand = turret::COMMAND_NONE;
+                    return;
+                }
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+                
+                m_pRobotIO->m_TurretMotor.Set(turret::dHomingSpeed);
+
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                m_eState = turret::eState::STATE_HOMING;
             }
 
             // *---------------------*
@@ -57,7 +74,21 @@ void Turret::Execute()
             // *---------------------*
             else if(m_eCommand == turret::COMMAND_MANUAL_LEFT)
             {
-                //Manual Left logic
+                if(m_pRobotIO->m_TurretMotor.GetPosition().GetValueAsDouble() >= 0.5)   //0.5 is max rotation;
+                {
+                    m_eCommand = turret::COMMAND_NONE;
+                    return;
+                }
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+                
+                m_pRobotIO->m_TurretMotor.Set(turret::dManualLeftSpeed);
+
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                m_eState = turret::eState::STATE_MANUAL_LEFT;
             }
 
             // *----------------------*
@@ -65,7 +96,21 @@ void Turret::Execute()
             // *----------------------*
             else if(m_eCommand == turret::COMMAND_MANUAL_RIGHT)
             {
-                //Manual right logic
+                if(m_pRobotIO->GetTurretLimitSwitch())
+                {
+                    m_eCommand = turret::COMMAND_NONE;
+                    return;
+                }
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+                
+                m_pRobotIO->m_TurretMotor.Set(turret::dManualRightSpeed);
+
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                m_eState = turret::eState::STATE_MANUAL_RIGHT;
             }
 
             // *-------------------*
@@ -99,10 +144,46 @@ void Turret::Execute()
         // ****************
         else if(m_eState == turret::eState::STATE_HOMING)
         {
-            //Homing state logic
+            bool bIsTimedOut = false;
+            if((double)m_pTimeoutTimer->Get() >= turret::dHomingTimeout)
+            {
+                bIsTimedOut = true;
+            }
+
+            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut)
+            {
+                m_pRobotIO->m_TurretMotor.Set(0);
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::COMMAND_NONE;
+            }
+            else if(m_pRobotIO->GetTurretLimitSwitch())
+            {
+                m_pRobotIO->m_TurretMotor.Set(0);
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+
+                m_eState = turret::eState::STATE_DEBOUNCE;
+            }
         }
 
-        //Will we need debounce?
+        // ******************
+        // * Debounce State *
+        // ******************
+        else if(m_eState == turret::eState::STATE_DEBOUNCE)
+        {
+            if((double)m_pTimeoutTimer->Get() >= turret::dDebounceTimeout)
+            {
+                m_pRobotIO->m_TurretMotor.SetPosition(0_tr);
+
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::COMMAND_NONE;
+            }
+        }
 
         
         // *********************
@@ -110,21 +191,51 @@ void Turret::Execute()
         // *********************
         else if(m_eState == turret::eState::STATE_MANUAL_LEFT)
         {
-            //Manual left state logic
+            bool bIsTimedOut = false;
+            if((double)m_pTimeoutTimer->Get() >= turret::dManualMoveTimeout)
+            {
+                bIsTimedOut = true;
+            }
+
+            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->m_TurretMotor.GetPosition().GetValueAsDouble() >= 0.5)
+            {
+                m_pRobotIO->m_TurretMotor.Set(0);
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::COMMAND_NONE;
+            }
         }
 
         // **********************
         // * Manual Right State *
         // **********************
-        else if(m_eState == turret::eState::STATE_MANUAL_LEFT)
+        else if(m_eState == turret::eState::STATE_MANUAL_RIGHT)
         {
-            //Manual left state logic
+            bool bIsTimedOut = false;
+            if((double)m_pTimeoutTimer->Get() >= turret::dManualMoveTimeout)
+            {
+                bIsTimedOut = true;
+            }
+
+            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->GetTurretLimitSwitch())
+            {
+                m_pRobotIO->m_TurretMotor.Set(0);
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::COMMAND_NONE;
+            }
         }
 
         // *******************
         // * Auto Move State *
         // *******************
-        else if(m_eState == turret::eState::STATE_MANUAL_LEFT)
+        else if(m_eState == turret::eState::STATE_AUTO_MOVE)
         {
             //Auto Move logic using motion magic
         }
