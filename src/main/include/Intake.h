@@ -31,20 +31,20 @@ namespace intake
     };
 
     // Timeout Constants
-    constexpr double dManualRaiseTimeout = 2.0;
-    constexpr double dManualLowerTimeout = 1.0;
+    constexpr double dManualRaiseTimeout = 4.0;
+    constexpr double dManualLowerTimeout = 2.0;
 
-    constexpr double dAutoRaiseTimeout = 2.5;
-    constexpr double dAutoLowerTimeout = 1.5;
+    constexpr double dAutoRaiseTimeout = 2.0;
+    constexpr double dAutoLowerTimeout = 1.0;
 
     constexpr double dManualIntakeTimeout = 30.0;
     constexpr double dManualOuttakeTimeout = 30.0;
 
     // Motor Speed Constants
-    constexpr double dManualLowerSpeed = 0.4;
-    constexpr double dManualRaiseSpeed = -0.4;
-    constexpr double dAutoLowerSpeed = 0.3;
-    constexpr double dAutoRaiseSpeed = -0.3;
+    constexpr double dManualLowerSpeed = 0.2;
+    constexpr double dManualRaiseSpeed = -0.2;
+    constexpr double dAutoLowerSpeed = 0.4;
+    constexpr double dAutoRaiseSpeed = -0.4;
 
     constexpr double dManualIntakeSpeed = 0.3;
     constexpr double dManualOuttakeSpeed = -0.3;
