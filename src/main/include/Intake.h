@@ -41,11 +41,14 @@ namespace intake
     constexpr double dManualOuttakeTimeout = 30.0;
 
     // Motor Speed Constants
-    constexpr double dManualSpeed = 0.4;
-    constexpr double dAutoSpeed = 0.3;
+    constexpr double dManualLowerSpeed = 0.4;
+    constexpr double dManualRaiseSpeed = -0.4;
+    constexpr double dAutoLowerSpeed = 0.3;
+    constexpr double dAutoRaiseSpeed = -0.3;
 
-    constexpr double dManualIntakeSpeed = 0.5;
-    constexpr double dManualOuttakeSpeed = 0.2;
+    constexpr double dManualIntakeSpeed = 0.3;
+    constexpr double dManualOuttakeSpeed = -0.3;
+
 }
 
 class Intake 
