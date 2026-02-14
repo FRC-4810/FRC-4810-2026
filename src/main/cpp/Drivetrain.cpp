@@ -188,16 +188,19 @@ void Drivetrain::TryAddVisionMeasurement(double correctedGyroDegrees)
         if(mt1_pose.rawFiducials[0].ambiguity > 0.7)
         {
             bDoRejectUpdate = true;
+            printf("Ambugity too high");
         }
 
         if(mt1_pose.rawFiducials[0].distToCamera > 3)
         {
             bDoRejectUpdate = true;
+            printf("Distance to camera too high");
         }
     }
     if(mt1_pose.tagCount == 0)
     {
         bDoRejectUpdate = true;
+        printf("No tags detected");
     }
 
     if(!bDoRejectUpdate)
@@ -207,6 +210,7 @@ void Drivetrain::TryAddVisionMeasurement(double correctedGyroDegrees)
             mt1_pose.pose,
             mt1_pose.timestampSeconds
         );
+        printf("Pose Added");
     }
 
     // ******************
