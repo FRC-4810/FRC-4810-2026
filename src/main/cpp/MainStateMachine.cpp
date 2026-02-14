@@ -104,6 +104,7 @@ void MainStateMachine::Initialize(
 
    m_pRobotIO = p_pRobotIO;
    m_Drivetrain.Initialize( p_pRobotIO );
+   m_Intake.Initialize( p_pRobotIO );
 }
 
 //-------------------------------------------------------------------
@@ -139,6 +140,7 @@ void MainStateMachine::Execute()
 
          // Call the subsystem execute methods to allow them to advance
          // through the idle and start states.
+         m_Intake.Execute();
 
 
          // printf( "Main - Advancing To Idle State\n" );
@@ -154,7 +156,65 @@ void MainStateMachine::Execute()
 
       else if ( m_eState == RobotMain::eState::STATE_IDLE )
       {
-         
+         // BLC - Intake Inputs
+
+         // Driver right bumper pressed - Manual Intake
+         if ( m_pRobotIO->m_DriveController.GetRightBumper() )
+         {
+            m_Intake.ManualIntake();
+
+            m_Intake.Execute();
+
+            m_eState =  RobotMain::eState::STATE_INTAKE_MANUAL_INTAKE;
+         }
+         // Driver left bumper pressed - Manual Outtake
+         else if ( m_pRobotIO->m_DriveController.GetLeftBumper() )
+         {
+            m_Intake.ManualOuttake();
+
+            m_Intake.Execute();
+
+            m_eState =  RobotMain::eState::STATE_INTAKE_MANUAL_OUTTAKE;
+         }
+
+         // Operator right bumper pressed - Auto Lower
+         if ( m_pRobotIO->m_OperatorController.GetRightBumper() )
+         {
+            m_Intake.AutoLower();
+
+            m_Intake.Execute();
+
+            m_eState =  RobotMain::eState::STATE_INTAKE_AUTO_LOWER;
+         }
+         // Operator left bumper pressed - Auto Raise
+         else if ( m_pRobotIO->m_OperatorController.GetLeftBumper() )
+         {
+            m_Intake.AutoRaise();
+
+            m_Intake.Execute();
+
+            m_eState =  RobotMain::eState::STATE_INTAKE_AUTO_RAISE;
+         }
+
+         // Operator right joystick down - Manual Raise
+         else if ( m_pRobotIO->m_OperatorController.GetRightY() > RobotMain::dIntakeRightJoystickBackwardThreshold )
+         {
+            m_Intake.ManualRaise();
+
+            m_Intake.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_MANUAL_RAISE;
+         }
+
+         // Operator right joystick up - Manual Lower
+         else if ( m_pRobotIO->m_OperatorController.GetRightY() < RobotMain::dIntakeRightJoystickForwardThreshold )
+         {
+            m_Intake.ManualLower();
+
+            m_Intake.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_MANUAL_LOWER;
+         }
       }
 
       // *===================================================================*
@@ -164,6 +224,126 @@ void MainStateMachine::Execute()
       // *===================================================================*
 
       // Code to be added
+
+      // BLC - Intake states
+      // *****************
+      // * Intake States *
+      // *****************
+
+      // *---------------------*
+      // * Manual Intake State *
+      // *---------------------*
+      else if ( m_eState == RobotMain::eState::STATE_INTAKE_MANUAL_INTAKE )
+      {
+         // Stop on button release
+         if ( !m_pRobotIO->m_DriveController.GetRightBumper() )
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if ( m_Intake.IsIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *----------------------*
+      // * Manual Outtake State *
+      // *----------------------*
+      else if ( m_eState == RobotMain::eState::STATE_INTAKE_MANUAL_OUTTAKE )
+      {
+         // Stop on button release
+         if ( !m_pRobotIO->m_DriveController.GetLeftBumper() )
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if ( m_Intake.IsIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *------------------*
+      // * Auto Raise State *
+      // *------------------*
+      else if ( m_eState == RobotMain::eState::STATE_INTAKE_AUTO_RAISE )
+      {
+         // Stop on button release
+         if ( !m_pRobotIO->m_OperatorController.GetLeftBumper() )
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if ( m_Intake.IsIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *------------------*
+      // * Auto Lower State *
+      // *------------------*
+      else if ( m_eState == RobotMain::eState::STATE_INTAKE_AUTO_LOWER )
+      {
+         // Stop on button release
+         if ( !m_pRobotIO->m_OperatorController.GetRightBumper() )
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if ( m_Intake.IsIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *--------------------*
+      // * Manual Raise State *
+      // *--------------------*
+      else if ( m_eState == RobotMain::eState::STATE_INTAKE_MANUAL_RAISE )
+      {
+         // Check if joystick is not above threshold
+         if ( m_pRobotIO->m_OperatorController.GetRightY() < RobotMain::dIntakeRightJoystickBackwardThreshold )
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if ( m_Intake.IsIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *--------------------*
+      // * Manual Lower State *
+      // *--------------------*
+      else if ( m_eState == RobotMain::eState::STATE_INTAKE_MANUAL_LOWER )
+      {
+         // Check if joystick is not below threshold
+         if ( m_pRobotIO->m_OperatorController.GetRightY() > RobotMain::dIntakeRightJoystickForwardThreshold )
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if ( m_Intake.IsIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
 
 
 
