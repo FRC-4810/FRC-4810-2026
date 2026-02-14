@@ -102,4 +102,6 @@ class Intake
         frc::Timer *m_pTimeoutTimer;
 
         RobotIO *m_pRobotIO;
+
+        configs::MotorOutputConfigs m_MotorConfigs;
 };

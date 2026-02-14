@@ -16,6 +16,8 @@ void Intake::Initialize( RobotIO *p_pRobotIO )
 
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
+
+    // Refresh arm motor configurator with m_MotorConfigs
 }
 
 void Intake::Execute()
@@ -48,6 +50,7 @@ void Intake::Execute()
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
+                // Enable coast mode
 
                 // Set speed on arm motor
 
@@ -70,6 +73,7 @@ void Intake::Execute()
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
+                // Enable coast mode
 
                 // Set speed on arm motor
 
@@ -92,6 +96,7 @@ void Intake::Execute()
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
+                // Enable coast mode
 
                 // Set speed on arm motor
 
@@ -114,6 +119,7 @@ void Intake::Execute()
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
+                // Enable coast mode
 
                 // Set speed on arm motor
 
@@ -178,6 +184,8 @@ void Intake::Execute()
             {
                 // Stop arm motors
 
+                // Enable brake mode
+
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
                 m_eCommand = intake::eCommand::COMMAND_NONE;
@@ -199,6 +207,8 @@ void Intake::Execute()
             if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit*/ )
             {
                 // Stop arm motors
+
+                // Enable brake mode
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -222,6 +232,8 @@ void Intake::Execute()
             {
                 // Stop arm motors
 
+                // Enable brake mode
+
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
                 m_eCommand = intake::eCommand::COMMAND_NONE;
@@ -243,6 +255,8 @@ void Intake::Execute()
             if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit*/ )
             {
                 // Stop arm motors
+
+                // Enable brake mode
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
