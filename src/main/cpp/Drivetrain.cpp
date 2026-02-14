@@ -154,6 +154,23 @@ frc::Pose2d Drivetrain::GetBotPose()
     };
 }
 
+
+// Go To Position function
+void Drivetrain::GoToPosition(const frc::Pose2d& targetPose) {
+    frc::Pose2d currentPose = GetBotPose();
+
+    // Finds the difference / error
+    frc::Translation2d translationError = targetPose.Translation() - currentPose.Translation();
+    double rotationError = (targetPose.Rotation() - currentPose.Rotation()).Radians().value();
+
+    double xSpeed = translationError.X().value();  // Forward/backward
+    double ySpeed = translationError.Y().value();  // Left/right
+    double rotSpeed = rotationError;        
+
+    // Drive the robot to position
+    DriveBotRelative(xSpeed, ySpeed, rotSpeed);
+}
+
 void Drivetrain::TryAddVisionMeasurement(double correctedGyroDegrees)
 {
     LimelightHelpers::SetRobotOrientation("limelight", (double)GetBotPose().Rotation().Degrees(), 0, 0, 0, 0, 0);  //Other 5 values are optional, ommitted for simplicity sake

@@ -77,6 +77,9 @@ public:
     frc::Pose2d GetBotPose();
 
 
+    void GoToPosition(const frc::Pose2d& targetPose);
+
+
 
     // Class Methods.
     /**
