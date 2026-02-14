@@ -29,7 +29,9 @@ void Intake::Execute()
         // * Start State *
         // ***************
         if ( m_eState == intake::eState::STATE_START )
-        {
+        {   
+            // Reset arm encoders, should be started at upper position
+
             // Go to idle state
             m_eState = intake::eState::STATE_IDLE;
         }
@@ -44,9 +46,11 @@ void Intake::Execute()
             // *----------------------*
             if ( m_eCommand == intake::eCommand::COMMAND_MANUAL_RAISE )
             {
-                // Check upper limit switch
+                // Check upper limit switch - if we dont end up using limit switches check the encoder
                 if ( /*Upper limit hit*/ )
                 {
+                    // Reset arm encoders
+
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
@@ -67,7 +71,7 @@ void Intake::Execute()
             // *----------------------*
             else if ( m_eCommand == intake::eCommand::COMMAND_MANUAL_LOWER )
             {
-                // Check lower limit switch
+                // Check lower limit switch - if we dont end up using limit switches check the encoder
                 if ( /*Lower limit hit*/ )
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
@@ -90,9 +94,11 @@ void Intake::Execute()
             // *--------------------*
             else if ( m_eCommand == intake::eCommand::COMMAND_AUTO_RAISE )
             {
-                // Check upper limit switch
+                // Check upper limit switch - if we dont end up using limit switches check the encoder
                 if ( /*Upper limit hit*/ )
                 {
+                    // Reset arm encoders
+
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
@@ -113,7 +119,7 @@ void Intake::Execute()
             // *--------------------*
             else if ( m_eCommand == intake::eCommand::COMMAND_AUTO_LOWER )
             {
-                // Check lower limit switch
+                // Check lower limit switch - if we dont end up using limit switches check the encoder
                 if ( /*Lower limit hit*/ )
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
@@ -180,7 +186,7 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Upper limit hit*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Upper limit hit - if limit switches aren't used, check encoders at upper limit*/ )
             {
                 // Stop arm motors
 
@@ -204,7 +210,7 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit - if limit switches aren't used, check encoders at lower limit*/ )
             {
                 // Stop arm motors
 
@@ -228,7 +234,7 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Upper limit hit*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Upper limit hit or encoder at auto raise setpoint*/ )
             {
                 // Stop arm motors
 
@@ -252,7 +258,7 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit or encoder at auto lower setpoint*/ )
             {
                 // Stop arm motors
 

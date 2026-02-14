@@ -49,6 +49,10 @@ namespace intake
     constexpr double dManualIntakeSpeed = 0.3;
     constexpr double dManualOuttakeSpeed = -0.3;
 
+    // Setpoint Constatns
+    constexpr double dUpperLimitSetpoint = 0.0;
+    constexpr double dLowerLimitSetpoint = 5.0;
+
 }
 
 class Intake 
