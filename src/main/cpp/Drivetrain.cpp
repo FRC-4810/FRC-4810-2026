@@ -157,10 +157,7 @@ void Drivetrain::UpdateOdometry()
     );
 
     //Vision Measurements
-    if(LimelightHelpers::getTV("limelight"))
-    {
-        TryAddVisionMeasurement();
-    }
+    TryAddVisionMeasurement();
 }
 
 void Drivetrain::ResetOdometry( frc::Pose2d pose )
