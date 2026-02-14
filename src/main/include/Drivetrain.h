@@ -25,8 +25,8 @@
 #include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/controller/PIDController.h>
 #include <frc/DriverStation.h>
-
 
 
 #include "RobotIO.h"
@@ -153,6 +153,25 @@ private:
 
     double m_dGyroOffset;
 
+    frc::PIDController m_XController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+    frc::PIDController m_YController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+    frc::PIDController m_RotController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+
     //-GMS - updated to 2025 design
     frc::Translation2d m_frontLeftLocation{+drivetrain::kWheelDistance / 2, -drivetrain::kWheelDistance / 2};     //Front Left Wheel Position
     frc::Translation2d m_frontRightLocation{+drivetrain::kWheelDistance / 2, +drivetrain::kWheelDistance / 2};    //Front Right Wheel Position
@@ -194,6 +213,6 @@ private:
     
     frc::Timer *m_DrivetrainTimer;
     
-    void TryAddVisionMeasurement(double gyroDegrees);
+    void TryAddVisionMeasurement();
     bool m_bUseCameraMeasurements;
 };

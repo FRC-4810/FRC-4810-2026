@@ -32,7 +32,22 @@ void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
 
     // Set gyrp offset at start (change m_dGyroOffset depending on what direction the bot should be facing at start)
     m_gyro.SetYaw(units::degree_t{m_dGyroOffset});
-    nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("setIMUMode", 1);
+    nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("setIMUMode", 0);
+
+
+    //Go To Position PID Controllers
+    m_XController.Reset();
+    m_XController.SetIZone(0.4);    //-40cm
+    m_XController.SetTolerance(0.05);   //-5cm
+
+    m_YController.Reset();
+    m_YController.SetIZone(0.4);    //-40cm
+    m_YController.SetTolerance(0.05);   //-5cm
+
+    m_RotController.Reset();
+    m_RotController.SetIZone(.35);
+    m_RotController.SetTolerance(.02);
+    m_RotController.EnableContinuousInput(-std::numbers::pi, std::numbers::pi);
 }
 
 void Drivetrain::Execute (  double leftYJoystickValue, double leftXJoystickValue,
@@ -140,6 +155,12 @@ void Drivetrain::UpdateOdometry()
             m_backRight.GetPosition()
         }
     );
+
+    //Vision Measurements
+    if(LimelightHelpers::getTV("limelight"))
+    {
+        TryAddVisionMeasurement();
+    }
 }
 
 void Drivetrain::ResetOdometry( frc::Pose2d pose )
@@ -159,19 +180,15 @@ frc::Pose2d Drivetrain::GetBotPose()
 void Drivetrain::GoToPosition(const frc::Pose2d& targetPose) {
     frc::Pose2d currentPose = GetBotPose();
 
-    // Finds the difference / error
-    frc::Translation2d translationError = targetPose.Translation() - currentPose.Translation();
-    double rotationError = (targetPose.Rotation() - currentPose.Rotation()).Radians().value();
-
-    double xSpeed = translationError.X().value();  // Forward/backward
-    double ySpeed = translationError.Y().value();  // Left/right
-    double rotSpeed = rotationError;        
+    double xSpeed =  std::clamp(m_XController.Calculate((double)currentPose.X().value(), (double)targetPose.X().value()), (double)-drivetrain::kMaxSpeed, (double)drivetrain::kMaxSpeed);
+    double ySpeed =  std::clamp(m_YController.Calculate((double)currentPose.Y().value(), (double)targetPose.Y().value()), (double)-drivetrain::kMaxSpeed, (double)drivetrain::kMaxSpeed);
+    double rotSpeed = std::clamp(m_RotController.Calculate((double)currentPose.Rotation().Radians().value(), (double)targetPose.Rotation().Radians().value()), (double)-drivetrain::kMaxAngularSpeed, (double)drivetrain::kMaxAngularSpeed);
 
     // Drive the robot to position
-    DriveBotRelative(xSpeed, ySpeed, rotSpeed);
+    DriveFieldRelative(xSpeed, ySpeed, rotSpeed);
 }
 
-void Drivetrain::TryAddVisionMeasurement(double correctedGyroDegrees)
+void Drivetrain::TryAddVisionMeasurement()
 {
     LimelightHelpers::SetRobotOrientation("limelight", (double)GetBotPose().Rotation().Degrees(), 0, 0, 0, 0, 0);  //Other 5 values are optional, ommitted for simplicity sake
 
