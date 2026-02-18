@@ -9,9 +9,9 @@ SwerveModule::SwerveModule(const int driveID,            //3 Parameters passed i
     
     //Set all the passed in motor and encoder values
 
-    : m_driveMotor(driveID),             //Set the objects to corresponding can IDs
-      m_turningMotor(turnID),
-      m_turningEncoder(encoderID)
+    : m_driveMotor(driveID, m_drivetrainBus),             //Set the objects to corresponding can IDs
+      m_turningMotor(turnID, m_drivetrainBus),
+      m_turningEncoder(encoderID, m_drivetrainBus)
 {
 
 }

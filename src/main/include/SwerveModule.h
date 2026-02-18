@@ -81,6 +81,8 @@ private:
     hardware::TalonFX m_turningMotor;
     hardware::CANcoder m_turningEncoder;
 
+    CANBus m_drivetrainBus{"Drivetrain"};
+
     controls::VelocityVoltage m_request{0_tps};
     controls::MotionMagicVoltage m_turnRequest{0_tr};
 };
