@@ -53,7 +53,10 @@ class RobotIO
       void UpdateInputStatus();
 
       // Accessor Methods.
-
+      inline bool IsIntakeLowered()
+         { return( m_IntakeLoweredLimit.Get() ); }
+      inline bool IsIntakeRaised()
+         { return( m_IntakeRaisedLimit.Get() ); }
       
 
       // Xbox Controllers
@@ -61,5 +64,12 @@ class RobotIO
       frc::XboxController m_DriveController{ 0 };
       frc::XboxController m_OperatorController{ 1 };
 
-      
+      // *******************
+      // * Intake Hardware *
+      // *******************
+      hardware::TalonFX m_IntakeMoveMotor{ 14 };
+      hardware::TalonFX m_IntakeRunMotor{ 15 };
+
+      frc::DigitalInput m_IntakeRaisedLimit{ 8 };
+      frc::DigitalInput m_IntakeLoweredLimit{ 9 };
 };
