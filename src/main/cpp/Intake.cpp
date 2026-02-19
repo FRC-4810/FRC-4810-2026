@@ -18,6 +18,7 @@ void Intake::Initialize( RobotIO *p_pRobotIO )
     m_pTimeoutTimer->Reset();
 
     // Refresh arm motor configurator with m_MotorConfigs
+    m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Refresh( m_MotorConfigs );
 }
 
 void Intake::Execute()
@@ -31,6 +32,7 @@ void Intake::Execute()
         if ( m_eState == intake::eState::STATE_START )
         {   
             // Reset arm encoders, should be started at upper position
+            m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
 
             // Go to idle state
             m_eState = intake::eState::STATE_IDLE;
@@ -46,24 +48,25 @@ void Intake::Execute()
             // *----------------------*
             if ( m_eCommand == intake::eCommand::COMMAND_MANUAL_RAISE )
             {
-                // Check upper limit switch - if we dont end up using limit switches check the encoder
-                if ( /*Upper limit hit*/ )
+                // Check upper limit
+                if ( m_pRobotIO->IsIntakeRaised() )
                 {
-                    // Reset arm encoders
-
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
                 // Enable coast mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dManualRaiseSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
                 // Set state to manual raise
-                m_eState = intake::eState::STATE_MANUAL_RAISE
+                m_eState = intake::eState::STATE_MANUAL_RAISE;
             }
 
             // *----------------------*
@@ -71,22 +74,25 @@ void Intake::Execute()
             // *----------------------*
             else if ( m_eCommand == intake::eCommand::COMMAND_MANUAL_LOWER )
             {
-                // Check lower limit switch - if we dont end up using limit switches check the encoder
-                if ( /*Lower limit hit*/ )
+                // Check lower limit
+                if ( m_pRobotIO->IsIntakeLowered() )
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
                 // Enable coast mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dManualLowerSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
                 // Set state to manual lower
-                m_eState = intake::eState::STATE_MANUAL_LOWER
+                m_eState = intake::eState::STATE_MANUAL_LOWER;
             }
 
             // *--------------------*
@@ -94,24 +100,28 @@ void Intake::Execute()
             // *--------------------*
             else if ( m_eCommand == intake::eCommand::COMMAND_AUTO_RAISE )
             {
-                // Check upper limit switch - if we dont end up using limit switches check the encoder
-                if ( /*Upper limit hit*/ )
+                // Check upper limit
+                if ( m_pRobotIO->IsIntakeRaised() )
                 {
                     // Reset arm encoders
+                    m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
 
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
                 // Enable coast mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAutoRaiseSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
                 // Set state to manual raise
-                m_eState = intake::eState::STATE_MANUAL_RAISE
+                m_eState = intake::eState::STATE_MANUAL_RAISE;
             }
 
             // *--------------------*
@@ -119,22 +129,25 @@ void Intake::Execute()
             // *--------------------*
             else if ( m_eCommand == intake::eCommand::COMMAND_AUTO_LOWER )
             {
-                // Check lower limit switch - if we dont end up using limit switches check the encoder
-                if ( /*Lower limit hit*/ )
+                // Check lower limit
+                if ( m_pRobotIO->IsIntakeLowered() )
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
                 // Enable coast mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAutoLowerSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
                 // Set state to auto lower
-                m_eState = intake::eState::STATE_AUTO_LOWER
+                m_eState = intake::eState::STATE_AUTO_LOWER;
             }
 
             // *-----------------------*
@@ -143,13 +156,14 @@ void Intake::Execute()
             else if ( m_eCommand == intake::eCommand::COMMAND_MANUAL_INTAKE )
             {
                 // Set speed on intake/outtake motor
+                m_pRobotIO->m_IntakeRunMotor.Set( intake::dManualIntakeSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
                 // Set state to manual intake
-                m_eState = intake::eState::STATE_MANUAL_INTAKE
+                m_eState = intake::eState::STATE_MANUAL_INTAKE;
             }
 
             // *------------------------*
@@ -158,13 +172,14 @@ void Intake::Execute()
             else if ( m_eCommand == intake::eCommand::COMMAND_MANUAL_OUTTAKE )
             {
                 // Set speed on intake/outtake motor
+                m_pRobotIO->m_IntakeRunMotor.Set( intake::dManualOuttakeSpeed );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
                 // Set state to manual outtake
-                m_eState = intake::eState::STATE_MANUAL_OUTTAKE
+                m_eState = intake::eState::STATE_MANUAL_OUTTAKE;
             }
 
             // Handle unrecognized command
@@ -186,11 +201,14 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Upper limit hit - if limit switches aren't used, check encoders at upper limit*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeRaised() )
             {
                 // Stop arm motors
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
                 // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -210,11 +228,14 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit - if limit switches aren't used, check encoders at lower limit*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeLowered() )
             {
                 // Stop arm motors
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
                 // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -234,11 +255,14 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Upper limit hit or encoder at auto raise setpoint*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeRaised() )
             {
                 // Stop arm motors
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
                 // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -258,11 +282,14 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || /* Lower limit hit or encoder at auto lower setpoint*/ )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeLowered() )
             {
                 // Stop arm motors
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
                 // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -285,6 +312,7 @@ void Intake::Execute()
             if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
                 // Stop intake/outtake motors
+                m_pRobotIO->m_IntakeRunMotor.Set( 0 );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -307,6 +335,7 @@ void Intake::Execute()
             if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
                 // Stop intake/outtake motors
+                m_pRobotIO->m_IntakeRunMotor.Set( 0 );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;

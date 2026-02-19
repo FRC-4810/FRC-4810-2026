@@ -178,7 +178,7 @@ void MainStateMachine::Execute()
          }
 
          // Operator right bumper pressed - Auto Lower
-         if ( m_pRobotIO->m_OperatorController.GetRightBumper() )
+         else if ( m_pRobotIO->m_OperatorController.GetRightBumper() )
          {
             m_Intake.AutoLower();
 
