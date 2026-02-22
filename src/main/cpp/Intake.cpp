@@ -31,9 +31,6 @@ void Intake::Execute()
         // ***************
         if ( m_eState == intake::eState::STATE_START )
         {   
-            // Reset arm encoders, should be started at upper position
-            m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
-
             // Go to idle state
             m_eState = intake::eState::STATE_IDLE;
         }
@@ -103,9 +100,6 @@ void Intake::Execute()
                 // Check upper limit
                 if ( m_pRobotIO->IsIntakeRaised() )
                 {
-                    // Reset arm encoders
-                    m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
-
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
                 }
@@ -120,8 +114,8 @@ void Intake::Execute()
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
-                // Set state to manual raise
-                m_eState = intake::eState::STATE_MANUAL_RAISE;
+                // Set state to auto raise
+                m_eState = intake::eState::STATE_AUTO_RAISE;
             }
 
             // *--------------------*
@@ -200,8 +194,15 @@ void Intake::Execute()
             {
                 bIsTimedOut = true;
             }
+            bool bLimitHit = false;
+            if ( m_pRobotIO->IsIntakeRaised() )
+            {
+                // Reset arm encoders
+                m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
+                bLimitHit = true;
+            }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeRaised() )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || bLimitHit == true )
             {
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
@@ -227,8 +228,13 @@ void Intake::Execute()
             {
                 bIsTimedOut = true;
             }
+            bool bLimitHit = false;
+            if ( m_pRobotIO->IsIntakeLowered() )
+            {
+                bLimitHit = true;
+            }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeLowered() )
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || bLimitHit == true )
             {
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
@@ -255,7 +261,15 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeRaised() )
+            bool bLimitHit = false;
+            if ( m_pRobotIO->IsIntakeRaised() )
+            {
+                // Reset arm encoders
+                m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
+                bLimitHit = true;
+            }
+
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || bLimitHit == true )
             {
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
@@ -282,7 +296,13 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
-            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || m_pRobotIO->IsIntakeLowered() )
+            bool bLimitHit = false;
+            if ( m_pRobotIO->IsIntakeLowered() )
+            {
+                bLimitHit = true;
+            }
+
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || bLimitHit == true )
             {
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
