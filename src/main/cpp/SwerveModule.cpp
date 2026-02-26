@@ -161,7 +161,7 @@ void SwerveModule::Stop()
 frc::SwerveModuleState SwerveModule::GetState() {
     return {
         units::meters_per_second_t{m_driveMotor.GetVelocity().GetValueAsDouble() * 2 * std::numbers::pi * swerveModule::kWheelRadius},
-        units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2)}
+        units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2)} // Needs to change - CS
     };
 }
 
@@ -178,17 +178,31 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
 {
     // Get the current module angle - Encoder returns in rotations, multiply by 2 pi to get radians
 
-    frc::Rotation2d currentAngle = frc::Rotation2d{
-        units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValue()}};
+
+    // CS - Change in logic here to fix degree calculations; avoid treating rotations as radians; Temperarory test
+    frc::Rotation2d currentAngle =frc::Rotation2d{units::turn_t{
+        m_turningMotor.GetPosition().GetValue()}};
 
     frc::SwerveModuleState state = desiredState;
 
     state.Optimize(currentAngle) ;  //Optimize State, avoid spinning over 90 deg
 
-    m_turningMotor.SetControl(m_turnRequest.WithPosition(
-        units::turn_t{(double)state.angle.Radians() / (2 * std::numbers::pi)}));
 
-    state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians()));
+    /*Previous logic 
+    frc::Rotation2d currentAngle = frc::Rotation2d{
+        units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValue()}};
+    */
+
+    // CS - Change Logic again using optomiziation function
+    units::turn_t targetTurns = units::turn_t{state.angle.Radians().value() / (2.0 * std::numbers::pi)};
+    m_turningMotor.SetControl(m_turnRequest.WithPosition(targetTurns));
+    
+    /* Previous logic
+    m_turningMotor.SetControl(m_turnRequest.WithPosition(
+        units::turn_t{(double)state.angle.Radians() / (2 * std::numbers::pi)}));*/
+
+
+    //state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians())); -- Removed; CS
 
     units::turns_per_second_t driveTps =
         units::turns_per_second_t{(double)(state.speed /
