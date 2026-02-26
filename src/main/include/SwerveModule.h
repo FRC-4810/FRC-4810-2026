@@ -1,6 +1,7 @@
 #pragma once
 
 #include <numbers>
+#include <string>
 
 #include <frc/controller/PIDController.h>
 #include <frc/controller/ProfiledPIDController.h>
@@ -16,14 +17,19 @@
 #include <ctre/phoenix6/TalonFX.hpp>
 #include <ctre/phoenix6/CANcoder.hpp>
 
-
 using namespace ctre::phoenix6;
 
 namespace swerveModule
 {
     static constexpr double kWheelRadius = 0.0508;  //Wheel Radius in Meters
+
     static constexpr double kDriveGearRatio = 7.85;  //Drive motor to wheel gear ratio
     static constexpr double kTurnGearRatio = 12.1;
+
+//-JJB - Note: The front left and right swerve unit encoders have to be "Not Inverted"
+//-JJB - due to the new swerve units that were installed that have a 3-gear train.
+//-JJB - The back left and right swerve modules are set to "Inverted" as before, because
+//-JJB - those units use a 2-gear train (The output of these spins opposite of the input).
 }
 
 class SwerveModule
@@ -33,12 +39,10 @@ public:
      * Swerve module constructor. Create 1 for each swerve module on bot, report relative locations in Drivetrain.h.
      * 
      * @param driveID The CAN ID for the drive motor.
-     * 
      * @param turnID The CAN ID for the turning motor.
-     * 
      * @param encoderID The CAN ID for the absolute encoder used to read wheel angle.
     */
-    SwerveModule(const int driveID, const int turnID, const int encoderID);
+    SwerveModule(const ctre::phoenix6::CANBus & canbus, const int driveID, const int turnID, const int encoderID);
     ~SwerveModule()
         {  }
 
@@ -80,8 +84,6 @@ private:
     hardware::TalonFX m_driveMotor;
     hardware::TalonFX m_turningMotor;
     hardware::CANcoder m_turningEncoder;
-
-    CANBus m_drivetrainBus{"Drivetrain"};
 
     controls::VelocityVoltage m_request{0_tps};
     controls::MotionMagicVoltage m_turnRequest{0_tr};
