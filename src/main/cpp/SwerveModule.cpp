@@ -64,8 +64,8 @@ void SwerveModule::ConfigModule()
     configs::Slot0Configs turnSlot0Configs{};
 
     turnSlot0Configs.kP = 25;
-    turnSlot0Configs.kD = 1;
-    turnSlot0Configs.kP = 0;
+    turnSlot0Configs.kI = 1;
+    turnSlot0Configs.kD = 0;
 
     turnConfig.WithSlot0(turnSlot0Configs);
     m_turnRequest.WithSlot(0);
