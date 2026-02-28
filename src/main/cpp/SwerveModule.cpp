@@ -74,6 +74,10 @@ void SwerveModule::ConfigModule()
     turnConfig.Voltage.PeakReverseVoltage = -11_V;
 
     turnConfig.Feedback = turnConfig.Feedback.WithFusedCANcoder(m_turningEncoder);
+    if(m_turningMotor.GetDeviceID() == 6 || m_turningMotor.GetDeviceID() == 8)
+    {
+        turnConfig.MotorOutput.Inverted = signals::InvertedValue::Clockwise_Positive; // smth new SSP
+    }
     turnConfig.Feedback.RotorToSensorRatio = swerveModule::kTurnGearRatio;
 
     turnConfig.MotionMagic.MotionMagicCruiseVelocity = 6.5_tps;
@@ -160,8 +164,8 @@ void SwerveModule::Stop()
 
 frc::SwerveModuleState SwerveModule::GetState() {
     return {
-        units::meters_per_second_t{m_driveMotor.GetVelocity().GetValueAsDouble() * 2 * std::numbers::pi * swerveModule::kWheelRadius},
-        units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2)} // Needs to change - CS
+        units::meters_per_second_t{m_driveMotor.GetVelocity().GetValueAsDouble() * (2.0 * std::numbers::pi * swerveModule::kWheelRadius)},
+        units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)} // Needs to change - CS
     };
 }
 
@@ -169,8 +173,8 @@ frc::SwerveModuleState SwerveModule::GetState() {
 frc::SwerveModulePosition SwerveModule::GetPosition() {
     
     return {
-        units::meter_t{m_driveMotor.GetPosition().GetValueAsDouble() * 2 * std::numbers::pi * swerveModule::kWheelRadius},
-        -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2)}
+        units::meter_t{m_driveMotor.GetPosition().GetValueAsDouble() * 2.0 * std::numbers::pi * swerveModule::kWheelRadius},
+        -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)}
     };
 }
 
@@ -181,7 +185,7 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
 
     // CS - Change in logic here to fix degree calculations; avoid treating rotations as radians; Temperarory test
     frc::Rotation2d currentAngle =frc::Rotation2d{units::turn_t{
-        m_turningMotor.GetPosition().GetValue()}};
+        m_turningMotor.GetPosition().GetValueAsDouble()}}; // GetValue() --> GetValueAsDouble() - SSP
 
     frc::SwerveModuleState state = desiredState;
 
