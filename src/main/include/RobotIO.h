@@ -54,6 +54,7 @@ class RobotIO
 
       // Accessor Methods.
 
+
       
 
       // Xbox Controllers
@@ -61,5 +62,9 @@ class RobotIO
       frc::XboxController m_DriveController{ 0 };
       frc::XboxController m_OperatorController{ 1 };
 
+      //hardware::TalonFX pivot {13};
+      //hardware::TaloxFX intake {14};
+      //hardware::TalonFX shooterLeft {15};
+      //hardware::TaloxFX shooterRight {16};
       
 };
