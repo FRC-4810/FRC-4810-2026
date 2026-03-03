@@ -11,7 +11,7 @@ Drivetrain::Drivetrain()
     m_bIsFieldRelative = true;
 
     m_bLockOnStop = false;
-    m_dGyroOffset = 180.0;
+    m_dGyroOffset = 0.0;
 }
 
 void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
@@ -44,7 +44,7 @@ void Drivetrain::Execute (
     frc::SmartDashboard::PutNumber("Odometry/Odometry Y", (double)botPose.Y());
     frc::SmartDashboard::PutNumber("Odometry/Odometry Rot", (double)botPose.Rotation().Degrees());
 
-    frc::SmartDashboard::PutBoolean("Drive Bot Relative", m_bIsFieldRelative);
+    frc::SmartDashboard::PutBoolean("Drive Field Relative", m_bIsFieldRelative);
 
     // Left Y value is Chassie X value (forward/backward)
     // Left X value is Chassie Y value (left/right)
