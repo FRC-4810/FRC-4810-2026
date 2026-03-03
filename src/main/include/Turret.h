@@ -3,6 +3,7 @@
 #include <frc/Timer.h>
 
 #include "RobotIO.h"
+#include "Drivetrain.h"
 
 namespace turret
 {
@@ -15,6 +16,7 @@ namespace turret
         STATE_MANUAL_LEFT = 4,  //Left is towards Home
         STATE_MANUAL_RIGHT = 5, //Right is away from Home
         STATE_AUTO_MOVE = 6,    //Automatically move to m_dTurretSetpoint
+        STATE_FOLLOW = 7,       // Follow the hub with the turret
         STATE_ERROR = 99
     };
 
@@ -25,6 +27,7 @@ namespace turret
         COMMAND_MANUAL_LEFT,
         COMMAND_MANUAL_RIGHT,
         COMMAND_AUTO_MOVE,
+        COMMAND_FOLLOW,
         COMMAND_STOP
     };
 
@@ -32,6 +35,7 @@ namespace turret
     static constexpr double dHomingTimeout = 10.0;
     static constexpr double dManualMoveTimeout = 10.0;
     static constexpr double dAutoMoveTimeout = 10.0;    //We may get rid of this when we add tracking
+    static constexpr double dFollowTimeout = 40.0;    //We may get rid of this when we add tracking
     static constexpr double dDebounceTimeout = 2.0;
 
     // Motor Speed Constants
@@ -40,6 +44,8 @@ namespace turret
     static constexpr double dManualRightSpeed = 0.25;
 
     static constexpr double dAutoMoveTollerance = 0.001389;    // Tollerance of plus/minus 0.5 degrees
+
+    static constexpr double dMaxRotations = 0.5;    //-Todo - configure gear ratio to be 0.5
     
 }
 
@@ -62,6 +68,9 @@ public:
     
     inline void ManualRight()
         {  m_eCommand = turret::COMMAND_MANUAL_RIGHT;  }
+
+    inline void SetAutoSetpoint( double dSetpoint )
+        {  m_dTurretSetpoint = dSetpoint;  }
 
     inline void AutoMove()
         {  m_eCommand = turret::COMMAND_AUTO_MOVE;  }
@@ -87,12 +96,12 @@ public:
 
     //If target - curret is within tollerance 
     inline bool IsAtTarget()
-        { return( fabs(m_pRobotIO->m_TurretMotor.GetPosition().GetValueAsDouble() - *m_pTurretSetpoint) < turret::dAutoMoveTollerance ); }
+        { return( fabs(m_pRobotIO->m_TurretMotor.GetPosition().GetValueAsDouble() - m_dTurretSetpoint) < turret::dAutoMoveTollerance ); }
 
 
 
     // Class Methods
-    void Initialize( RobotIO *p_pRobotIO, double *p_pTurretSetpoint );
+    void Initialize( RobotIO *p_pRobotIO, Drivetrain *p_pDrivetrain );
     void Execute();
     void UpdateInputStatus();
     
@@ -100,13 +109,16 @@ private:
     turret::eState m_eState;
     turret::eCommand m_eCommand;
 
-    double *m_pTurretSetpoint;
+    double m_dTurretSetpoint;
 
+    Drivetrain *m_pDrivetrain;
     RobotIO *m_pRobotIO;
 
     frc::Timer *m_pTimeoutTimer;
 
     configs::MotorOutputConfigs m_MotorConfigs;
+
+    double GetTurretAngleRotations();
 
     //Motion Magic configs
     controls::MotionMagicVoltage m_Request{0_tr};

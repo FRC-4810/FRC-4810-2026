@@ -54,8 +54,11 @@ class RobotIO
       void UpdateInputStatus();
 
       // Accessor Methods.
-      inline bool GetTurretLimitSwitch()
-         { return(m_TurretLimitSwitch.Get()); }
+      inline bool IsTurretHomed()
+         { return(m_TurretHomeLimitSwitch.Get()); }
+
+      inline bool IsTurretMax()
+         { return(m_TurretFarLimitSwitch.Get()); }
       
 
       // Xbox Controllers
@@ -67,8 +70,9 @@ class RobotIO
       // *******************
       // * Turret Hardware *
       // *******************
-      hardware::TalonFXS m_TurretMotor{ 16 };       // Configure ID once all hardware is known
-      frc::DigitalInput m_TurretLimitSwitch{ 0 };  //  Configure ID once all hardware is known
+      hardware::TalonFXS m_TurretMotor{ 14 };       // Configure ID once all hardware is known
+      frc::DigitalInput m_TurretHomeLimitSwitch{ 0 };  //  Configure ID once all hardware is known
+      frc::DigitalInput m_TurretFarLimitSwitch{ 1 };  //  Configure ID once all hardware is known
 
       
 };

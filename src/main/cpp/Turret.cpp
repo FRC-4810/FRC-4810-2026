@@ -5,15 +5,16 @@ Turret::Turret()
 {
     m_eState = turret::eState::STATE_START;
     m_eCommand = turret::COMMAND_NONE;
+    m_dTurretSetpoint = 0.0;
 
     m_pRobotIO = nullptr;
-    m_pTurretSetpoint = nullptr;
+    m_pDrivetrain = nullptr;
 }
 
-void Turret::Initialize( RobotIO *p_pRobotIO, double *p_pTurretSetpoint )
+void Turret::Initialize( RobotIO *p_pRobotIO, Drivetrain *p_pDrivetrain )
 {
     m_pRobotIO = p_pRobotIO;
-    m_pTurretSetpoint = p_pTurretSetpoint;
+    m_pDrivetrain = p_pDrivetrain;
 
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
@@ -31,7 +32,7 @@ void Turret::UpdateInputStatus()
 void Turret::Execute()
 {
     //Check if m_pRobotIO or m_pTurretSetpoint has been assigned
-    if(m_pRobotIO != nullptr && m_pTurretSetpoint != nullptr)
+    if(m_pRobotIO != nullptr && m_pDrivetrain != nullptr)
     {
         // ***************
         // * Start State *
@@ -51,7 +52,7 @@ void Turret::Execute()
             // *--------------*
             if(m_eCommand == turret::COMMAND_HOME)
             {
-                if(m_pRobotIO->GetTurretLimitSwitch())
+                if(m_pRobotIO->IsTurretHomed())
                 {
                     m_pRobotIO->m_TurretMotor.SetPosition(0_tr);
                     m_eCommand = turret::COMMAND_NONE;
@@ -74,7 +75,7 @@ void Turret::Execute()
             // *---------------------*
             else if(m_eCommand == turret::COMMAND_MANUAL_LEFT)
             {
-                if(m_pRobotIO->m_TurretMotor.GetPosition().GetValueAsDouble() >= 0.5)   //0.5 is max rotation;
+                if(m_pRobotIO->IsTurretMax())
                 {
                     m_eCommand = turret::COMMAND_NONE;
                     return;
@@ -96,7 +97,7 @@ void Turret::Execute()
             // *----------------------*
             else if(m_eCommand == turret::COMMAND_MANUAL_RIGHT)
             {
-                if(m_pRobotIO->GetTurretLimitSwitch())
+                if(m_pRobotIO->IsTurretHomed())
                 {
                     m_eCommand = turret::COMMAND_NONE;
                     return;
@@ -118,18 +119,21 @@ void Turret::Execute()
             // *-------------------*
             else if(m_eCommand == turret::COMMAND_AUTO_MOVE)
             {
-                //Auto move logic - motion magic with m_pTurretSetpoint
-                //To access m_pTurretSetpoint, use the following notation:
-                *m_pTurretSetpoint;
+                if(m_dTurretSetpoint > 0 && m_dTurretSetpoint < turret::dMaxRotations)
+                {
+                    if(IsAtTarget())
+                    {
+                        m_eCommand = turret::COMMAND_NONE;
+                        return;
+                    }
 
-                //Brief explanation: MainStateMachine will have a method of calculating a desired turret angle
-                // (limelight/odometry/hardcoded) that it will store as m_dTurretTargetPosition. This class will
-                // then have a pointer to that double that it will utilize (read only, can't be const due to nullptr
-                // at construction) to aim the turret. Therefore, multiple commands are not needed for various 
-                // setpoints, and this will allow for potential future expansion of aiming directly at the hub. - GMS
-                
-                // We can make it a const pointer if we declare it at construction rather than in Initialize, however
-                // this may be beyond the scope of what we need.
+                    m_pRobotIO->m_TurretMotor.SetControl(m_Request.WithPosition( units::angle::turn_t{m_dTurretSetpoint} ));
+
+                    m_pTimeoutTimer->Reset();
+                    m_pTimeoutTimer->Start();
+
+                    m_eState = turret::eState::STATE_AUTO_MOVE;
+                }
             }
 
             // Error - unrecognized command
@@ -160,7 +164,7 @@ void Turret::Execute()
                 m_eState = turret::eState::STATE_IDLE;
                 m_eCommand = turret::COMMAND_NONE;
             }
-            else if(m_pRobotIO->GetTurretLimitSwitch())
+            else if(m_pRobotIO->IsTurretHomed())
             {
                 m_pRobotIO->m_TurretMotor.Set(0);
 
@@ -197,7 +201,7 @@ void Turret::Execute()
                 bIsTimedOut = true;
             }
 
-            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->m_TurretMotor.GetPosition().GetValueAsDouble() >= 0.5)
+            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->IsTurretMax())
             {
                 m_pRobotIO->m_TurretMotor.Set(0);
 
@@ -220,7 +224,7 @@ void Turret::Execute()
                 bIsTimedOut = true;
             }
 
-            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->GetTurretLimitSwitch())
+            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->IsTurretHomed())
             {
                 m_pRobotIO->m_TurretMotor.Set(0);
 
@@ -237,9 +241,49 @@ void Turret::Execute()
         // *******************
         else if(m_eState == turret::eState::STATE_AUTO_MOVE)
         {
-            //Auto Move logic using motion magic
+            bool bIsTimedOut = false;
+            if((double)m_pTimeoutTimer->Get() >= turret::dAutoMoveTimeout)
+            {
+                bIsTimedOut = true;
+            }
+
+            if(IsAtTarget() || bIsTimedOut || m_eCommand == turret::COMMAND_STOP)
+            {
+                m_pRobotIO->m_TurretMotor.Set(0);
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::COMMAND_NONE;
+            }
         }
 
+        // ********************
+        // * Follow Hub State *
+        // ********************
+        else if(m_eState == turret::eState::STATE_FOLLOW)
+        {
+            bool bIsTimedOut = false;
+            if((double)m_pTimeoutTimer->Get() >= turret::dFollowTimeout)
+            {
+                bIsTimedOut = true;
+            }
+
+            //Update Motor Control
+            m_pRobotIO->m_TurretMotor.SetControl(m_Request.WithPosition(units::angle::turn_t{ GetTurretAngleRotations() }));
+
+            if(bIsTimedOut || m_eCommand == turret::COMMAND_STOP)
+            {
+                m_pRobotIO->m_TurretMotor.Set(0);
+
+                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::COMMAND_NONE;
+            }
+        }
 
         // Handle Error State or unknown state
         else
@@ -253,4 +297,13 @@ void Turret::Execute()
         // Handle RobotIO nullptr error
         printf("ERROR in Turret.cpp - Robot IO Pointer Null or Turret Setpoint Pointer Null\n");
     }
+}
+
+double Turret::GetTurretAngleRotations()
+{
+    //Todo Calculate turret target rotations based on drivetrain location
+
+    
+
+    return 0.0;
 }
