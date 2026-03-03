@@ -23,7 +23,7 @@ namespace swerveModule
 {
     static constexpr double kWheelRadius = 0.0508;  //Wheel Radius in Meters
 
-    static constexpr double kDriveGearRatio = 7.85;  //Drive motor to wheel gear ratio
+    static constexpr double kDriveGearRatio = 4.59;  //Drive motor to wheel gear ratio
     static constexpr double kTurnGearRatio = 12.1;
 
 //-JJB - Note: The front left and right swerve unit encoders have to be "Not Inverted"
