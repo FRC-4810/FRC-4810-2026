@@ -74,6 +74,7 @@ void SwerveModule::ConfigModule()
     turnConfig.Voltage.PeakReverseVoltage = -11_V;
 
     turnConfig.Feedback = turnConfig.Feedback.WithFusedCANcoder(m_turningEncoder);
+
     if(m_turningMotor.GetDeviceID() == 2 || m_turningMotor.GetDeviceID() == 4)
     {
         turnConfig.MotorOutput.Inverted = signals::InvertedValue::Clockwise_Positive; // smth new SSP
@@ -91,7 +92,7 @@ void SwerveModule::ConfigModule()
 //-JJB - CAN ID 1: Front Left Drive
 //-JJB - CAN ID 5: Back Left Drive
 
-    if(m_driveMotor.GetDeviceID() == 3 || m_driveMotor.GetDeviceID() == 7)
+    if(m_driveMotor.GetDeviceID() == 1 || m_driveMotor.GetDeviceID() == 5)
     {
         driveConfig.MotorOutput.Inverted = signals::InvertedValue::Clockwise_Positive;
     }
