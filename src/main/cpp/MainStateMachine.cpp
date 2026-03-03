@@ -104,6 +104,8 @@ void MainStateMachine::Initialize(
 
    m_pRobotIO = p_pRobotIO;
    m_Drivetrain.Initialize( p_pRobotIO );
+   m_Magazine.Initialize( p_pRobotIO );
+   m_Shooter.Initialize( p_pRobotIO );
 }
 
 //-------------------------------------------------------------------
@@ -139,7 +141,8 @@ void MainStateMachine::Execute()
 
          // Call the subsystem execute methods to allow them to advance
          // through the idle and start states.
-
+         m_Magazine.Execute();
+         m_Shooter.Execute();
 
          // printf( "Main - Advancing To Idle State\n" );
          m_eState = RobotMain::eState::STATE_IDLE;
@@ -154,7 +157,27 @@ void MainStateMachine::Execute()
 
       else if ( m_eState == RobotMain::eState::STATE_IDLE )
       {
-         
+         // *-------------------------------------* - GMS
+         // * Operator A Button - Low Speed Shoot *
+         // *-------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetAButton())
+         {
+            m_Shooter.LowPowerShoot();
+            m_Shooter.Execute();
+
+            m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
+         }
+
+         // *--------------------------------*
+         // * Operator X Button - Hopper Out *
+         // *--------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetXButton())
+         {
+            m_Magazine.RunOut();
+            m_Magazine.Execute();
+
+            m_eState = RobotMain::eState::STATE_MAGAZINE_MANUAL_OUT;
+         }
       }
 
       // *===================================================================*
@@ -164,7 +187,71 @@ void MainStateMachine::Execute()
       // *===================================================================*
 
       // Code to be added
+      
+      // **************************
+      // * Shooting Ramp Up State *
+      // **************************
+      else if(m_eState == RobotMain::eState::STATE_SHOOTING_RAMP_UP)
+      {
+         if(!m_pRobotIO->m_OperatorController.GetAButton())
+         {
+            m_Shooter.Stop();
+         }
 
+         m_Shooter.Execute();
+
+         if(m_Shooter.isShooting())
+         {
+            m_Magazine.RunIn();
+            m_Magazine.Execute();
+
+            m_eState = RobotMain::eState::STATE_SHOOTING;
+         }
+
+         if(m_Shooter.isIdle())
+         {
+            m_eState = RobotMain::eState::STATE_SHOOTING;
+         }
+      }
+
+      // ******************
+      // * Shooting State *
+      // ******************
+      else if(m_eState == RobotMain::eState::STATE_SHOOTING)
+      {
+         if(!m_pRobotIO->m_OperatorController.GetAButton())
+         {
+            m_Magazine.Stop();
+            m_Shooter.Stop();
+         }
+
+         m_Magazine.Execute();
+
+         if(m_Magazine.IsIdle() && m_Shooter.isIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      //-TODO - GMS - Add intake raise to agitate rest of balls 
+
+      // *****************************
+      // * Magazine Manual Out State *
+      // *****************************
+      else if(m_eState == RobotMain::eState::STATE_MAGAZINE_MANUAL_OUT)
+      {
+         if(!m_pRobotIO->m_OperatorController.GetXButton())
+         {
+            m_Magazine.Stop();
+         }
+
+         m_Magazine.Execute();
+
+         if(m_Magazine.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
 
 
 

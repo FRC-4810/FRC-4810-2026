@@ -21,6 +21,7 @@
 
 //#include "ctre/Phoenix.h"              //-GMS - Old Phoenix 5 controls
 #include <ctre/phoenix6/TalonFX.hpp>
+#include <ctre/phoenix6/TalonFXS.hpp>
 
 //-JJB #include <units/units.h>        // Catch-all.  Use individual headers
 #include "units/velocity.h"            // For velocity calculations
@@ -54,7 +55,11 @@ class RobotIO
 
       // Accessor Methods.
 
-
+      //-GMS
+      inline double GetShooterSpeed()
+      {
+         return( m_LeftShooterMotor_Master.GetVelocity().GetValueAsDouble() );
+      }
       
 
       // Xbox Controllers
@@ -66,5 +71,23 @@ class RobotIO
       //hardware::TaloxFX intake {14};
       //hardware::TalonFX shooterLeft {15};
       //hardware::TaloxFX shooterRight {16};
+
+      // *********************
+      // * Magazine Hardware *
+      // *********************
+      hardware::TalonFXS m_FeederMotor{ 17 };   //-GMS TODO - CHECK THIS. TalonFXS? TalonSRX? Other?
+      hardware::TalonFXS m_KickerMotor{ 18 };
+
+      //-GMS - not yet implemented
+      //frc::DigitalInput m_EmptyPhotoeye{ 2 };   //Bottom of hopper Photoeye
+      //frc::DigitalInput m_FullPhotoeye{ 3 };    //Top of hopper Photoeye
+
+
+
+      // ******************************  -GMS
+      // * Shooter Subsystem Hardware *
+      // ******************************
+      hardware::TalonFX m_LeftShooterMotor_Master{ 15 };       // Check CAN ID's with rest of Robot Hardware
+      hardware::TalonFX m_RightShooterMotor_Follower{ 16 };    // Check CAN ID's with rest of Robot Hardware
       
 };

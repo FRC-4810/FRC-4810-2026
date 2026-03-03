@@ -20,6 +20,10 @@
 
 #include "Drivetrain.h"                // Drivetrain state machine class
                                        //    definition
+#include "Magazine.h"                  // Magazine state machine class
+                                       //    definition
+#include "Shooter.h"                   // Shooter state machine class
+                                       //    definition
 
 // *------------------------------------------------*
 // * Top Level (Main) State Machine Enumerated Type *
@@ -31,6 +35,9 @@ namespace RobotMain
    {
       STATE_START = 0,
       STATE_IDLE = 1,
+      STATE_SHOOTING_RAMP_UP = 5,
+      STATE_SHOOTING = 6,
+      STATE_MAGAZINE_MANUAL_OUT = 7,
       STATE_ERROR = 99
    };
 
@@ -68,6 +75,8 @@ class MainStateMachine
 
       // State Machine Object Instances.
       Drivetrain m_Drivetrain;
+      Magazine m_Magazine;
+      Shooter m_Shooter;
 };
 
 #endif // MAIN_STATE_MACHINE_H_

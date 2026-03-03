@@ -68,7 +68,60 @@ void RobotIO::RobotInit()
 
    // Done in SwerveModule.cpp 
 
+   // *----------------------------------*
+   // * Magazine Hardware Initialization *
+   // *----------------------------------*
    
+   configs::TalonFXSConfiguration feederMotorConfigs{};
+   
+   feederMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
+   feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
+
+   configs::TalonFXSConfiguration kickerMotorConfigs{};
+   
+   kickerMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
+   kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   m_KickerMotor.GetConfigurator().Apply(kickerMotorConfigs);
+
+
+   // *---------------------------------*
+   // * Shooter Hardware Initialization * 
+   // *---------------------------------*
+   configs::TalonFXConfiguration leftShooterMotor_MasterConfig{};
+
+   leftShooterMotor_MasterConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   leftShooterMotor_MasterConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
+   leftShooterMotor_MasterConfig.MotorOutput.Inverted =
+      signals::InvertedValue::CounterClockwise_Positive;
+
+   configs::TalonFXConfiguration rightShooterMotor_FollowerConfig{};
+
+   rightShooterMotor_FollowerConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   rightShooterMotor_FollowerConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
+
+   // Apply the Motor Controller Configurations.
+
+   m_LeftShooterMotor_Master.GetConfigurator().Apply( leftShooterMotor_MasterConfig );
+   m_RightShooterMotor_Follower.GetConfigurator().Apply( rightShooterMotor_FollowerConfig );
+
+   //-GMS - This is my guess that the shooter will be powered by 2 Kraken Motors on 40A fuses, oposing direction
+   m_RightShooterMotor_Follower.SetControl(
+      controls::Follower{
+         m_LeftShooterMotor_Master.GetDeviceID(),     // Master ID - Device ID of Master to follow
+         true});                       // OpposeMasterDirection
+                                       // true - Motor invert to oppose the master's
+                                       //    configured Invert. Typical when the the
+                                       //    master and follower mechanically spin in
+                                       //    opposite directions.
 }
 
 //-------------------------------------------------------------------
