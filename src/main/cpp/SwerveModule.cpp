@@ -91,7 +91,10 @@ void SwerveModule::ConfigModule()
 //-JJB - CAN ID 1: Front Left Drive
 //-JJB - CAN ID 5: Back Left Drive
 
-    if(m_driveMotor.GetDeviceID() == 3 || m_driveMotor.GetDeviceID() == 7)
+
+    //-GMS - TODO CHECK THIS, should be 1 and 5
+    //if(m_driveMotor.GetDeviceID() == 3 || m_driveMotor.GetDeviceID() == 7)
+    if(m_driveMotor.GetDeviceID() == 1 || m_driveMotor.GetDeviceID() == 5)
     {
         driveConfig.MotorOutput.Inverted = signals::InvertedValue::Clockwise_Positive;
     }
