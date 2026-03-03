@@ -120,6 +120,9 @@ void MainStateMachine::UpdateStatus()
 
 void MainStateMachine::Execute()
 {
+
+   frc::SmartDashboard::PutBoolean("Shooter at speed", m_Shooter.isShooting());
+
    // printf( ">>> Enter - MainStateMachine::Execute\n" );
 
    // Verify that the pointer to the robot I/O instance is not null.
@@ -136,14 +139,14 @@ void MainStateMachine::Execute()
 
       if ( m_eState == RobotMain::eState::STATE_START )
       {
-         // printf( "Main - Enter Start State\n" );
+         printf( "Main - Enter Start State\n" );
 
          // Call the subsystem execute methods to allow them to advance
          // through the idle and start states.
          m_Shooter.Execute();
 
 
-         // printf( "Main - Advancing To Idle State\n" );
+         //printf( "Main - Advancing To Idle State\n" );
          m_eState = RobotMain::eState::STATE_IDLE;
       }
 
@@ -203,7 +206,7 @@ void MainStateMachine::Execute()
          // If shooter motors are at velocity, transition to magazine loading state
          else if ( m_Shooter.isShooting() )
          {
-            m_eState = RobotMain::eState::STATE_MAGAZINE_LOAD_SHOOTER;
+            //m_eState = RobotMain::eState::STATE_MAGAZINE_LOAD_SHOOTER;
          }
 
          m_Shooter.Execute();
@@ -217,7 +220,7 @@ void MainStateMachine::Execute()
       // *-----------------------*
       // * High Power Ramp State *
       // *-----------------------*
-      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_LOW_POWER_RAMP )
+      else if ( m_eState == RobotMain::eState::STATE_SHOOTER_HIGH_POWER_RAMP )
       {
          // Stop on button release
          if ( !m_pRobotIO->m_OperatorController.GetYButton() )
@@ -228,7 +231,7 @@ void MainStateMachine::Execute()
          else if ( m_Shooter.isShooting() )
          {
 
-            m_eState = RobotMain::eState::STATE_MAGAZINE_LOAD_SHOOTER;
+            //m_eState = RobotMain::eState::STATE_MAGAZINE_LOAD_SHOOTER;
          }
 
          m_Shooter.Execute();

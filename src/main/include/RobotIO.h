@@ -69,7 +69,7 @@ class RobotIO
       // ******************************  -GMS
       // * Shooter Subsystem Hardware *
       // ******************************
-      hardware::TalonFX m_LeftShooterMotor_Master{ 18 };       // Check CAN ID's with rest of Robot Hardware
-      hardware::TalonFX m_RightShooterMotor_Follower{ 19 };    // Check CAN ID's with rest of Robot Hardware
+      hardware::TalonFX m_LeftShooterMotor_Master{ 15 };       // Check CAN ID's with rest of Robot Hardware
+      hardware::TalonFX m_RightShooterMotor_Follower{ 16 };    // Check CAN ID's with rest of Robot Hardware
       
 };
