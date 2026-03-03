@@ -28,11 +28,11 @@ namespace magazine
 
     static constexpr double dMagazineTimeout = 30.0;
 
-    static constexpr double dKickerMotorInSpeed = 0.5;
-    static constexpr double dKickerMotorOutSpeed = -0.5;
+    static constexpr double dKickerMotorInSpeed = 0.8;
+    static constexpr double dKickerMotorOutSpeed = -0.8;
 
-    static constexpr double dFeederMotorInSpeed = 0.5;
-    static constexpr double dFeederMotorOutSpeed = -0.5;
+    static constexpr double dFeederMotorInSpeed = 0.8;
+    static constexpr double dFeederMotorOutSpeed = -0.8;
     
 }
 
@@ -82,6 +82,4 @@ private:
     RobotIO *m_pRobotIO;
 
     frc::Timer *m_pTimeoutTimer;
-
-    //TODO - Add Motor Configs if needed
 };

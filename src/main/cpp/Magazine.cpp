@@ -17,8 +17,6 @@ void Magazine::Initialize( RobotIO *p_pRobotIO )
 
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
-
-    //TODO - Refresh Motor Configs if necessary
 }
 
 void Magazine::UpdateInputStatus()
@@ -45,8 +43,27 @@ void Magazine::Execute()
         if(m_eState == magazine::eState::STATE_IDLE)
         {
 
-            //TODO - Add your command processing here
+            if(m_eCommand == magazine::COMMAND_RUN_IN)
+            {
+                m_pRobotIO->m_FeederMotor.Set( magazine::dFeederMotorInSpeed );
+                m_pRobotIO->m_KickerMotor.Set( magazine::dKickerMotorInSpeed );
 
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                m_eState = magazine::eState::STATE_RUN_IN;
+            }
+
+            else if(m_eCommand == magazine::COMMAND_RUN_OUT)
+            {
+                m_pRobotIO->m_FeederMotor.Set( magazine::dFeederMotorOutSpeed );
+                m_pRobotIO->m_KickerMotor.Set( magazine::dKickerMotorOutSpeed );
+
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                m_eState = magazine::eState::STATE_RUN_OUT;
+            }
 
 
             // Error - unrecognized command
@@ -58,8 +75,41 @@ void Magazine::Execute()
 
         //TODO - Add your state processing here
 
+        else if(m_eState == magazine::eState::STATE_RUN_IN)
+        {
+            bool bIsTimedOut = false;
+            if((double)m_pTimeoutTimer->Get() >= magazine::dMagazineTimeout)
+            {
+                bIsTimedOut = true;
+            }
 
+            if(bIsTimedOut || m_eCommand == magazine::COMMAND_STOP)
+            {
+                m_pRobotIO->m_FeederMotor.Set( 0.0 );
+                m_pRobotIO->m_KickerMotor.Set( 0.0 );
 
+                m_eCommand = magazine::eCommand::COMMAND_NONE;
+                m_eState = magazine::eState::STATE_IDLE;
+            }
+        }
+
+        else if(m_eState == magazine::eState::STATE_RUN_OUT)
+        {
+            bool bIsTimedOut = false;
+            if((double)m_pTimeoutTimer->Get() >= magazine::dMagazineTimeout)
+            {
+                bIsTimedOut = true;
+            }
+
+            if(bIsTimedOut || m_eCommand == magazine::COMMAND_STOP)
+            {
+                m_pRobotIO->m_FeederMotor.Set( 0.0 );
+                m_pRobotIO->m_KickerMotor.Set( 0.0 );
+
+                m_eCommand = magazine::eCommand::COMMAND_NONE;
+                m_eState = magazine::eState::STATE_IDLE;
+            }
+        }
 
         // Handle Error State or unknown state
         else
