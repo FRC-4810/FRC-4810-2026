@@ -157,10 +157,10 @@ void MainStateMachine::Execute()
 
       else if ( m_eState == RobotMain::eState::STATE_IDLE )
       {
-         // *-------------------------------------* - GMS
-         // * Operator A Button - Low Speed Shoot *
-         // *-------------------------------------*
-         if(m_pRobotIO->m_OperatorController.GetAButton())
+         // *------------------------------------------* - GMS
+         // * Operator Right Trigger - Low Speed Shoot *
+         // *------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
          {
             m_Shooter.LowPowerShoot();
             m_Shooter.Execute();
@@ -168,7 +168,7 @@ void MainStateMachine::Execute()
             m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
          }
 
-         // *--------------------------------*
+         // *--------------------------------* - GMS
          // * Operator X Button - Hopper Out *
          // *--------------------------------*
          if(m_pRobotIO->m_OperatorController.GetXButton())
@@ -193,7 +193,7 @@ void MainStateMachine::Execute()
       // **************************
       else if(m_eState == RobotMain::eState::STATE_SHOOTING_RAMP_UP)
       {
-         if(!m_pRobotIO->m_OperatorController.GetAButton())
+         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8)
          {
             m_Shooter.Stop();
          }
@@ -210,7 +210,7 @@ void MainStateMachine::Execute()
 
          if(m_Shooter.isIdle())
          {
-            m_eState = RobotMain::eState::STATE_SHOOTING;
+            m_eState = RobotMain::eState::STATE_IDLE;
          }
       }
 
@@ -219,7 +219,7 @@ void MainStateMachine::Execute()
       // ******************
       else if(m_eState == RobotMain::eState::STATE_SHOOTING)
       {
-         if(!m_pRobotIO->m_OperatorController.GetAButton())
+         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8)
          {
             m_Magazine.Stop();
             m_Shooter.Stop();
