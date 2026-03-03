@@ -75,7 +75,7 @@ class RobotIO
       // *********************
       // * Magazine Hardware *
       // *********************
-      hardware::TalonFXS m_FeederMotor{ 17 };   //-GMS TODO - CHECK THIS. TalonFXS? TalonSRX? Other?
+      hardware::TalonFXS m_FeederMotor{ 17 };   //-GMS TODO - CHECK THIS
       hardware::TalonFXS m_KickerMotor{ 18 };
 
       //-GMS - not yet implemented
