@@ -195,7 +195,15 @@ void MainStateMachine::Execute()
 
             m_eState =  RobotMain::eState::STATE_INTAKE_AUTO_RAISE;
          }
+         // Operator B button pressed - Agitate
+         else if ( m_pRobotIO->m_OperatorController.GetBButton() )
+         {
+            m_Intake.Agitate();
 
+            m_Intake.Execute();
+
+            m_eState =  RobotMain::eState::STATE_INTAKE_AGITATE;
+         }
          // Operator right joystick down - Manual Raise
          else if ( m_pRobotIO->m_OperatorController.GetRightY() > RobotMain::dIntakeRightJoystickBackwardThreshold )
          {
@@ -294,6 +302,25 @@ void MainStateMachine::Execute()
       {
          // Stop on button release
          if ( !m_pRobotIO->m_OperatorController.GetRightBumper() )
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if ( m_Intake.IsIdle() )
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *---------------*
+      // * Agitate State *
+      // *---------------*
+      else if ( m_eState == RobotMain::eState::STATE_INTAKE_AGITATE )
+      {
+         // Stop on button release
+         if ( !m_pRobotIO->m_OperatorController.GetBButton() )
          {
             m_Intake.Stop();
          }

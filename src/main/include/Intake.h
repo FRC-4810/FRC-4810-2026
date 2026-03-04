@@ -13,9 +13,10 @@ namespace intake
         STATE_MANUAL_LOWER = 3,
         STATE_AUTO_RAISE = 4,
         STATE_AUTO_LOWER = 5,
-        STATE_MANUAL_INTAKE = 6,
-        STATE_MANUAL_OUTTAKE = 7,
-        STATE_ERROR
+        STATE_AGITATE = 6,
+        STATE_MANUAL_INTAKE = 7,
+        STATE_MANUAL_OUTTAKE = 8,
+        STATE_ERROR = 99
     };
 
     enum eCommand
@@ -25,6 +26,7 @@ namespace intake
         COMMAND_MANUAL_LOWER,
         COMMAND_AUTO_RAISE,
         COMMAND_AUTO_LOWER,
+        COMMAND_AGITATE,
         COMMAND_MANUAL_INTAKE,
         COMMAND_MANUAL_OUTTAKE,
         COMMAND_STOP
@@ -36,22 +38,25 @@ namespace intake
 
     constexpr double dAutoRaiseTimeout = 2.0;
     constexpr double dAutoLowerTimeout = 1.0;
+    constexpr double dAgitateTimeout = 1.0;
 
     constexpr double dManualIntakeTimeout = 30.0;
     constexpr double dManualOuttakeTimeout = 30.0;
 
-    // Motor Speed Constants
+    // Motor Speed Constants TODO
     constexpr double dManualLowerSpeed = 0.2;
     constexpr double dManualRaiseSpeed = -0.2;
     constexpr double dAutoLowerSpeed = 0.4;
     constexpr double dAutoRaiseSpeed = -0.4;
+    constexpr double dAgitateSpeed = -0.4;
 
     constexpr double dManualIntakeSpeed = 0.3;
     constexpr double dManualOuttakeSpeed = -0.3;
 
-    // Setpoint Constatns
+    // Setpoint Constants TODO
     constexpr double dUpperLimitSetpoint = 0.0;
-    constexpr double dLowerLimitSetpoint = 5.0;
+    constexpr double dLowerLimitSetpoint = 0.5;
+    constexpr double dCenterSetpoint = 0.25;
 
 }
 
@@ -74,6 +79,8 @@ class Intake
             { m_eCommand = intake::COMMAND_AUTO_RAISE; }
         inline void AutoLower()
             { m_eCommand = intake::COMMAND_AUTO_LOWER; }
+        inline void Agitate()
+            { m_eCommand = intake::COMMAND_AGITATE; }
         inline void ManualIntake()
             { m_eCommand = intake::COMMAND_MANUAL_INTAKE; }
         inline void ManualOuttake()
@@ -89,6 +96,8 @@ class Intake
             { return(m_eState == intake::eState::STATE_AUTO_RAISE); }
         inline bool IsAutoLowering()
             { return(m_eState == intake::eState::STATE_AUTO_LOWER); }
+        inline bool IsAgitating()
+            { return(m_eState == intake::eState::STATE_AGITATE); }
         inline bool IsManualIntaking()
             { return(m_eState == intake::eState::STATE_MANUAL_INTAKE); }
         inline bool IsManualOuttaking()

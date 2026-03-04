@@ -143,6 +143,33 @@ void Intake::Execute()
                 // Set state to auto lower
                 m_eState = intake::eState::STATE_AUTO_LOWER;
             }
+            
+            // *-----------------*
+            // * Agitate Command *
+            // *-----------------*
+            else if ( m_eCommand == intake::eCommand::COMMAND_AGITATE )
+            {
+                // Check if arm is above setpoint
+                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint ) 
+                {
+                    m_eCommand = intake::eCommand::COMMAND_NONE;
+                    return;
+                }
+
+                // Enable coast mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+
+                // Set speed on arm motor
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAgitateSpeed );
+
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                // Set state to auto lower
+                m_eState = intake::eState::STATE_AGITATE;
+            }
 
             // *-----------------------*
             // * Manual Intake Command *
@@ -298,6 +325,39 @@ void Intake::Execute()
 
             bool bLimitHit = false;
             if ( m_pRobotIO->IsIntakeLowered() )
+            {
+                bLimitHit = true;
+            }
+
+            if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true || bLimitHit == true )
+            {
+                // Stop arm motors
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
+
+                // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+
+                // Reset state and command
+                m_eState = intake::eState::STATE_IDLE;
+                m_eCommand = intake::eCommand::COMMAND_NONE;
+            }
+        }
+
+        // *****************
+        // * Agitate State *
+        // *****************
+        else if ( m_eState == intake::eState::STATE_AGITATE )
+        {
+            // Check timeout timer
+            bool bIsTimedOut = false;
+            if ( (double)m_pTimeoutTimer->Get() >= intake::dAgitateTimeout )
+            {
+                bIsTimedOut = true;
+            }
+
+            bool bLimitHit = false;
+            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint  )
             {
                 bLimitHit = true;
             }
