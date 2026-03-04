@@ -54,9 +54,9 @@ class RobotIO
 
       // Accessor Methods.
       inline bool IsIntakeLowered()
-         { return( m_IntakeLoweredLimit.Get() ); }
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.25 ); }  // TODO - Configure to be max rotation on motor after gear ratio
       inline bool IsIntakeRaised()
-         { return( m_IntakeRaisedLimit.Get() ); }
+         { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }
       
 
       // Xbox Controllers
@@ -70,6 +70,6 @@ class RobotIO
       hardware::TalonFX m_IntakeMoveMotor{ 14 };
       hardware::TalonFX m_IntakeRunMotor{ 15 };
 
-      frc::DigitalInput m_IntakeRaisedLimit{ 8 };
-      frc::DigitalInput m_IntakeLoweredLimit{ 9 };
+      frc::DigitalInput m_IntakeLeftLimit{ 8 };
+      frc::DigitalInput m_IntakeRightLimit{ 9 };
 };

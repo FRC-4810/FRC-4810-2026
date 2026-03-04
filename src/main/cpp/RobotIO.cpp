@@ -78,6 +78,8 @@ void RobotIO::RobotInit()
    intakeMoveConfigs.MotorOutput.Inverted =
       signals::InvertedValue::CounterClockwise_Positive;
 
+   intakeMoveConfigs.Feedback.SensorToMechanismRatio = 25.0;   //-GMS - 25 to 1 gear ratio
+
 
    configs::TalonFXConfiguration intakeRunConfigs{};
 
