@@ -75,8 +75,8 @@ class RobotIO
       // *********************
       // * Magazine Hardware *
       // *********************
-      hardware::TalonFXS m_FeederMotor{ 17 };   //-GMS TODO - CHECK THIS
       hardware::TalonFXS m_KickerMotor{ 18 };
+      hardware::TalonFXS m_FeederMotor{ 19 };
 
       //-GMS - not yet implemented
       //frc::DigitalInput m_EmptyPhotoeye{ 2 };   //Bottom of hopper Photoeye

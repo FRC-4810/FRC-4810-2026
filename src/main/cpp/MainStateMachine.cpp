@@ -225,6 +225,7 @@ void MainStateMachine::Execute()
             m_Shooter.Stop();
          }
 
+         m_Shooter.Execute();
          m_Magazine.Execute();
 
          if(m_Magazine.IsIdle() && m_Shooter.isIdle())

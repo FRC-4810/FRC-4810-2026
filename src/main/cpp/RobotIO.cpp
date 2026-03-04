@@ -80,6 +80,8 @@ void RobotIO::RobotInit()
    feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
+   feederMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
+
    m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
 
    configs::TalonFXSConfiguration kickerMotorConfigs{};
@@ -89,6 +91,9 @@ void RobotIO::RobotInit()
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
    kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   kickerMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
+
 
    m_KickerMotor.GetConfigurator().Apply(kickerMotorConfigs);
 
