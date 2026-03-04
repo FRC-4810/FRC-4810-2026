@@ -17,6 +17,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 #include <ctre/phoenix6/Pigeon2.hpp>
+#include <ctre/phoenix6/CANBus.hpp>
 #include "SwerveModule.h"
 
 //-GMS - 2026 Auton Setup
@@ -137,10 +138,16 @@ public:
     
     void Stop();
 
-    SwerveModule m_frontLeft{1,2,9};
-    SwerveModule m_frontRight{3,4,10};
-    SwerveModule m_backLeft{5,6,11};
-    SwerveModule m_backRight{7,8,12};
+    ctre::phoenix6::CANBus canbus{"Drivebase"};
+
+//-JJB - 20-Feb-2026 - The encoders were swapped when the new swerve units were install
+//-JJB - in the front of the robot.  This change corrects that.
+//-JJB     SwerveModule m_frontLeft{canbus,1,2,9};
+//-JJB     SwerveModule m_frontRight{canbus,3,4,10};
+    SwerveModule m_frontLeft{canbus,1,2,10};
+    SwerveModule m_frontRight{canbus,3,4,9};
+    SwerveModule m_backLeft{canbus,5,6,11};
+    SwerveModule m_backRight{canbus,7,8,12};
 
 private:
     RobotIO *m_pRobotIO;    //Pointer to RobotIO
@@ -215,4 +222,7 @@ private:
     
     void TryAddVisionMeasurement();
     bool m_bUseCameraMeasurements;
+
+    void UpdatePoseMegatag1();
+    void UpdatePoseMegatag2();
 };

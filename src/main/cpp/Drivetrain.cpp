@@ -187,13 +187,32 @@ void Drivetrain::GoToPosition(const frc::Pose2d& targetPose) {
 
 void Drivetrain::TryAddVisionMeasurement()
 {
-    LimelightHelpers::SetRobotOrientation("limelight", (double)GetBotPose().Rotation().Degrees(), 0, 0, 0, 0, 0);  //Other 5 values are optional, ommitted for simplicity sake
+    LimelightHelpers::SetIMUMode("limelight", 0); //-GMS - Only use Pigeon, ignore Limelight IMU
 
+    //-GMS - Pick which one works best
+    //UpdatePoseMegatag1();
+    UpdatePoseMegatag2();
+
+}
+
+void Drivetrain::UpdatePoseMegatag1()
+{
+    LimelightHelpers::SetRobotOrientation("limelight", (double)GetBotPose().Rotation().Degrees(), 0, 0, 0, 0, 0);  //Other 5 values are optional, ommitted for simplicity sake
+    
     // ******************
     // * Megatag 1 code *
     // ******************
 
     LimelightHelpers::PoseEstimate mt1_pose = LimelightHelpers::getBotPoseEstimate_wpiBlue();
+
+    if(frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue)    //-GMS - Blue alliance
+    {
+        mt1_pose = LimelightHelpers::getBotPoseEstimate_wpiBlue("limelight");
+    }
+    else    //-GMS - Red alliance
+    {
+        mt1_pose = LimelightHelpers::getBotPoseEstimate_wpiRed("limelight");
+    }
 
     bool bDoRejectUpdate = false;
 
@@ -202,19 +221,19 @@ void Drivetrain::TryAddVisionMeasurement()
         if(mt1_pose.rawFiducials[0].ambiguity > 0.7)
         {
             bDoRejectUpdate = true;
-            printf("Ambugity too high");
+            printf("Reject Vision - Ambugity too high\n");
         }
 
         if(mt1_pose.rawFiducials[0].distToCamera > 3)
         {
             bDoRejectUpdate = true;
-            printf("Distance to camera too high");
+            printf("Reject Vision - Distance to camera too high\n");
         }
     }
     if(mt1_pose.tagCount == 0)
     {
         bDoRejectUpdate = true;
-        printf("No tags detected");
+        printf("Reject Vision - No tags detected\n");
     }
 
     if(!bDoRejectUpdate)
@@ -224,34 +243,48 @@ void Drivetrain::TryAddVisionMeasurement()
             mt1_pose.pose,
             mt1_pose.timestampSeconds
         );
-        printf("Pose Added");
+        printf("Pose Added: X: [%f], Y: [%f], Rot: [%f]\n", (double)mt1_pose.pose.X(), (double)mt1_pose.pose.Y(), (double)mt1_pose.pose.Rotation().Degrees());
     }
+}
 
+void Drivetrain::UpdatePoseMegatag2()
+{
     // ******************
     // * Megatag 2 code *
     // ******************
 
-    /*LimelightHelpers::PoseEstimate mt2_pose = LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
-
+    LimelightHelpers::SetRobotOrientation("limelight", (double)m_poseEstimator.GetEstimatedPosition().Rotation().Degrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers::PoseEstimate mt2Pose;
+    if(frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue)    //-GMS - Blue alliance
+    {
+        mt2Pose = LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+    }
+    else    //-GMS - Red alliance
+    {
+        mt2Pose = LimelightHelpers::getBotPoseEstimate_wpiRed_MegaTag2("limelight");
+    }
+   
     bool bDoRejectUpdate = false;
 
-    if( fabs(m_gyro.GetAngularVelocityZWorld().GetValueAsDouble()) > 360)
+    // if our angular velocity is greater than 360 degrees per second, ignore vision updates
+    if(fabs(m_gyro.GetAngularVelocityZDevice().GetValueAsDouble()) > 360)
     {
         bDoRejectUpdate = true;
+        printf("Reject Vision - Angular Velocity too high\n");
     }
-    if(mt2_pose.tagCount == 0)
+    if(mt2Pose.tagCount == 0)
     {
         bDoRejectUpdate = true;
+        printf("Reject Vision - No tags detected\n");
     }
 
     if(!bDoRejectUpdate)
     {
-        m_poseEstimator.SetVisionMeasurementStdDevs({.7,.7,9999999});
+        m_poseEstimator.SetVisionMeasurementStdDevs({0.7,0.7,9999999});
         m_poseEstimator.AddVisionMeasurement(
-            mt2_pose.pose,
-            mt2_pose.timestampSeconds
+            mt2Pose.pose,
+            mt2Pose.timestampSeconds
         );
-
-        printf("Mt2 Pose Added | X: [%f], Y: [%f], Rot: [%f]", (double)mt2_pose.pose.X(), (double)mt2_pose.pose.Y(), (double)mt2_pose.pose.Rotation().Degrees());
-    }*/
+        printf("Pose Added: X: [%f], Y: [%f], Rot: [%f]\n", (double)mt2Pose.pose.X(), (double)mt2Pose.pose.Y(), (double)mt2Pose.pose.Rotation().Degrees());
+    }
 }
