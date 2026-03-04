@@ -74,15 +74,34 @@ void RobotIO::RobotInit()
    // *---------------------------------*
    configs::TalonFXConfiguration leftShooterMotor_MasterConfig{};
 
-   leftShooterMotor_MasterConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   //leftShooterMotor_MasterConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s ); -GMS - Replace w/ motion magic
    leftShooterMotor_MasterConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
    leftShooterMotor_MasterConfig.MotorOutput.Inverted =
       signals::InvertedValue::CounterClockwise_Positive;
 
    configs::TalonFXConfiguration rightShooterMotor_FollowerConfig{};
 
-   rightShooterMotor_FollowerConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   //rightShooterMotor_FollowerConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );  -GMS - Replace w/ motion magic
    rightShooterMotor_FollowerConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
+
+//-GMS - Motion Magic Configs
+   leftShooterMotor_MasterConfig.Voltage.WithPeakForwardVoltage(11_V);   
+   leftShooterMotor_MasterConfig.Voltage.WithPeakReverseVoltage(-11_V);   
+
+   leftShooterMotor_MasterConfig.Feedback.WithFeedbackSensorSource(signals::FeedbackSensorSourceValue::RotorSensor);
+   leftShooterMotor_MasterConfig.Feedback.WithRotorToSensorRatio( 1.0 );
+   leftShooterMotor_MasterConfig.Feedback.WithSensorToMechanismRatio( 1.0 );
+
+   configs::Slot0Configs shooterSlot0Configs{}; //-TODO - tune all these -GMS
+   shooterSlot0Configs.kP = 1.0;
+   shooterSlot0Configs.kD = 0.0;
+   shooterSlot0Configs.kV = 0.0952;
+   shooterSlot0Configs.kS = 0.001;
+   leftShooterMotor_MasterConfig.WithSlot0(shooterSlot0Configs);
+
+   leftShooterMotor_MasterConfig.MotionMagic.WithMotionMagicAcceleration(200_tr_per_s_sq);   //-Top speed in 0.5s
+   leftShooterMotor_MasterConfig.MotionMagic.WithMotionMagicJerk(1000_tr_per_s_cu);          //-Top accel in 0.2s
+
 
    // Apply the Motor Controller Configurations.
 
