@@ -33,12 +33,12 @@ namespace intake
     };
 
     // Timeout Constants
-    constexpr double dManualRaiseTimeout = 4.0;
-    constexpr double dManualLowerTimeout = 2.0;
+    constexpr double dManualRaiseTimeout = 5.0;
+    constexpr double dManualLowerTimeout = 5.0;
 
-    constexpr double dAutoRaiseTimeout = 2.0;
-    constexpr double dAutoLowerTimeout = 1.0;
-    constexpr double dAgitateTimeout = 1.0;
+    constexpr double dAutoRaiseTimeout = 5.0;
+    constexpr double dAutoLowerTimeout = 3.0;
+    constexpr double dAgitateTimeout = 3.0;
 
     constexpr double dManualIntakeTimeout = 30.0;
     constexpr double dManualOuttakeTimeout = 30.0;
