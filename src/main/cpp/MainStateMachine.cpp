@@ -104,8 +104,12 @@ void MainStateMachine::Initialize(
 
    m_pRobotIO = p_pRobotIO;
    m_Drivetrain.Initialize( p_pRobotIO );
+   m_Intake.Initialize( p_pRobotIO );
    m_Magazine.Initialize( p_pRobotIO );
    m_Shooter.Initialize( p_pRobotIO );
+
+   m_pAgitateTimer = new frc::Timer();
+   m_pAgitateTimer->Reset();
 }
 
 //-------------------------------------------------------------------
@@ -143,6 +147,7 @@ void MainStateMachine::Execute()
          // through the idle and start states.
          m_Magazine.Execute();
          m_Shooter.Execute();
+         m_Intake.Execute();
 
          // printf( "Main - Advancing To Idle State\n" );
          m_eState = RobotMain::eState::STATE_IDLE;
@@ -157,6 +162,74 @@ void MainStateMachine::Execute()
 
       else if ( m_eState == RobotMain::eState::STATE_IDLE )
       {
+         // *-------------------------------------* - GMS
+         // * Driver Right Bumper - Run Intake in *
+         // *-------------------------------------*
+         if(m_pRobotIO->m_DriveController.GetRightBumper())
+         {
+            m_Intake.ManualIntake();
+            m_Intake.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_RUN_IN;
+         }
+
+         // *------------------------------------------* - GMS
+         // * Driver Left Bumper - Run Intake Out/Dump *
+         // *------------------------------------------*
+         if(m_pRobotIO->m_DriveController.GetRightBumper())
+         {
+            m_Intake.ManualOuttake();
+            m_Intake.Execute();
+            m_Magazine.RunOut();
+            m_Magazine.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_RUN_OUT;
+         }
+
+         // *-------------------------------------------------* - GMS
+         // * Operator Left Joystick Up - Manual Intake Raise *
+         // *-------------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetLeftY() < -0.8)   //-TODO - Check this
+         {
+            m_Intake.ManualRaise();
+            m_Intake.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_MANUAL_RAISE;
+         }
+
+         // *---------------------------------------------------* - GMS
+         // * Operator Left Joystick Down - Manual Intake Lower *
+         // *---------------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetLeftY() > 0.8)   //-TODO - Check this
+         {
+            m_Intake.ManualLower();
+            m_Intake.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_MANUAL_LOWER;
+         }
+
+         // *------------------------------------------* - GMS
+         // * Operator Left Bumper - Auto Intake Raise *
+         // *------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetLeftBumper())
+         {
+            m_Intake.AutoRaise();
+            m_Intake.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_AUTO_RAISE;
+         }
+
+         // *-------------------------------------------* - GMS
+         // * Operator Right Bumper - Auto Intake Lower *
+         // *-------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetRightBumper())
+         {
+            m_Intake.AutoLower();
+            m_Intake.Execute();
+
+            m_eState = RobotMain::eState::STATE_INTAKE_AUTO_LOWER;
+         }
+
          // *------------------------------------------* - GMS
          // * Operator Right Trigger - Low Speed Shoot *
          // *------------------------------------------*
@@ -187,6 +260,110 @@ void MainStateMachine::Execute()
       // *===================================================================*
 
       // Code to be added
+
+      // ***********************
+      // * Intake Run In State *
+      // ***********************
+      else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_IN)
+      {
+         if(!m_pRobotIO->m_DriveController.GetRightBumper())
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if(m_Intake.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // ***********************
+      // * Intake Out In State *
+      // ***********************
+      else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_OUT)
+      {
+         if(!m_pRobotIO->m_DriveController.GetLeftBumper())
+         {
+            m_Intake.Stop();
+            m_Magazine.Stop();
+         }
+
+         m_Intake.Execute();
+         m_Magazine.Execute();
+
+         if(m_Intake.IsIdle() && m_Magazine.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *****************************
+      // * Intake Manual Raise State *
+      // *****************************
+      else if(m_eState == RobotMain::eState::STATE_INTAKE_MANUAL_RAISE)
+      {
+         if(m_pRobotIO->m_OperatorController.GetLeftY() > -0.8)
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if(m_Intake.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *****************************
+      // * Intake Manual Lower State *
+      // *****************************
+      else if(m_eState == RobotMain::eState::STATE_INTAKE_MANUAL_LOWER)
+      {
+         if(m_pRobotIO->m_OperatorController.GetLeftY() < 0.8)
+         {
+            m_Intake.Stop();
+         }
+
+         m_Intake.Execute();
+
+         if(m_Intake.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // ***************************
+      // * Intake Auto Raise State *
+      // ***************************
+      else if(m_eState == RobotMain::eState::STATE_INTAKE_AUTO_RAISE)
+      {
+         //One touch - No check if button not pressed
+
+         m_Intake.Execute();
+
+         if(m_Intake.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // ***************************
+      // * Intake Auto Lower State *
+      // ***************************
+      else if(m_eState == RobotMain::eState::STATE_INTAKE_AUTO_LOWER)
+      {
+         //One touch - No check if button not pressed
+         
+         m_Intake.Execute();
+
+         if(m_Intake.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
       
       // **************************
       // * Shooting Ramp Up State *
@@ -204,6 +381,9 @@ void MainStateMachine::Execute()
          {
             m_Magazine.RunIn();
             m_Magazine.Execute();
+
+            m_pAgitateTimer->Reset();
+            m_pAgitateTimer->Start();
 
             m_eState = RobotMain::eState::STATE_SHOOTING;
          }
@@ -223,14 +403,33 @@ void MainStateMachine::Execute()
          {
             m_Magazine.Stop();
             m_Shooter.Stop();
+            m_Intake.Stop();
+         }
+
+         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 5.0) //TODO - tune this - 5s
+         {
+            m_Intake.Agitate();
          }
 
          m_Shooter.Execute();
          m_Magazine.Execute();
+         m_Intake.Execute();
 
-         if(m_Magazine.IsIdle() && m_Shooter.isIdle())
+         if(m_Magazine.IsIdle() && m_Shooter.isIdle() && m_Intake.IsIdle())
          {
-            m_eState = RobotMain::eState::STATE_IDLE;
+            //-GMS - If intake is already lowered, we never reached the agitate state, so we don't need to move it. 
+            //       Otherwise, we auto lower it back to the bottom position for intaking.
+            if(m_pRobotIO->IsIntakeLowered())
+            {
+               m_eState = RobotMain::eState::STATE_IDLE;
+            }
+            else
+            {
+               m_Intake.AutoLower();
+               m_Intake.Execute();
+
+               m_eState = RobotMain::eState::STATE_INTAKE_AUTO_LOWER;
+            }
          }
       }
 
