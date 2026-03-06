@@ -152,7 +152,7 @@ public:
 private:
     RobotIO *m_pRobotIO;    //Pointer to RobotIO
 
-    hardware::Pigeon2 m_gyro{13};
+    hardware::Pigeon2 m_gyro{13, canbus};
 
     bool m_bIsFieldRelative;    //Field Relative bool (true: field centric; false: bot centric)
 

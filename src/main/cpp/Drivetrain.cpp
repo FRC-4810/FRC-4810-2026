@@ -13,7 +13,7 @@ Drivetrain::Drivetrain()
     m_bLockOnStop = false;
     m_dGyroOffset = 0.0;
 
-    m_bUseCameraMeasurements = false;
+    m_bUseCameraMeasurements = true;
 }
 
 void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
@@ -30,9 +30,13 @@ void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
     m_DrivetrainTimer->Reset();
     m_DrivetrainTimer->Start();
 
+    printf("Drivetrain Initialize\n");
+
     // Set gyrp offset at start (change m_dGyroOffset depending on what direction the bot should be facing at start)
     m_gyro.SetYaw(units::degree_t{m_dGyroOffset});
-    nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("setIMUMode", 0);
+
+    LimelightHelpers::SetIMUMode("limelight", 0); //-GMS - Only use Pigeon, ignore Limelight IMU
+    //nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("setIMUMode", 0);
 
 
     //Go To Position PID Controllers
@@ -53,13 +57,13 @@ void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
 void Drivetrain::Execute (  double leftYJoystickValue, double leftXJoystickValue,
                 double rightXJoystickValue  )
 {
-    frc::SmartDashboard::PutNumber("Gyro Angle", (double)GetGyroRotation2d().Degrees());
+    //frc::SmartDashboard::PutNumber("Gyro Angle", (double)GetGyroRotation2d().Degrees());
     frc::Pose2d botPose = GetBotPose();
     frc::SmartDashboard::PutNumber("Odometry/Odometry X", (double)botPose.X());
     frc::SmartDashboard::PutNumber("Odometry/Odometry Y", (double)botPose.Y());
     frc::SmartDashboard::PutNumber("Odometry/Odometry Rot", (double)botPose.Rotation().Degrees());
 
-    frc::SmartDashboard::PutBoolean("Drive Bot Relative", m_bIsFieldRelative);
+    frc::SmartDashboard::PutBoolean("Drive Field Relative", m_bIsFieldRelative);
 
     // Left Y value is Chassie X value (forward/backward)
     // Left X value is Chassie Y value (left/right)
@@ -145,9 +149,11 @@ void Drivetrain::UpdateOdometry()
     // corner. Values for x and y should be near zero. Also check left is positive y, forward is positive x.
     // Driver station should be set to blue alliance, though I don't think it will impact this.
     // Odometry values are posted to shuffleboard under "Odometry" folder.
+    double updatedGyroDegrees = (double)GetGyroRotation2d().Degrees() + 0;
+    
     m_poseEstimator.UpdateWithTime(
         m_DrivetrainTimer->Get(),
-        GetGyroRotation2d(),
+        frc::Rotation2d(units::degree_t{updatedGyroDegrees}),
         {
             m_frontLeft.GetPosition(),
             m_frontRight.GetPosition(),
@@ -187,7 +193,6 @@ void Drivetrain::GoToPosition(const frc::Pose2d& targetPose) {
 
 void Drivetrain::TryAddVisionMeasurement()
 {
-    LimelightHelpers::SetIMUMode("limelight", 0); //-GMS - Only use Pigeon, ignore Limelight IMU
 
     //-GMS - Pick which one works best
     //UpdatePoseMegatag1();
@@ -253,7 +258,7 @@ void Drivetrain::UpdatePoseMegatag2()
     // * Megatag 2 code *
     // ******************
 
-    LimelightHelpers::SetRobotOrientation("limelight", (double)m_poseEstimator.GetEstimatedPosition().Rotation().Degrees(), 0, 0, 0, 0, 0);
+    LimelightHelpers::SetRobotOrientation("limelight", m_gyro.GetYaw().GetValueAsDouble(), 0, 0, 0, 0, 0);
     LimelightHelpers::PoseEstimate mt2Pose;
     if(frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue)    //-GMS - Blue alliance
     {
@@ -280,7 +285,15 @@ void Drivetrain::UpdatePoseMegatag2()
 
     if(!bDoRejectUpdate)
     {
-        m_poseEstimator.SetVisionMeasurementStdDevs({0.7,0.7,9999999});
+        if(mt2Pose.tagCount > 1)
+        {
+            //m_poseEstimator.SetVisionMeasurementStdDevs({0.002,0.002,9999999});
+            ResetOdometry(mt2Pose.pose);
+        }
+        else
+        {
+            m_poseEstimator.SetVisionMeasurementStdDevs({0.01,0.01,9999999});
+        }
         m_poseEstimator.AddVisionMeasurement(
             mt2Pose.pose,
             mt2Pose.timestampSeconds
