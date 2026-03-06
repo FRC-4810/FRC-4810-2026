@@ -68,6 +68,30 @@ void RobotIO::RobotInit()
 
    // Done in SwerveModule.cpp 
 
+   // **********************************
+   // * Intake Hardware Initialization *
+   // **********************************
+   configs::TalonFXConfiguration intakeMoveConfigs{};
+
+   intakeMoveConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   intakeMoveConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   intakeMoveConfigs.MotorOutput.Inverted =
+      signals::InvertedValue::CounterClockwise_Positive;
+
+   intakeMoveConfigs.Feedback.SensorToMechanismRatio = 25.0;   //-GMS - 25 to 1 gear ratio
+
+
+   configs::TalonFXConfiguration intakeRunConfigs{};
+
+   intakeRunConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   intakeRunConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   
+   intakeRunConfigs.MotorOutput.Inverted =
+      signals::InvertedValue::Clockwise_Positive;
+
+   m_IntakeMoveMotor.GetConfigurator().Apply( intakeMoveConfigs );
+   m_IntakeRunMotor.GetConfigurator().Apply( intakeRunConfigs );
+
    // *----------------------------------*
    // * Magazine Hardware Initialization *
    // *----------------------------------*

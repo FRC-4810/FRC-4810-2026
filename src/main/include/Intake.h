@@ -48,10 +48,10 @@ namespace intake
     constexpr double dManualRaiseSpeed = -0.2;
     constexpr double dAutoLowerSpeed = 0.4;
     constexpr double dAutoRaiseSpeed = -0.4;
-    constexpr double dAgitateSpeed = -0.4;
+    constexpr double dAgitateSpeed = -0.5;
 
-    constexpr double dManualIntakeSpeed = 0.3;
-    constexpr double dManualOuttakeSpeed = -0.3;
+    constexpr double dManualIntakeSpeed = 0.7;
+    constexpr double dManualOuttakeSpeed = -0.7;
 
     // Setpoint Constants TODO
     constexpr double dUpperLimitSetpoint = 0.0;

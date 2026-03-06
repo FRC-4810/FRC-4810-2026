@@ -420,6 +420,7 @@ void Intake::Execute()
 
                 // Set speed on arm motor
                 m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAgitateSpeed );
+                m_pRobotIO->m_IntakeRunMotor.Set( 0 );
 
                 // Reset timer
                 m_pTimeoutTimer->Reset();
