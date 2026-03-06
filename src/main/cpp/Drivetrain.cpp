@@ -57,7 +57,7 @@ void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
 void Drivetrain::Execute (  double leftYJoystickValue, double leftXJoystickValue,
                 double rightXJoystickValue  )
 {
-    //frc::SmartDashboard::PutNumber("Gyro Angle", (double)GetGyroRotation2d().Degrees());
+    frc::SmartDashboard::PutNumber("Gyro Angle", (double)GetGyroRotation2d().Degrees());
     frc::Pose2d botPose = GetBotPose();
     frc::SmartDashboard::PutNumber("Odometry/Odometry X", (double)botPose.X());
     frc::SmartDashboard::PutNumber("Odometry/Odometry Y", (double)botPose.Y());
