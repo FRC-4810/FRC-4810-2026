@@ -91,6 +91,7 @@ void SwerveModule::ConfigModule()
 //-JJB - CAN ID 1: Front Left Drive
 //-JJB - CAN ID 5: Back Left Drive
 
+
     if(m_driveMotor.GetDeviceID() == 3 || m_driveMotor.GetDeviceID() == 7)
     {
         driveConfig.MotorOutput.Inverted = signals::InvertedValue::Clockwise_Positive;
@@ -206,7 +207,7 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
         units::turn_t{(double)state.angle.Radians() / (2 * std::numbers::pi)}));*/
 
 
-    //state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians())); -- Removed; CS
+    state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians()));// -- Removed; CS
 
     units::turns_per_second_t driveTps =
         units::turns_per_second_t{(double)(state.speed /
