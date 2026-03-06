@@ -176,7 +176,7 @@ void MainStateMachine::Execute()
          // *------------------------------------------* - GMS
          // * Driver Left Bumper - Run Intake Out/Dump *
          // *------------------------------------------*
-         if(m_pRobotIO->m_DriveController.GetRightBumper())
+         if(m_pRobotIO->m_DriveController.GetLeftBumper())
          {
             m_Intake.ManualOuttake();
             m_Intake.Execute();
@@ -381,6 +381,8 @@ void MainStateMachine::Execute()
          {
             m_Magazine.RunIn();
             m_Magazine.Execute();
+            m_Intake.ManualIntake();
+            m_Intake.Execute();
 
             m_pAgitateTimer->Reset();
             m_pAgitateTimer->Start();

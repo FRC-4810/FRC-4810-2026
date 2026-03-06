@@ -163,6 +163,9 @@ void Intake::Execute()
                 // Set speed on arm motor
                 m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAgitateSpeed );
 
+                // Set speed on run motor
+                m_pRobotIO->m_IntakeRunMotor.Set( intake::dManualIntakeSpeed );
+
                 // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
@@ -397,6 +400,33 @@ void Intake::Execute()
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
                 m_eCommand = intake::eCommand::COMMAND_NONE;
+            }
+
+
+
+            //-GMS - Transition to agitate
+            // Check if arm is above setpoint
+            if(m_eCommand == intake::COMMAND_AGITATE)
+            {
+                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint ) 
+                {
+                    m_eCommand = intake::eCommand::COMMAND_NONE;
+                    return;
+                }
+
+                // Enable coast mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+
+                // Set speed on arm motor
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAgitateSpeed );
+
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                // Set state to auto lower
+                m_eState = intake::eState::STATE_AGITATE;
             }
         }
 

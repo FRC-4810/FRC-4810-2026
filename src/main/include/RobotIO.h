@@ -59,9 +59,12 @@ class RobotIO
       // * Intake Accessors *
       // *------------------*
       inline bool IsIntakeLowered()
-         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.25 ); }  // TODO - Configure to be max rotation on motor after gear ratio
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.66 ); }
+      /*inline bool IsIntakeRaised()
+         { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }*/
       inline bool IsIntakeRaised()
-         { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= 0.02 ); }
+      
 
 
 
