@@ -165,7 +165,7 @@ void MainStateMachine::Execute()
          // *-------------------------------------* - GMS
          // * Driver Right Bumper - Run Intake in *
          // *-------------------------------------*
-         if(m_pRobotIO->m_DriveController.GetRightBumper())
+         if(m_pRobotIO->m_DriveController.GetRightBumperButton())
          {
             m_Intake.ManualIntake();
             m_Intake.Execute();
@@ -176,7 +176,7 @@ void MainStateMachine::Execute()
          // *------------------------------------------* - GMS
          // * Driver Left Bumper - Run Intake Out/Dump *
          // *------------------------------------------*
-         if(m_pRobotIO->m_DriveController.GetLeftBumper())
+         if(m_pRobotIO->m_DriveController.GetLeftBumperButton())
          {
             m_Intake.ManualOuttake();
             m_Intake.Execute();
@@ -211,7 +211,7 @@ void MainStateMachine::Execute()
          // *------------------------------------------* - GMS
          // * Operator Left Bumper - Auto Intake Raise *
          // *------------------------------------------*
-         if(m_pRobotIO->m_OperatorController.GetLeftBumper())
+         if(m_pRobotIO->m_OperatorController.GetLeftBumperButton())
          {
             m_Intake.AutoRaise();
             m_Intake.Execute();
@@ -222,7 +222,7 @@ void MainStateMachine::Execute()
          // *-------------------------------------------* - GMS
          // * Operator Right Bumper - Auto Intake Lower *
          // *-------------------------------------------*
-         if(m_pRobotIO->m_OperatorController.GetRightBumper())
+         if(m_pRobotIO->m_OperatorController.GetRightBumperButton())
          {
             m_Intake.AutoLower();
             m_Intake.Execute();
@@ -266,7 +266,7 @@ void MainStateMachine::Execute()
       // ***********************
       else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_IN)
       {
-         if(!m_pRobotIO->m_DriveController.GetRightBumper())
+         if(!m_pRobotIO->m_DriveController.GetRightBumperButton())
          {
             m_Intake.Stop();
          }
@@ -284,7 +284,7 @@ void MainStateMachine::Execute()
       // ***********************
       else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_OUT)
       {
-         if(!m_pRobotIO->m_DriveController.GetLeftBumper())
+         if(!m_pRobotIO->m_DriveController.GetLeftBumperButton())
          {
             m_Intake.Stop();
             m_Magazine.Stop();
