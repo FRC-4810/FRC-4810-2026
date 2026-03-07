@@ -288,3 +288,16 @@ void MainStateMachine::Execute()
       printf( "Main - Null Robot I/O Pointer Encountered\n" );
    }
 }
+
+// Returns the bots distance to the hub in meters
+double MainStateMachine::GetHubDistance()
+{
+   frc::Pose2d pose = m_Drivetrain.GetBotPose();
+   double dHubX = 4.625594; 
+   double dHubY = 4.034536;
+
+   //-GMS - use distance formula to calculate distance from bot pose to hub
+   double dist = sqrt( pow((double)pose.X() - dHubX, 2) + pow((double)pose.Y() - dHubY, 2) );
+
+   return dist;
+}

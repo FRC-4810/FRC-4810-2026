@@ -80,6 +80,9 @@ class MainStateMachine
 
       // BLC- Shooter State Machine Object
       Shooter m_Shooter;
+
+      //-GMS - Active tracking Help
+      double GetHubDistance();
 };
 
 #endif // MAIN_STATE_MACHINE_H_
