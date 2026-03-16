@@ -23,6 +23,8 @@
 //-GMS - 2026 Auton Setup
 #include <pathplanner/lib/auto/AutoBuilder.h>
 #include <pathplanner/lib/config/RobotConfig.h>
+#include <pathplanner/lib/path/PathPlannerPath.h>
+#include <pathplanner/lib/trajectory/PathPlannerTrajectory.h>
 #include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/kinematics/ChassisSpeeds.h>
@@ -81,6 +83,15 @@ public:
     void GoToPosition(const frc::Pose2d& targetPose);
 
 
+    // ***************
+    // * PathPlanner *
+    // ***************
+    void LoadPath(std::string pathName, bool resetPose = false);
+    void FollowPath();
+    bool IsPathFinished();
+    
+    void DriveRobotRelative(const frc::ChassisSpeeds& speeds);
+    frc::ChassisSpeeds GetRobotRelativeSpeeds();
 
     // Class Methods.
     /**
@@ -225,4 +236,23 @@ private:
 
     void UpdatePoseMegatag1();
     void UpdatePoseMegatag2();
+
+    // PathPlanner Members
+    pathplanner::PathPlannerTrajectory m_currentTrajectory;
+    frc::Timer *m_pathTimer;
+    // Controller for following the path
+    pathplanner::PPHolonomicDriveController m_pathController{
+        pathplanner::PIDConstants{
+            5.0,    //Kp
+            0.0,    //Ki
+            0.0,    //Kd
+            0.0     //I-Range
+        },
+        pathplanner::PIDConstants{
+            5.0,    //Kp
+            0.0,    //Ki
+            0.0,    //Kd
+            0.0     //I-Range
+        }
+    };
 };
