@@ -207,7 +207,8 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
         units::turn_t{(double)state.angle.Radians() / (2 * std::numbers::pi)}));*/
 
 
-    //state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians())); -- Removed; CS
+    state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians())); // -- Removed; CS
+
 
     units::turns_per_second_t driveTps =
         units::turns_per_second_t{(double)(state.speed /
