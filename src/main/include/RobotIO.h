@@ -55,7 +55,22 @@ class RobotIO
 
       // Accessor Methods.
 
-      //-GMS
+      // *------------------* -GMS
+      // * Intake Accessors *
+      // *------------------*
+      inline bool IsIntakeLowered()
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.66 ); }
+      /*inline bool IsIntakeRaised()
+         { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }*/
+      inline bool IsIntakeRaised()
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= 0.02 ); }
+      
+
+
+
+      // *-------------------* -GMS
+      // * Shooter Accessors *
+      // *-------------------*
       inline double GetShooterSpeed()
       {
          return( m_LeftShooterMotor_Master.GetVelocity().GetValueAsDouble() );
@@ -71,6 +86,17 @@ class RobotIO
       //hardware::TaloxFX intake {14};
       //hardware::TalonFX shooterLeft {15};
       //hardware::TaloxFX shooterRight {16};
+
+      // *******************
+      // * Intake Hardware *
+      // *******************
+      hardware::TalonFX m_IntakeMoveMotor{ 13 };   //TODO - Check Can ID's
+      hardware::TalonFX m_IntakeRunMotor{ 14 };
+
+      //-GMS - not yet implemented TODO
+      frc::DigitalInput m_IntakeLeftLimit{ 8 };
+      frc::DigitalInput m_IntakeRightLimit{ 9 };
+
 
       // *********************
       // * Magazine Hardware *
