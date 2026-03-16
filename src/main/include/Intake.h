@@ -116,5 +116,4 @@ class Intake
 
         RobotIO *m_pRobotIO;
 
-        configs::MotorOutputConfigs m_MotorConfigs;
 };
