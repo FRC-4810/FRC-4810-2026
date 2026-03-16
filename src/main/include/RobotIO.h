@@ -60,10 +60,8 @@ class RobotIO
       // *------------------*
       inline bool IsIntakeLowered()
          { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.66 ); }
-      /*inline bool IsIntakeRaised()
-         { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }*/
       inline bool IsIntakeRaised()
-         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= 0.02 ); }
+         { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }
       
 
 
@@ -82,18 +80,12 @@ class RobotIO
       frc::XboxController m_DriveController{ 0 };
       frc::XboxController m_OperatorController{ 1 };
 
-      //hardware::TalonFX pivot {13};
-      //hardware::TaloxFX intake {14};
-      //hardware::TalonFX shooterLeft {15};
-      //hardware::TaloxFX shooterRight {16};
-
       // *******************
       // * Intake Hardware *
       // *******************
       hardware::TalonFX m_IntakeMoveMotor{ 13 };   //TODO - Check Can ID's
       hardware::TalonFX m_IntakeRunMotor{ 14 };
 
-      //-GMS - not yet implemented TODO
       frc::DigitalInput m_IntakeLeftLimit{ 8 };
       frc::DigitalInput m_IntakeRightLimit{ 9 };
 
@@ -105,8 +97,8 @@ class RobotIO
       hardware::TalonFXS m_FeederMotor{ 19 };
 
       //-GMS - not yet implemented
-      //frc::DigitalInput m_EmptyPhotoeye{ 2 };   //Bottom of hopper Photoeye
-      //frc::DigitalInput m_FullPhotoeye{ 3 };    //Top of hopper Photoeye
+      frc::DigitalInput m_EmptyPhotoeye{ 2 };   //Bottom of hopper Photoeye
+      frc::DigitalInput m_FullPhotoeye{ 3 };    //Top of hopper Photoeye
 
 
 

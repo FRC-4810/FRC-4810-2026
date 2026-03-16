@@ -33,12 +33,12 @@ namespace intake
     };
 
     // Timeout Constants
-    constexpr double dManualRaiseTimeout = 5.0;
-    constexpr double dManualLowerTimeout = 5.0;
+    constexpr double dManualRaiseTimeout = 4.0;
+    constexpr double dManualLowerTimeout = 2.0;
 
-    constexpr double dAutoRaiseTimeout = 5.0;
-    constexpr double dAutoLowerTimeout = 3.0;
-    constexpr double dAgitateTimeout = 3.0;
+    constexpr double dAutoRaiseTimeout = 2.0;
+    constexpr double dAutoLowerTimeout = 1.0;
+    constexpr double dAgitateTimeout = 1.0;
 
     constexpr double dManualIntakeTimeout = 30.0;
     constexpr double dManualOuttakeTimeout = 30.0;
@@ -48,15 +48,15 @@ namespace intake
     constexpr double dManualRaiseSpeed = -0.2;
     constexpr double dAutoLowerSpeed = 0.4;
     constexpr double dAutoRaiseSpeed = -0.4;
-    constexpr double dAgitateSpeed = -0.5;
+    constexpr double dAgitateSpeed = -0.4;
 
-    constexpr double dManualIntakeSpeed = 0.7;
-    constexpr double dManualOuttakeSpeed = -0.7;
+    constexpr double dManualIntakeSpeed = 0.3;
+    constexpr double dManualOuttakeSpeed = -0.3;
 
     // Setpoint Constants TODO
     constexpr double dUpperLimitSetpoint = 0.0;
-    constexpr double dLowerLimitSetpoint = 0.66;
-    constexpr double dCenterSetpoint = 0.33;
+    constexpr double dLowerLimitSetpoint = 0.5;
+    constexpr double dCenterSetpoint = 0.25;
 
 }
 
@@ -115,6 +115,4 @@ class Intake
         frc::Timer *m_pTimeoutTimer;
 
         RobotIO *m_pRobotIO;
-
-        configs::MotorOutputConfigs m_MotorConfigs;
 };

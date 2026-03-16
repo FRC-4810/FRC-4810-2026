@@ -159,5 +159,7 @@ void RobotIO::RobotInit()
 
 void RobotIO::UpdateInputStatus()
 {
-   
+   frc::SmartDashboard::PutNumber("Intake Position", m_IntakeMoveMotor.GetPosition().GetValueAsDouble());
+   frc::SmartDashboard::PutBoolean("Intake Lowered", IsIntakeLowered());
+   frc::SmartDashboard::PutBoolean("Intake Raised", IsIntakeRaised());
 }
