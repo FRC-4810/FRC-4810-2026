@@ -44,18 +44,18 @@ namespace intake
     constexpr double dManualOuttakeTimeout = 30.0;
 
     // Motor Speed Constants TODO
-    constexpr double dManualLowerSpeed = 0.2;
-    constexpr double dManualRaiseSpeed = -0.2;
+    constexpr double dManualLowerSpeed = 0.4;
+    constexpr double dManualRaiseSpeed = -0.4;
     constexpr double dAutoLowerSpeed = 0.4;
     constexpr double dAutoRaiseSpeed = -0.4;
     constexpr double dAgitateSpeed = -0.4;
 
-    constexpr double dManualIntakeSpeed = 0.3;
-    constexpr double dManualOuttakeSpeed = -0.3;
+    constexpr double dManualIntakeSpeed = 1;
+    constexpr double dManualOuttakeSpeed = -1;
 
     // Setpoint Constants TODO
     constexpr double dUpperLimitSetpoint = 0.0;
-    constexpr double dLowerLimitSetpoint = 0.5;
+    constexpr double dLowerLimitSetpoint = 0.55;
     constexpr double dCenterSetpoint = 0.25;
 
 }
