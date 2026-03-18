@@ -60,16 +60,12 @@ class RobotIO
       // *------------------*
       inline bool IsIntakeLowered()
          { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.5 ); }
+      
+         //-GMS - for now, with no limits, check if close to 0
       inline bool IsIntakeRaised()
-         { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }
-
-         //{ return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.40 ); }
-      
-      //-GMS - check this - intake not raising may be because these need to be inverted
-      //inline bool IsIntakeRaised()
-         //{ return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= 0.05 ); }
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= 0.05 ); }
       //   { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }
-      
+
 
 
 

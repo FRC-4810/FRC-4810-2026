@@ -225,7 +225,8 @@ void Intake::Execute()
             if ( m_pRobotIO->IsIntakeRaised() )
             {
                 // Reset arm encoders
-                m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
+                //-GMS - don't reset until we have limits on it
+                //m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
                 bLimitHit = true;
             }
 
@@ -284,7 +285,8 @@ void Intake::Execute()
             if ( m_pRobotIO->IsIntakeRaised() )
             {
                 // Reset arm encoders
-                m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
+                //-GMS - don't reset until we have limits on it
+                //m_pRobotIO->m_IntakeMoveMotor.SetPosition( units::angle::turn_t{0} );
                 bLimitHit = true;
             }
 
