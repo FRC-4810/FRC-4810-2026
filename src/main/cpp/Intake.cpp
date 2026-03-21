@@ -150,7 +150,7 @@ void Intake::Execute()
             else if ( m_eCommand == intake::eCommand::COMMAND_AGITATE )
             {
                 // Check if arm is above setpoint
-                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint ) 
+                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint ) 
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
@@ -217,7 +217,7 @@ void Intake::Execute()
         {
             // Check timeout timer
             bool bIsTimedOut = false;
-            if ( (double)m_pTimeoutTimer->Get() >= intake::dManualRaiseTimeout )
+            if ( (double)m_pTimeoutTimer->Get() <= intake::dManualRaiseTimeout )
             {
                 bIsTimedOut = true;
             }
