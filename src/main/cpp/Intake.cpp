@@ -217,7 +217,7 @@ void Intake::Execute()
         {
             // Check timeout timer
             bool bIsTimedOut = false;
-            if ( (double)m_pTimeoutTimer->Get() <= intake::dManualRaiseTimeout )
+            if ( (double)m_pTimeoutTimer->Get() >= intake::dManualRaiseTimeout )
             {
                 bIsTimedOut = true;
             }
@@ -359,7 +359,7 @@ void Intake::Execute()
             }
 
             bool bLimitHit = false;
-            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint  )
+            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint  )
             {
                 bLimitHit = true;
             }
