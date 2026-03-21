@@ -19,12 +19,19 @@
 #include <ctre/phoenix6/CANBus.hpp>
 
 #include <ctre/phoenix6/Pigeon2.hpp>
+#include <ctre/phoenix6/CANBus.hpp>
 #include "SwerveModule.h"
 
+//-GMS - 2026 Auton Setup
+#include <pathplanner/lib/auto/AutoBuilder.h>
+#include <pathplanner/lib/config/RobotConfig.h>
+#include <pathplanner/lib/path/PathPlannerPath.h>
+#include <pathplanner/lib/trajectory/PathPlannerTrajectory.h>
+#include <pathplanner/lib/controllers/PPHolonomicDriveController.h>
 #include <frc/geometry/Pose2d.h>
 #include <frc/kinematics/ChassisSpeeds.h>
+#include <frc/controller/PIDController.h>
 #include <frc/DriverStation.h>
-
 #include "RobotIO.h"
 
 namespace drivetrain
@@ -65,9 +72,21 @@ public:
     // * Odometry *
     // ************
     
-    inline void ResetOdometry()
-       { m_poseEstimator.ResetPose( frc::Pose2d{ 0_m, 0_m, frc::Rotation2d(0_deg) } ); }
+    inline void ResetOdometry( const frc::Pose2d& pose = frc::Pose2d{ 0_m, 0_m, frc::Rotation2d(0_deg) } )
+       { m_poseEstimator.ResetPose( pose ); }
 
+    void GoToPosition(const frc::Pose2d& targetPose);
+
+
+    // ***************
+    // * PathPlanner *
+    // ***************
+    void LoadPath(std::string pathName, bool resetPose = false);
+    void FollowPath();
+    bool IsPathFinished();
+    
+    void DriveRobotRelative(const frc::ChassisSpeeds& speeds);
+    frc::ChassisSpeeds GetRobotRelativeSpeeds();
     inline frc::Pose2d GetBotPose()
        { return( m_poseEstimator.GetEstimatedPosition() ); }
 
@@ -145,6 +164,25 @@ private:
 
     double m_dGyroOffset;
 
+    frc::PIDController m_XController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+    frc::PIDController m_YController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+    frc::PIDController m_RotController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+
     //-GMS - updated to 2025 design
     frc::Translation2d m_frontLeftLocation{+drivetrain::kWheelDistance / 2, -drivetrain::kWheelDistance / 2};     //Front Left Wheel Position
     frc::Translation2d m_frontRightLocation{+drivetrain::kWheelDistance / 2, +drivetrain::kWheelDistance / 2};    //Front Right Wheel Position
@@ -198,4 +236,31 @@ private:
     };
     
     frc::Timer *m_DrivetrainTimer;
+    
+    void TryAddVisionMeasurement();
+    bool m_bUseCameraMeasurements;
+
+    void UpdatePoseMegatag1();
+    void UpdatePoseMegatag2();
+
+    // PathPlanner Members
+    pathplanner::PathPlannerTrajectory m_currentTrajectory;
+    frc::Timer *m_pathTimer;
+    // Controller for following the path
+    pathplanner::PPHolonomicDriveController m_pathController{
+        //Linear PID Controller
+        pathplanner::PIDConstants{
+            5.0,    //Kp
+            0.0,    //Ki
+            0.0,    //Kd
+            0.0     //I-Range
+        },
+        //Rotational PID Controller
+        pathplanner::PIDConstants{
+            5.0,    //Kp
+            0.0,    //Ki
+            0.0,    //Kd
+            0.0     //I-Range
+        }
+    };
 };
