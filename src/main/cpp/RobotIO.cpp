@@ -68,7 +68,91 @@ void RobotIO::RobotInit()
 
    // Done in SwerveModule.cpp 
 
+   // **********************************
+   // * Intake Hardware Initialization *
+   // **********************************
+   configs::TalonFXConfiguration intakeMoveConfigs{};
+
+   intakeMoveConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   intakeMoveConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   intakeMoveConfigs.MotorOutput.Inverted =
+      signals::InvertedValue::CounterClockwise_Positive;
+
+   intakeMoveConfigs.Feedback.SensorToMechanismRatio = 25.0;   //-GMS - 25 to 1 gear ratio
+
+   intakeMoveConfigs.MotorOutput.NeutralMode = signals::NeutralModeValue::Coast; //-GMS - intake move in coast always
+
+
+   configs::TalonFXConfiguration intakeRunConfigs{};
+
+   intakeRunConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   intakeRunConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    
+   intakeRunConfigs.MotorOutput.Inverted =
+      signals::InvertedValue::Clockwise_Positive;
+
+   m_IntakeMoveMotor.GetConfigurator().Apply( intakeMoveConfigs );
+   m_IntakeRunMotor.GetConfigurator().Apply( intakeRunConfigs );
+
+   // *----------------------------------*
+   // * Magazine Hardware Initialization *
+   // *----------------------------------*
+   
+   configs::TalonFXSConfiguration feederMotorConfigs{};
+   
+   feederMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
+   feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   feederMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
+
+   m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
+
+   configs::TalonFXSConfiguration kickerMotorConfigs{};
+   
+   kickerMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
+   kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
+   kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   kickerMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
+
+
+   m_KickerMotor.GetConfigurator().Apply(kickerMotorConfigs);
+
+
+   // *---------------------------------*
+   // * Shooter Hardware Initialization * 
+   // *---------------------------------*
+   configs::TalonFXConfiguration leftShooterMotor_MasterConfig{};
+
+   leftShooterMotor_MasterConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   leftShooterMotor_MasterConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
+   leftShooterMotor_MasterConfig.MotorOutput.Inverted =
+      signals::InvertedValue::CounterClockwise_Positive;
+
+   configs::TalonFXConfiguration rightShooterMotor_FollowerConfig{};
+
+   rightShooterMotor_FollowerConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   rightShooterMotor_FollowerConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
+
+   // Apply the Motor Controller Configurations.
+
+   m_LeftShooterMotor_Master.GetConfigurator().Apply( leftShooterMotor_MasterConfig );
+   m_RightShooterMotor_Follower.GetConfigurator().Apply( rightShooterMotor_FollowerConfig );
+
+   //-GMS - This is my guess that the shooter will be powered by 2 Kraken Motors on 40A fuses, oposing direction
+   m_RightShooterMotor_Follower.SetControl(
+      controls::Follower{
+         m_LeftShooterMotor_Master.GetDeviceID(),     // Master ID - Device ID of Master to follow
+         true});                       // OpposeMasterDirection
+                                       // true - Motor invert to oppose the master's
+                                       //    configured Invert. Typical when the the
+                                       //    master and follower mechanically spin in
+                                       //    opposite directions.
 }
 
 //-------------------------------------------------------------------
@@ -77,5 +161,7 @@ void RobotIO::RobotInit()
 
 void RobotIO::UpdateInputStatus()
 {
-   
+   frc::SmartDashboard::PutNumber("Intake Position", m_IntakeMoveMotor.GetPosition().GetValueAsDouble());
+   frc::SmartDashboard::PutBoolean("Intake Lowered", IsIntakeLowered());
+   frc::SmartDashboard::PutBoolean("Intake Raised", IsIntakeRaised());
 }

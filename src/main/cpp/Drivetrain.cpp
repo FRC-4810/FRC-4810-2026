@@ -59,8 +59,10 @@ void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
     m_RotController.EnableContinuousInput(-std::numbers::pi, std::numbers::pi);
 }
 
-void Drivetrain::Execute (  double leftYJoystickValue, double leftXJoystickValue,
-                double rightXJoystickValue  )
+void Drivetrain::Execute (
+    double leftYJoystickValue,         // Chassis forward/backward
+    double leftXJoystickValue,         // Chassis left/right
+    double rightXJoystickValue )       // Chassis Rotation (Clockwise/Counterclockwise)
 {
     frc::SmartDashboard::PutNumber("Gyro Angle", (double)GetGyroRotation2d().Degrees());
     frc::Pose2d botPose = GetBotPose();
@@ -72,8 +74,9 @@ void Drivetrain::Execute (  double leftYJoystickValue, double leftXJoystickValue
 
     // Left Y value is Chassie X value (forward/backward)
     // Left X value is Chassie Y value (left/right)
-    // Right X value is Chassie Rotation value (Clockwise/Counterclockwise)
+    // Right X value is Chassie Rotation value 
 
+//-JJB - This should not be here...
     //-GMS - clamp values so chassis speed never above max speed
     if(pow(leftYJoystickValue, 2) + pow(leftXJoystickValue, 2) > 1 )
     {
@@ -81,6 +84,7 @@ void Drivetrain::Execute (  double leftYJoystickValue, double leftXJoystickValue
         leftXJoystickValue /= sqrt(pow(leftYJoystickValue, 2) + pow(leftXJoystickValue, 2));
     }
 
+//-JJB - This should not be here...
     // All speeds need to be inverted - Correct for joystick inversion.
     const auto xSpeed = m_xSpeedLimiter.Calculate(-frc::ApplyDeadband(leftYJoystickValue, 0.12)) * drivetrain::kMaxSpeed;
     const auto ySpeed = m_ySpeedLimiter.Calculate(frc::ApplyDeadband(leftXJoystickValue, 0.12)) * drivetrain::kMaxSpeed;
@@ -109,9 +113,14 @@ void Drivetrain::Execute (  double leftYJoystickValue, double leftXJoystickValue
 
 void Drivetrain::DriveFieldRelative( double xSpeed, double ySpeed, double rotSpeed )
 {
-    frc::ChassisSpeeds speeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(units::meters_per_second_t{xSpeed}, units::meters_per_second_t{ySpeed}, units::radians_per_second_t{rotSpeed}, GetGyroRotation2d());
+    frc::ChassisSpeeds speeds = frc::ChassisSpeeds::FromFieldRelativeSpeeds(
+        units::meters_per_second_t{xSpeed},
+        units::meters_per_second_t{ySpeed},
+        units::radians_per_second_t{rotSpeed}, GetGyroRotation2d());
 
-    auto [fl, fr, bl, br] = m_kinematics.ToSwerveModuleStates(speeds);  //Go from speeds to swerve module states using kinematics objects
+    // Go from speeds to swerve module states using kinematics objects
+
+    auto [fl, fr, bl, br] = m_kinematics.ToSwerveModuleStates(speeds);
 
     m_frontLeft.SetDesiredState(fl);    //Set Front Left State to target
     m_frontRight.SetDesiredState(fr);   //Set Front Right State to target
@@ -123,9 +132,14 @@ void Drivetrain::DriveFieldRelative( double xSpeed, double ySpeed, double rotSpe
 
 void Drivetrain::DriveBotRelative( double xSpeed, double ySpeed, double rotSpeed )
 {
-    frc::ChassisSpeeds speeds = frc::ChassisSpeeds{units::meters_per_second_t{ xSpeed }, units::meters_per_second_t{ ySpeed }, units::radians_per_second_t{ rotSpeed }};
+    frc::ChassisSpeeds speeds = frc::ChassisSpeeds{
+        units::meters_per_second_t{ xSpeed },
+        units::meters_per_second_t{ ySpeed },
+        units::radians_per_second_t{ rotSpeed }};
 
-    auto [fl, fr, bl, br] = m_kinematics.ToSwerveModuleStates(speeds);  //Go from speeds to swerve module states using kinematics objects
+    // Go from speeds to swerve module states using kinematics objects
+
+    auto [fl, fr, bl, br] = m_kinematics.ToSwerveModuleStates(speeds);
 
     m_frontLeft.SetDesiredState(fl);    //Set Front Left State to target
     m_frontRight.SetDesiredState(fr);   //Set Front Right State to target

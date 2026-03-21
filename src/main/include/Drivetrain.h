@@ -1,11 +1,11 @@
 #pragma once
 
 #include <numbers>
+#include <string>
 
 #include <frc/geometry/Translation2d.h>
 #include <frc/geometry/Rotation2d.h>
 #include <frc/kinematics/SwerveDriveKinematics.h>
-//#include <frc/kinematics/SwerveDriveOdometry.h> - Replaced with pose estimator
 #include <frc/estimator/SwerveDrivePoseEstimator.h>
 #include <frc/AnalogGyro.h>
 
@@ -15,6 +15,8 @@
 
 #include <frc/smartdashboard/Field2d.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+
+#include <ctre/phoenix6/CANBus.hpp>
 
 #include <ctre/phoenix6/Pigeon2.hpp>
 #include <ctre/phoenix6/CANBus.hpp>
@@ -30,23 +32,19 @@
 #include <frc/kinematics/ChassisSpeeds.h>
 #include <frc/controller/PIDController.h>
 #include <frc/DriverStation.h>
-
-
 #include "RobotIO.h"
 
 namespace drivetrain
 {
     // Constant Values for max bot linear velocity (Drive Speed) and angular velocity (Spin/turn Speed)
 
-    static constexpr units::meters_per_second_t kMaxSpeed = 2.5_mps;  // 2.5 meters per second
+    static constexpr units::meters_per_second_t kMaxSpeed = 4_mps;  // 2.5 meters per second
     static constexpr units::radians_per_second_t kMaxAngularSpeed{ std::numbers::pi };  // 1/2 rotation per second 
 
     static constexpr units::meter_t kWheelDistance = 0.54782769475136_m;  // The distance bewteen 2 adjacent (like 1 edge of the square, not the diagnol) 
 }
 
 using namespace ctre::phoenix6;
-using namespace pathplanner;
-
 
 class Drivetrain
 {
@@ -56,6 +54,7 @@ public:
     ~Drivetrain() 
         { }
 
+    // Class Methods.
 
     // Accessor Methods.
     inline void ToggleFieldRelative()
@@ -63,9 +62,6 @@ public:
 
     inline bool IsFieldRelative()
         {  return {m_bIsFieldRelative};  }
-
-    inline void SetUsingCamera( bool bUseCamera )
-        {  m_bUseCameraMeasurements = bUseCamera;  }
 
     inline frc::Rotation2d GetGyroRotation2d()
         { return{ frc::Rotation2d(units::degree_t{ -m_gyro.GetYaw().GetValue() }) }; }
@@ -76,9 +72,8 @@ public:
     // * Odometry *
     // ************
     
-    void ResetOdometry( frc::Pose2d pose = frc::Pose2d{0_m, 0_m, frc::Rotation2d(0_deg)} );
-    frc::Pose2d GetBotPose();
-
+    inline void ResetOdometry()
+       { m_poseEstimator.ResetPose( frc::Pose2d{ 0_m, 0_m, frc::Rotation2d(0_deg) } ); }
 
     void GoToPosition(const frc::Pose2d& targetPose);
 
@@ -92,13 +87,11 @@ public:
     
     void DriveRobotRelative(const frc::ChassisSpeeds& speeds);
     frc::ChassisSpeeds GetRobotRelativeSpeeds();
+    inline frc::Pose2d GetBotPose()
+       { return( m_poseEstimator.GetEstimatedPosition() ); }
 
     // Class Methods.
-    /**
-     * Initializes the drivetrain class.
-     * 
-     * @param p_pRobotIO Pointer to RobotIO.
-    */
+
     void Initialize ( RobotIO *p_pRobotIO );
 
     /**
@@ -163,7 +156,7 @@ public:
 private:
     RobotIO *m_pRobotIO;    //Pointer to RobotIO
 
-    hardware::Pigeon2 m_gyro{13, canbus};
+    hardware::Pigeon2 m_gyro{13,canbus};
 
     bool m_bIsFieldRelative;    //Field Relative bool (true: field centric; false: bot centric)
 
@@ -195,6 +188,19 @@ private:
     frc::Translation2d m_frontRightLocation{+drivetrain::kWheelDistance / 2, +drivetrain::kWheelDistance / 2};    //Front Right Wheel Position
     frc::Translation2d m_backLeftLocation{-drivetrain::kWheelDistance / 2, -drivetrain::kWheelDistance / 2};      //Back Left Wheel Position
     frc::Translation2d m_backRightLocation{-drivetrain::kWheelDistance / 2, +drivetrain::kWheelDistance / 2};     //Back Right Wheel Position
+
+    // A slew rate limiter is used to limit how fast a signal can change
+    // over time.  When controlling velocity or voltage, its main purpose
+    // is to prevent sudden, sharp changes that could cause instability,
+    // stress, or unsafe behavior.
+    // It limits the rate of change (Δoutput / Δtime), not the maximum value.
+
+
+    // SkewRateLimiter - Limits the rate of change of an input value.
+    // Useful for implementing voltage, setpoint, and/or output ramps.
+    // A slew-rate limit is most appropriate when the quantity being
+    // controlled is a velocity or a voltage. When controlling a position,
+    // consider using a TrapezoidProfile instead.
 
     frc::SlewRateLimiter<units::scalar> m_xSpeedLimiter{3 / 1_s};
     frc::SlewRateLimiter<units::scalar> m_ySpeedLimiter{3 / 1_s};
