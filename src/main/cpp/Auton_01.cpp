@@ -41,7 +41,7 @@ void Auton01::Execute()
             // Move path Logic
 
             // Check if path done
-            if()
+            if(false)
             {
                 m_eState = auton01::eState::STATE_MOVE_1;
             }
