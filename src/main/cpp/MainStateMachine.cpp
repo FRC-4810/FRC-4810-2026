@@ -431,7 +431,7 @@ void MainStateMachine::Execute()
 
          if(m_Magazine.IsIdle() && m_Shooter.isIdle() && m_Intake.IsIdle())
          {
-            //-GMS - If intake is already lowered, we never reached the agitate state, so we don't need to move it. 
+            //-GMS - If intake is already lowered, we never reached the agitate state (or finished it and lowered manually?), so we don't need to move it. 
             //       Otherwise, we auto lower it back to the bottom position for intaking.
             if(m_pRobotIO->IsIntakeLowered())
             {

@@ -150,7 +150,7 @@ void Intake::Execute()
             else if ( m_eCommand == intake::eCommand::COMMAND_AGITATE )
             {
                 // Check if arm is above setpoint
-                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint ) 
+                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint ) 
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
@@ -167,7 +167,7 @@ void Intake::Execute()
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
-                // Set state to auto lower
+                // Set state to agitate
                 m_eState = intake::eState::STATE_AGITATE;
             }
 
@@ -343,7 +343,7 @@ void Intake::Execute()
             }
 
             bool bLimitHit = false;
-            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint  )
+            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint  )
             {
                 bLimitHit = true;
             }
