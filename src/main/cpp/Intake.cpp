@@ -150,7 +150,7 @@ void Intake::Execute()
             else if ( m_eCommand == intake::eCommand::COMMAND_AGITATE )
             {
                 // Check if arm is above setpoint
-                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint ) 
+                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint ) 
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
@@ -343,7 +343,7 @@ void Intake::Execute()
             }
 
             bool bLimitHit = false;
-            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint  )
+            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= intake::dCenterSetpoint  )
             {
                 bLimitHit = true;
             }

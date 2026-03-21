@@ -40,8 +40,8 @@ namespace intake
     constexpr double dAutoLowerTimeout = 1.0;
     constexpr double dAgitateTimeout = 1.0;
 
-    constexpr double dManualIntakeTimeout = 30.0;
-    constexpr double dManualOuttakeTimeout = 30.0;
+    constexpr double dManualIntakeTimeout = 5.0;
+    constexpr double dManualOuttakeTimeout = 5.0;
 
     // Motor Speed Constants TODO
     constexpr double dManualLowerSpeed = 0.4;

@@ -413,16 +413,17 @@ void MainStateMachine::Execute()
       // ******************
       else if(m_eState == RobotMain::eState::STATE_SHOOTING)
       {
+
+         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 3.0) //TODO - tune this - 5s
+         {
+            m_Intake.Agitate();
+         }
+         
          if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
          {
             m_Magazine.Stop();
             m_Shooter.Stop();
             m_Intake.Stop();
-         }
-
-         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 5.0) //TODO - tune this - 5s
-         {
-            m_Intake.Agitate();
          }
 
          m_Shooter.Execute();
