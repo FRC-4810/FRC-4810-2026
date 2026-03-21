@@ -90,7 +90,7 @@ void Robot::AutonomousInit()
       "Selected Auton Routine",             // Key name
       m_autoSelected );                     // Value
 
-   if(m_autoSelected == AUTON_ROUTINE_01 ) { /*Initialize*/ }
+   if(m_autoSelected == AUTON_ROUTINE_01 ) { m_Auton01.Initialize(&m_RobotIO); }
 }
 
 //-------------------------------------------------------------------
@@ -101,7 +101,7 @@ void Robot::AutonomousPeriodic()
 
    if ( m_autoSelected == AUTON_ROUTINE_01 )
    {
-      //execute
+      m_Auton01.Execute();
    }
 }
 

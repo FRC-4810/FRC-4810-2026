@@ -81,7 +81,7 @@ public:
     // ***************
     // * PathPlanner *
     // ***************
-    void LoadPath(std::string pathName, bool resetPose = false);
+    void LoadPath(std::string pathName, bool resetPose = true);
     void FollowPath();
     bool IsPathFinished();
     

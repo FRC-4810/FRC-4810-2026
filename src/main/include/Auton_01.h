@@ -2,6 +2,8 @@
 
 #include "RobotIO.h"
 #include <frc/Timer.h>
+#include <string>
+#include "Drivetrain.h"
 
 namespace auton01 
 {
@@ -15,6 +17,10 @@ namespace auton01
 
 
     //Timers
+    static constexpr double dMove1Timer = 5;
+
+    //Paths
+    static const std::string path1Name = "Test Path";
 }
 
 class Auton01 
@@ -35,6 +41,7 @@ class Auton01
         auton01::eState m_eState;
 
         RobotIO *m_pRobotIO;
-
         frc::Timer *m_pTimeoutTimer;
+
+        Drivetrain m_Drivetrain;
 };

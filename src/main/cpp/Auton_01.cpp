@@ -13,6 +13,8 @@ void Auton01::Initialize( RobotIO *p_pRobotIO )
 {
     m_pRobotIO = p_pRobotIO;
 
+    m_Drivetrain.Initialize( p_pRobotIO );
+
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
 }
@@ -29,6 +31,10 @@ void Auton01::Execute()
         if ( m_eState == auton01::eState::STATE_START )
         {
             // Move path Logic
+            m_Drivetrain.LoadPath( auton01::path1Name );
+            m_Drivetrain.FollowPath();
+            m_pTimeoutTimer->Reset();
+            m_pTimeoutTimer->Start();
 
             m_eState = auton01::eState::STATE_MOVE_1;
         }
@@ -39,17 +45,19 @@ void Auton01::Execute()
         else if ( m_eState == auton01::eState::STATE_MOVE_1 )
         {
             // Move path Logic
+            m_Drivetrain.FollowPath();
 
             // Check if path done
-            if(false)
+            if(m_Drivetrain.IsPathFinished() || (double)m_pTimeoutTimer->Get() >= auton01::dMove1Timer)
             {
-                m_eState = auton01::eState::STATE_MOVE_1;
+                m_Drivetrain.Stop();
+                m_eState = auton01::eState::STATE_DONE;
             }
         }
 
         else if ( m_eState == auton01::eState::STATE_DONE )
         {
-
+            
         }
         
 

@@ -43,6 +43,7 @@
 
 #include "RobotIO.h"                   // Controlled hardware class definition
 #include "MainStateMachine.h"          // Main State Machine class definition
+#include "Auton_01.h"                   // Auton 01 State Machine class definition
 
 using namespace ctre::phoenix6;
 
@@ -68,9 +69,10 @@ class Robot : public frc::TimedRobot
       MainStateMachine m_MainStateMachine;   // Main Robot State Machine
 
       // Autonomous Mode.
+      Auton01 m_Auton01;
 
       frc::SendableChooser<std::string> m_chooser;
-      const std::string AUTON_ROUTINE_01 = "01 - AUTON";
+      const std::string AUTON_ROUTINE_01 = "01 - Test Path";
       // Add more auton names
       std::string m_autoSelected;
 };

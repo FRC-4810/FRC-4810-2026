@@ -175,6 +175,7 @@ void Drivetrain::LoadPath(std::string pathName, bool resetPose)
 {
     try {
         auto path = pathplanner::PathPlannerPath::fromPathFile(pathName);
+        printf("Loaded path");
         
         // Handle Alliance Flipping
         // CWS - Commenting out alliance flipping for now, as it can be easily handled by flipping the path in the PathPlanner GUI. If we want to add it back in, we should also add a "preventFlipping" boolean to the PathPlannerPath class, and check that here before flipping the path.
@@ -189,6 +190,8 @@ void Drivetrain::LoadPath(std::string pathName, bool resetPose)
         
         pathplanner::RobotConfig robotConfig = pathplanner::RobotConfig::fromGUISettings(); // Load config from deploy/pathplanner/settings.json
 
+        printf("Loaded settings");
+
         m_currentTrajectory = path->generateTrajectory(
             frc::ChassisSpeeds{}, 
             startPose.Rotation(), 
@@ -197,6 +200,7 @@ void Drivetrain::LoadPath(std::string pathName, bool resetPose)
 
         if (resetPose) {
             ResetOdometry(startPose);
+            printf("Reset Odometry");
         }
 
         m_pathTimer->Reset();
@@ -228,6 +232,7 @@ void Drivetrain::FollowPath()
 
 bool Drivetrain::IsPathFinished()
 {
+    printf("Path Finished");
     // If trajectory is empty/invalid, consider it finished
     if (m_currentTrajectory.getTotalTime() <= 0_s) return true;
 
