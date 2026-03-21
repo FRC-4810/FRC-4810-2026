@@ -414,7 +414,7 @@ void MainStateMachine::Execute()
       else if(m_eState == RobotMain::eState::STATE_SHOOTING)
       {
 
-         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 3.0) //TODO - tune this - 5s
+         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 1.5) //TODO - tune this - 1.5s
          {
             m_Intake.Agitate();
          }
@@ -436,10 +436,18 @@ void MainStateMachine::Execute()
             //       Otherwise, we auto lower it back to the bottom position for intaking.
             if(m_pRobotIO->IsIntakeLowered())
             {
+               //-GMS - if we are in coast mode, transition to brake
+               configs::MotorOutputConfigs configs;
+               m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Refresh( configs );
+               
+               configs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+               m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( configs );
+
                m_eState = RobotMain::eState::STATE_IDLE;
             }
             else
             {
+               //-GMS - will auto transition into brake mode
                m_Intake.AutoLower();
                m_Intake.Execute();
 
