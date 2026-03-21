@@ -241,6 +241,18 @@ void MainStateMachine::Execute()
             m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
          }
 
+         
+         // *------------------------------------------* - GMS
+         // * Operator Left Trigger - High Speed Shoot *
+         // *------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8)
+         {
+            m_Shooter.HighPowerShoot();
+            m_Shooter.Execute();
+
+            m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
+         }
+
          // *--------------------------------* - GMS
          // * Operator X Button - Hopper Out *
          // *--------------------------------*
@@ -370,7 +382,7 @@ void MainStateMachine::Execute()
       // **************************
       else if(m_eState == RobotMain::eState::STATE_SHOOTING_RAMP_UP)
       {
-         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8)
+         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
          {
             m_Shooter.Stop();
          }
@@ -401,7 +413,7 @@ void MainStateMachine::Execute()
       // ******************
       else if(m_eState == RobotMain::eState::STATE_SHOOTING)
       {
-         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8)
+         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
          {
             m_Magazine.Stop();
             m_Shooter.Stop();
