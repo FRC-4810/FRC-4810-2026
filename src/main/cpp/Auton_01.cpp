@@ -64,12 +64,12 @@ void Auton01::Execute()
         // Error or unkown state
         else
         {
-            printf("Shooter.cpp: Error state or unknown state\n");
+            printf("Auton_01.cpp: Error state or unknown state\n");
         }
     }
     // m_pRobotIO is nullptr
     else
     {
-        printf("Shooter.cpp: m_pRobotIO is nullptr\n");
+        printf("Auton_01.cpp: m_pRobotIO is nullptr\n");
     }
 }
