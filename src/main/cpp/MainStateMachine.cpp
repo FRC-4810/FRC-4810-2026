@@ -278,7 +278,7 @@ void MainStateMachine::Execute()
       // ***********************
       else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_IN)
       {
-         if(!m_pRobotIO->m_DriveController.GetRightBumperButton())
+         if(!m_pRobotIO->m_DriveController.GetRightTriggerAxis() > 0.8)
          {
             m_Intake.Stop();
          }
@@ -296,7 +296,7 @@ void MainStateMachine::Execute()
       // ***********************
       else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_OUT)
       {
-         if(!m_pRobotIO->m_DriveController.GetLeftBumperButton())
+         if(!m_pRobotIO->m_DriveController.GetLeftTriggerAxis() > 0.8)
          {
             m_Intake.Stop();
             m_Magazine.Stop();
@@ -504,7 +504,7 @@ void MainStateMachine::Execute()
       else if(m_eDriveState == RobotMain::eDriveState::STATE_NORMAL) // Normal drive state/drive by joysticks
       {
       
-         if(m_pRobotIO->m_DriveController.GetXButton())
+         if(m_pRobotIO->m_DriveController.GetXButton()) // Swapped X and B buttons - BLC
          {
             m_Drivetrain.DriveBotRelative(0, 0.1, 0);
          }
