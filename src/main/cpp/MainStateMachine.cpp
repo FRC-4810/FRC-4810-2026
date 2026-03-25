@@ -162,10 +162,10 @@ void MainStateMachine::Execute()
 
       else if ( m_eState == RobotMain::eState::STATE_IDLE )
       {
-         // *-------------------------------------* - GMS
-         // * Driver Right Bumper - Run Intake in *
-         // *-------------------------------------*
-         if(m_pRobotIO->m_DriveController.GetRightBumperButton())
+         // *--------------------------------------* - BLC changed to right trigger
+         // * Driver Right Trigger - Run Intake in *
+         // *--------------------------------------*
+         if(m_pRobotIO->m_DriveController.GetRightTriggerAxis() > 0.8)
          {
             m_Intake.ManualIntake();
             m_Intake.Execute();
@@ -173,10 +173,10 @@ void MainStateMachine::Execute()
             m_eState = RobotMain::eState::STATE_INTAKE_RUN_IN;
          }
 
-         // *------------------------------------------* - GMS
+         // *------------------------------------------* - BLC changed to left trigger
          // * Driver Left Bumper - Run Intake Out/Dump *
          // *------------------------------------------*
-         if(m_pRobotIO->m_DriveController.GetLeftBumperButton())
+         if(m_pRobotIO->m_DriveController.GetLeftTriggerAxis() > 0.8)
          {
             m_Intake.ManualOuttake();
             m_Intake.Execute();
