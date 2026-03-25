@@ -504,11 +504,11 @@ void MainStateMachine::Execute()
       else if(m_eDriveState == RobotMain::eDriveState::STATE_NORMAL) // Normal drive state/drive by joysticks
       {
       
-         if(m_pRobotIO->m_DriveController.GetBButton())
+         if(m_pRobotIO->m_DriveController.GetXButton())
          {
             m_Drivetrain.DriveBotRelative(0, 0.1, 0);
          }
-         else if(m_pRobotIO->m_DriveController.GetXButton())
+         else if(m_pRobotIO->m_DriveController.GetBButton())
          {
             m_Drivetrain.DriveBotRelative(0, -0.1, 0);
          }
