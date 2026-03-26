@@ -389,11 +389,23 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
+            // Check if arm is up - BLC
+            if ( !m_pRobotIO->IsIntakeLowered() )
+            {
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dManualLowerSpeed );
+            } else 
+            {
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
+            }
+
 
             if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
                 // Stop intake/outtake motors
                 m_pRobotIO->m_IntakeRunMotor.Set( 0 );
+
+                // Stop arm
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;

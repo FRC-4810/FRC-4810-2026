@@ -30,6 +30,7 @@ void Robot::RobotInit()
 {
    m_chooser.SetDefaultOption( AUTON_ROUTINE_01, AUTON_ROUTINE_01 );
    m_chooser.AddOption( AUTON_ROUTINE_01, AUTON_ROUTINE_01 );
+   m_chooser.AddOption( AUTON_ROUTINE_02, AUTON_ROUTINE_02 );
 
    frc::SmartDashboard::PutData( "Auton Modes", &m_chooser );
 
@@ -91,6 +92,7 @@ void Robot::AutonomousInit()
       m_autoSelected );                     // Value
 
    if(m_autoSelected == AUTON_ROUTINE_01 ) { m_Auton01.Initialize(&m_RobotIO); }
+   else if(m_autoSelected == AUTON_ROUTINE_02 ) { m_Auton02.Initialize(&m_RobotIO); }
 }
 
 //-------------------------------------------------------------------
@@ -102,6 +104,10 @@ void Robot::AutonomousPeriodic()
    if ( m_autoSelected == AUTON_ROUTINE_01 )
    {
       m_Auton01.Execute();
+   }
+   else if ( m_autoSelected == AUTON_ROUTINE_02 )
+   {
+      m_Auton02.Execute();
    }
 }
 
