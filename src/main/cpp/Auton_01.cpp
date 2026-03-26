@@ -57,7 +57,7 @@ void Auton01::Execute()
 
         else if ( m_eState == auton01::eState::STATE_DONE )
         {
-            
+            m_Drivetrain.Stop();
         }
         
 

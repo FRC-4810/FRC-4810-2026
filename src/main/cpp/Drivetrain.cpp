@@ -232,11 +232,15 @@ void Drivetrain::FollowPath()
 
 bool Drivetrain::IsPathFinished()
 {
-    printf("Path Finished");
     // If trajectory is empty/invalid, consider it finished
     if (m_currentTrajectory.getTotalTime() <= 0_s) return true;
 
-    return m_pathTimer->Get() >= m_currentTrajectory.getTotalTime();
+    if ( m_pathTimer->Get() >= m_currentTrajectory.getTotalTime() )
+    {
+        printf("Path Finished\n");
+        return true;
+    }
+    return false;
 }
 
 void Drivetrain::Stop()

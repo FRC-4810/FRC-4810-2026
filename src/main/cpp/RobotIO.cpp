@@ -87,7 +87,11 @@ void RobotIO::RobotInit()
 
    intakeRunConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    intakeRunConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
+   intakeRunConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true);
+   intakeRunConfigs.CurrentLimits.WithStatorCurrentLimit( 30_A );
+   intakeRunConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
    
+
    intakeRunConfigs.MotorOutput.Inverted =
       signals::InvertedValue::Clockwise_Positive;
 
@@ -103,6 +107,8 @@ void RobotIO::RobotInit()
    feederMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   feederMotorConfigs.CurrentLimits.WithStatorCurrentLimit( 30_A );
+   feederMotorConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true); 
    feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
@@ -115,6 +121,8 @@ void RobotIO::RobotInit()
    kickerMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   kickerMotorConfigs.CurrentLimits.WithStatorCurrentLimit( 30_A );
+   kickerMotorConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true);
    kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
@@ -131,6 +139,10 @@ void RobotIO::RobotInit()
 
    leftShooterMotor_MasterConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
    leftShooterMotor_MasterConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
+   leftShooterMotor_MasterConfig.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   leftShooterMotor_MasterConfig.CurrentLimits.WithStatorCurrentLimit( 40_A );
+   leftShooterMotor_MasterConfig.CurrentLimits.WithStatorCurrentLimitEnable(true);
+
    leftShooterMotor_MasterConfig.MotorOutput.Inverted =
       signals::InvertedValue::CounterClockwise_Positive;
 
@@ -138,6 +150,9 @@ void RobotIO::RobotInit()
 
    rightShooterMotor_FollowerConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
    rightShooterMotor_FollowerConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
+   rightShooterMotor_FollowerConfig.CurrentLimits.WithSupplyCurrentLimitEnable(true);
+   rightShooterMotor_FollowerConfig.CurrentLimits.WithStatorCurrentLimit( 40_A );
+   rightShooterMotor_FollowerConfig.CurrentLimits.WithStatorCurrentLimitEnable(true);
 
    // Apply the Motor Controller Configurations.
 
