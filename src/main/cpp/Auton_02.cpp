@@ -12,7 +12,6 @@ Auton02::Auton02()
 void Auton02::Initialize( RobotIO *p_pRobotIO )
 {
     m_pRobotIO = p_pRobotIO;
-
     m_Drivetrain.Initialize( p_pRobotIO );
     m_Intake.Initialize( p_pRobotIO );
     m_Magazine.Initialize( p_pRobotIO );
@@ -51,6 +50,8 @@ void Auton02::Execute()
             double rotSpeed = m_RotationPIDController.Calculate((double)m_Drivetrain.GetGyroRotation2d().Radians(), auton02::dTargetGyro);
             m_Drivetrain.DriveFieldRelative(auton02::xMoveSpeed, auton02::yMoveSpeed, rotSpeed);
 
+            m_Intake.AutoLower();
+
             // Check if timed out
             if((double)m_pTimeoutTimer->Get() >= auton02::dMove1Timer)
             {
@@ -74,6 +75,9 @@ void Auton02::Execute()
             {
                 m_Magazine.RunIn();
                 m_Magazine.Execute();
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+                m_eState = auton02::eState::STATE_SHOOT;
             }
         }
 

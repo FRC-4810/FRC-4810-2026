@@ -22,12 +22,12 @@ namespace auton02
 
 
     //Timers
-    static constexpr double dMove1Timer = 5;    //Todo - tune this timer
-    static constexpr double dShootTimer = 5;    //Todo - tune this timer
+    static constexpr double dMove1Timer = 2.3;    //Todo - tune this timer
+    static constexpr double dShootTimer = 4;    //Todo - tune this timer
 
     //Setpoints
-    static constexpr double dTargetGyro = -0.261799;    //Radians - todo tune this - current: -15 deg
-    static constexpr double xMoveSpeed = -1.0;  //m/s - todo tune this. Is x or y towards driver?
+    static constexpr double dTargetGyro = 3.162013;    //Radians - todo tune this - current: -15 deg
+    static constexpr double xMoveSpeed = -0.5;  //m/s - todo tune this. Is x or y towards driver?
     static constexpr double yMoveSpeed = 0.0;   //m/s - todo tune this. Is x or y towards driver?
 
     
@@ -56,7 +56,7 @@ class Auton02
         //-GMS - todo tune this
         frc::PIDController m_RotationPIDController
         {
-            1.0,    //Kp
+            -1.0,    //Kp
             0.0,    //Ki
             0.0     //Kd
         };

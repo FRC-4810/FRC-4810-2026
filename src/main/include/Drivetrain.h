@@ -250,14 +250,14 @@ private:
     pathplanner::PPHolonomicDriveController m_pathController{
         //Linear PID Controller
         pathplanner::PIDConstants{
-            5.0,    //Kp
+            0.5,    //Kp
             0.0,    //Ki
             0.0,    //Kd
             0.0     //I-Range
         },
         //Rotational PID Controller
         pathplanner::PIDConstants{
-            5.0,    //Kp
+            0.5,    //Kp
             0.0,    //Ki
             0.0,    //Kd
             0.0     //I-Range
