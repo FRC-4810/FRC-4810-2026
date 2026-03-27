@@ -146,6 +146,55 @@ void SwerveModule::ConfigModule()
 
 
 
+//-JJB - None of this is necessary if using the FusedCANcoder setup:
+/*
+    // CANcoder Configurations
+    // Need to flip based on CCW or CW
+    //-JJB CANcoderConfiguration config = new CANcoderConfiguration();
+    //-JJB config.SensorDirection = true; // flip if necessary
+    //-JJB encoder.getConfigurator().apply(config);
+
+    // “When you read this angle, treat it as 0°.”
+
+    //-JJB double absolutePosition = encoder.getAbsolutePosition().getValue();
+    //-JJB CANcoderConfiguration config = new CANcoderConfiguration();
+    //-JJB config.MagnetSensor.MagnetOffset = -absolutePosition;
+    //-JJB encoder.getConfigurator().apply(config);
+
+
+    // Once CANcoders are zeroed, tell Talon FX integrated encoders to match the CANcoder:
+
+    // Get absolute position from CANcoder (0 to 1 rotations)
+//-JJB     double absolutePosition = m_turningEncoder.GetAbsolutePosition().GetValueAsDouble();
+    units::angle::turn_t absolutePosition = m_turningEncoder.GetAbsolutePosition().GetValue();
+
+    // Convert to motor rotations (adjust for gear ratio!)
+    double motorRotations = absolutePosition * swerveModule::kTurnGearRatio;
+
+    // Set TalonFX integrated encoder position
+    m_turningMotor.SetPosition(motorRotations);
+//-JJB     ctre::phoenix::StatusCode SetPosition(units::angle::turn_t newValue) final
+*/
+/*
+ void SyncIntegratedToAbsolute() {
+        // Get absolute position from CANcoder (0 to 1 rotations)
+        auto absolutePosition = m_canCoder.GetAbsolutePosition().GetValue();
+
+        // Convert to motor rotations (adjust for gear ratio!)
+        constexpr double kAngleGearRatio = 12.8;  // Example SDS Mk4i L2
+        double motorRotations = absolutePosition * kAngleGearRatio;
+
+        // Set TalonFX integrated encoder position
+        m_angleMotor.SetPosition(motorRotations);
+    }
+*/
+
+
+
+
+
+
+
     m_driveMotor.GetConfigurator().Apply(driveConfig);
     m_turningMotor.GetConfigurator().Apply(turnConfig);
 
@@ -178,6 +227,15 @@ frc::SwerveModulePosition SwerveModule::GetPosition() {
         -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)}
     };
 }
+frc::SwerveModulePosition SwerveModule::GetPositionOdometry() {
+    
+    /* Your positions are wrong, so I'm hacking the inversions to make them align. */
+    /* With more time I'd make sure forward is actually forward so there's no offsets/inversions */
+    return {
+        -units::meter_t{m_driveMotor.GetPosition().GetValueAsDouble() * 2.0 * std::numbers::pi * swerveModule::kWheelRadius},
+        -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)}
+    };
+}
 
 void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
 {
@@ -207,7 +265,8 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
         units::turn_t{(double)state.angle.Radians() / (2 * std::numbers::pi)}));*/
 
 
-    state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians()));// -- Removed; CS
+    state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians())); // -- Removed; CS
+
 
     units::turns_per_second_t driveTps =
         units::turns_per_second_t{(double)(state.speed /

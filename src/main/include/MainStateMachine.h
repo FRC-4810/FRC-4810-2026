@@ -20,6 +20,14 @@
 
 #include "Drivetrain.h"                // Drivetrain state machine class
                                        //    definition
+#include "Intake.h"                    // Intake state machine class
+                                       //    definition
+#include "Magazine.h"                  // Magazine state machine class
+                                       //    definition
+#include "BasicTurret.h"               // Turret state machine class
+                                       //    definition
+#include "Shooter.h"                   // Shooter state machine class
+                                       //    definition
 
 #include "Shooter.h"                   // Shooter state machine class
 
@@ -33,24 +41,44 @@ namespace RobotMain
    {
       STATE_START = 0,
       STATE_IDLE = 1,
-
-      // BLC - Shooter states
-      STATE_SHOOTER_LOW_POWER_RAMP,
-      STATE_SHOOTER_HIGH_POWER_RAMP,
-
-      STATE_MAGAZINE_LOAD_SHOOTER,
-
+      STATE_INTAKE_MANUAL_LOWER = 2,
+      STATE_INTAKE_MANUAL_RAISE = 3,
+      STATE_INTAKE_AUTO_LOWER = 4,
+      STATE_INTAKE_AUTO_RAISE = 5,
+      STATE_INTAKE_AGITATE = 6,  //-GMS - Do we need this?
+      STATE_INTAKE_RUN_IN = 7,
+      STATE_INTAKE_RUN_OUT = 8,
+      STATE_SHOOTING_RAMP_UP = 9,
+      STATE_SHOOTING = 10,
+      STATE_MAGAZINE_MANUAL_OUT = 11,
+      STATE_MANUAL_TURRET_ROTATING_LEFT = 12,
+      STATE_MANUAL_TURRET_ROTATING_RIGHT = 13,
       STATE_ERROR = 99
    };
-
-   // Different states for the drivetrain. Independent to avoid locking
-   // driver out of drive controls.  Normal state is regular, states 1
-   // & 2 are for reef, states 3 & 4 are for source stations.
 
    enum eDriveState  
    {
       STATE_NORMAL = 0,
    };
+
+   // Joystick Threshold Values. Defines the value at which the forward
+   // push of the joystick triggers an event when a joystick is being
+   // used as a button trigger 
+
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_FORWARD_UPPER_THRESHOLD = -0.8;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_FORWARD_LOWER_THRESHOLD = -0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_BACKWARD_LOWER_THRESHOLD = 0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_BACKWARD_UPPER_THRESHOLD = 0.8;
+
+   static constexpr double SETPOINT_LEFT_JOYSTICK_FORWARD_UPPER_THRESHOLD = -0.8;
+   static constexpr double SETPOINT_LEFT_JOYSTICK_FORWARD_LOWER_THRESHOLD = -0.4;
+   static constexpr double SETPOINT_LEFT_JOYSTICK_BACKWARD_LOWER_THRESHOLD = 0.4;
+   static constexpr double SETPOINT_LEFT_JOYSTICK_BACKWARD_UPPER_THRESHOLD = 0.8;
+
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_LEFT_UPPER_THRESHOLD = -0.8;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_LEFT_LOWER_THRESHOLD = -0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_RIGHT_LOWER_THRESHOLD = 0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD = 0.8;
 }
 
 class MainStateMachine
@@ -69,20 +97,20 @@ class MainStateMachine
       void UpdateStatus();
       void Execute();
 
+      Drivetrain m_Drivetrain;
+      Intake m_Intake;
    private:
-
       RobotMain::eState m_eState;      // Current main state
       RobotIO *m_pRobotIO;             // Pointer to Robot I/O Class Instance
       RobotMain::eDriveState m_eDriveState;      // Current Drive state
 
+      //-GMS - Intake agitate timer
+      frc::Timer *m_pAgitateTimer;
+
       // State Machine Object Instances.
-      Drivetrain m_Drivetrain;
-
-      // BLC- Shooter State Machine Object
+      Magazine m_Magazine;
+      BasicTurret m_Turret;
       Shooter m_Shooter;
-
-      //-GMS - Active tracking Help
-      double GetHubDistance();
 };
 
 #endif // MAIN_STATE_MACHINE_H_

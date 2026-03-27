@@ -1,0 +1,4 @@
+See file:///C:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
+compiling MainStateMachine.cpp successful.
+
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
