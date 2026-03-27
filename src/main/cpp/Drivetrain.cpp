@@ -264,6 +264,91 @@ bool Drivetrain::IsPathFinished()
     return false;
 }
 
+void Drivetrain::DriveRobotRelative(const frc::ChassisSpeeds& speeds)
+{
+    auto [fl, fr, bl, br] = m_kinematics.ToSwerveModuleStates(speeds);
+
+    m_frontLeft.SetDesiredState(fl);
+    m_frontRight.SetDesiredState(fr);
+    m_backLeft.SetDesiredState(bl);
+    m_backRight.SetDesiredState(br);
+
+    UpdateOdometry();
+}
+
+frc::ChassisSpeeds Drivetrain::GetRobotRelativeSpeeds()
+{
+    return m_kinematics.ToChassisSpeeds({
+        m_frontLeft.GetState(),
+        m_frontRight.GetState(),
+        m_backLeft.GetState(),
+        m_backRight.GetState()
+    });
+}
+
+void Drivetrain::LoadPath(std::string pathName, bool resetPose)
+{
+    try {
+        auto path = pathplanner::PathPlannerPath::fromPathFile(pathName);
+        
+        // Handle Alliance Flipping
+        // CWS - Commenting out alliance flipping for now, as it can be easily handled by flipping the path in the PathPlanner GUI. If we want to add it back in, we should also add a "preventFlipping" boolean to the PathPlannerPath class, and check that here before flipping the path.
+        /*auto alliance = frc::DriverStation::GetAlliance();
+        if (alliance && alliance.value() == frc::DriverStation::Alliance::kRed) {
+            path = path->flipPath();
+        }*/
+
+        // Generate the trajectory for this path
+        // Using the path's starting rotation and 0 speed (assuming start of auto)
+        frc::Pose2d startPose = path->getStartingHolonomicPose().value_or(frc::Pose2d{});
+        
+        pathplanner::RobotConfig robotConfig = pathplanner::RobotConfig::fromGUISettings(); // Load config from deploy/pathplanner/settings.json
+
+        m_currentTrajectory = path->generateTrajectory(
+            frc::ChassisSpeeds{}, 
+            startPose.Rotation(), 
+            robotConfig
+        );
+
+        if (resetPose) {
+            ResetOdometry(startPose);
+        }
+
+        m_pathTimer->Reset();
+        m_pathTimer->Stop();
+    } catch (const std::exception& e) {
+        printf("Failed to load path: %s\n", pathName.c_str());
+    }
+}
+
+void Drivetrain::FollowPath()
+{
+    // Check if trajectory is valid (has duration)
+    if (m_currentTrajectory.getTotalTime() <= 0_s) return;
+
+    m_pathTimer->Start();
+    units::time::second_t time = m_pathTimer->Get();
+
+    // Get the target state from the trajectory
+    pathplanner::PathPlannerTrajectoryState state = m_currentTrajectory.sample(time);
+
+    // Calculate robot-relative speeds using the controller
+    frc::ChassisSpeeds targetSpeeds = m_pathController.calculateRobotRelativeSpeeds(
+        GetBotPose(),
+        state
+    );
+
+    DriveRobotRelative(targetSpeeds);
+}
+
+bool Drivetrain::IsPathFinished()
+{
+    // If trajectory is empty/invalid, consider it finished
+    if (m_currentTrajectory.getTotalTime() <= 0_s) return true;
+
+    return m_pathTimer->Get() >= m_currentTrajectory.getTotalTime();
+}
+
 void Drivetrain::Stop()
 {
     m_frontLeft.Stop();

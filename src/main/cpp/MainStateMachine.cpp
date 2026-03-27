@@ -596,6 +596,12 @@ void MainStateMachine::Execute()
          m_Drivetrain.ToggleFieldRelative();
       }
 
+      if ( m_pRobotIO->m_DriveController.GetBackButtonPressed() )
+      {
+         frc::Pose2d targetPose{2_m, 3_m, frc::Rotation2d{90_deg}};
+         m_Drivetrain.GoToPosition(targetPose);
+      }
+
       // If driver controller disconects, stop drivetrain and don't run anything else
 
       if ( ! m_pRobotIO->m_DriveController.IsConnected() )
