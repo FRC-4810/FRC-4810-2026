@@ -29,10 +29,6 @@
 #include "Shooter.h"                   // Shooter state machine class
                                        //    definition
 
-#include "Shooter.h"                   // Shooter state machine class
-
-#include "Turret.h"
-
 // *------------------------------------------------*
 // * Top Level (Main) State Machine Enumerated Type *
 // *------------------------------------------------*

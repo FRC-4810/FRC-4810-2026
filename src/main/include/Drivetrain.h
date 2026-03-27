@@ -191,44 +191,6 @@ private:
     };
 
 
-    frc::PIDController m_XController{
-        0.0,    //Kp
-        0.0,    //Ki
-        0.0     //Kd
-    };
-
-    frc::PIDController m_YController{
-        0.0,    //Kp
-        0.0,    //Ki
-        0.0     //Kd
-    };
-
-    frc::PIDController m_RotController{
-        0.0,    //Kp
-        0.0,    //Ki
-        0.0     //Kd
-    };
-
-
-    frc::PIDController m_XController{
-        0.0,    //Kp
-        0.0,    //Ki
-        0.0     //Kd
-    };
-
-    frc::PIDController m_YController{
-        0.0,    //Kp
-        0.0,    //Ki
-        0.0     //Kd
-    };
-
-    frc::PIDController m_RotController{
-        0.0,    //Kp
-        0.0,    //Ki
-        0.0     //Kd
-    };
-
-
     //-GMS - updated to 2025 design
     frc::Translation2d m_frontLeftLocation{+drivetrain::kWheelDistance / 2, -drivetrain::kWheelDistance / 2};     //Front Left Wheel Position
     frc::Translation2d m_frontRightLocation{+drivetrain::kWheelDistance / 2, +drivetrain::kWheelDistance / 2};    //Front Right Wheel Position

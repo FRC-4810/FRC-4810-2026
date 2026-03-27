@@ -54,11 +54,6 @@ class RobotIO
       void UpdateInputStatus();
 
       // Accessor Methods.
-      inline bool IsHopperEmpty()
-         { return( m_EmptyPhotoeye.Get() ); }
-         
-      inline bool IsHopperFull()
-         { return( m_FullPhotoeye.Get() ); }
 
       // *------------------* -GMS
       // * Intake Accessors *

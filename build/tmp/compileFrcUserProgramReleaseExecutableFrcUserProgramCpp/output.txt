@@ -1,4 +1,39 @@
 See file:///C:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling BasicTurret.cpp successful.
+
+compiling Shooter.cpp successful.
+
+compiling Intake.cpp successful.
+
+compiling RobotIO.cpp successful.
+
+compiling Magazine.cpp successful.
+
+compiling SwerveModule.cpp successful.
+
 compiling MainStateMachine.cpp successful.
+C:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::Execute()':
+C:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:326:66: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+  326 |          if(!m_pRobotIO->m_DriveController.GetRightTriggerAxis() > 0.8)
+      |                                                                  ^
+C:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:326:13: note: add parentheses around left hand side expression to silence this warning
+  326 |          if(!m_pRobotIO->m_DriveController.GetRightTriggerAxis() > 0.8)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |             (                                                   )
+C:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:344:65: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+  344 |          if(!m_pRobotIO->m_DriveController.GetLeftTriggerAxis() > 0.8)
+      |                                                                 ^
+C:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:344:13: note: add parentheses around left hand side expression to silence this warning
+  344 |          if(!m_pRobotIO->m_DriveController.GetLeftTriggerAxis() > 0.8)
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |             (                                                  )
+
+compiling Auton_01.cpp successful.
+
+compiling Auton_02.cpp successful.
+
+compiling Robot.cpp successful.
+
+compiling Drivetrain.cpp successful.
 
 Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
