@@ -91,6 +91,8 @@ MainStateMachine::MainStateMachine()
    m_eState = RobotMain::eState::STATE_START;
 
    m_eDriveState = RobotMain::eDriveState::STATE_NORMAL; //Default to normal drive state
+
+   m_dTurretTargetPosition = 0;
 }
 
 //-------------------------------------------------------------------
@@ -131,6 +133,9 @@ void MainStateMachine::UpdateStatus()
 
 void MainStateMachine::Execute()
 {
+
+   frc::SmartDashboard::PutBoolean("Shooter at speed", m_Shooter.isShooting());
+
    // printf( ">>> Enter - MainStateMachine::Execute\n" );
 
    // Verify that the pointer to the robot I/O instance is not null.
@@ -147,7 +152,7 @@ void MainStateMachine::Execute()
 
       if ( m_eState == RobotMain::eState::STATE_START )
       {
-         // printf( "Main - Enter Start State\n" );
+         printf( "Main - Enter Start State\n" );
 
          // Call the subsystem execute methods to allow them to advance
          // through the idle and start states.
@@ -156,7 +161,7 @@ void MainStateMachine::Execute()
          m_Shooter.Execute();
          m_Intake.Execute();
 
-         // printf( "Main - Advancing To Idle State\n" );
+         //printf( "Main - Advancing To Idle State\n" );
          m_eState = RobotMain::eState::STATE_IDLE;
       }
 
@@ -596,6 +601,12 @@ void MainStateMachine::Execute()
          m_Drivetrain.ToggleFieldRelative();
       }
 
+      if ( m_pRobotIO->m_DriveController.GetBackButtonPressed() )
+      {
+         frc::Pose2d targetPose{2_m, 3_m, frc::Rotation2d{90_deg}};
+         m_Drivetrain.GoToPosition(targetPose);
+      }
+
       // If driver controller disconects, stop drivetrain and don't run anything else
 
       if ( ! m_pRobotIO->m_DriveController.IsConnected() )
@@ -624,4 +635,17 @@ void MainStateMachine::Execute()
    {
       printf( "Main - Null Robot I/O Pointer Encountered\n" );
    }
+}
+
+// Returns the bots distance to the hub in meters
+double MainStateMachine::GetHubDistance()
+{
+   frc::Pose2d pose = m_Drivetrain.GetBotPose();
+   double dHubX = 4.625594; 
+   double dHubY = 4.034536;
+
+   //-GMS - use distance formula to calculate distance from bot pose to hub
+   double dist = sqrt( pow((double)pose.X() - dHubX, 2) + pow((double)pose.Y() - dHubY, 2) );
+
+   return dist;
 }
