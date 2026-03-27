@@ -18,7 +18,7 @@ void Intake::Initialize( RobotIO *p_pRobotIO )
     m_pTimeoutTimer->Reset();
 
     // Refresh arm motor configurator with m_MotorConfigs
-    //m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Refresh( m_MotorConfigs );
+    m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Refresh( m_MotorConfigs );
 }
 
 void Intake::Execute()
@@ -52,8 +52,8 @@ void Intake::Execute()
                     return;
                 }
                 // Enable coast mode
-                //m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
-                //m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
                 m_pRobotIO->m_IntakeMoveMotor.Set( intake::dManualRaiseSpeed );
@@ -78,8 +78,8 @@ void Intake::Execute()
                     return;
                 }
                 // Enable coast mode
-                //m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
-                //m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
                 m_pRobotIO->m_IntakeMoveMotor.Set( intake::dManualLowerSpeed );
@@ -104,8 +104,8 @@ void Intake::Execute()
                     return;
                 }
                 // Enable coast mode
-                //m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
-                //m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
                 m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAutoRaiseSpeed );
@@ -130,8 +130,8 @@ void Intake::Execute()
                     return;
                 }
                 // Enable coast mode
-                //m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
-                //m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
                 m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAutoLowerSpeed );
@@ -157,8 +157,8 @@ void Intake::Execute()
                 }
 
                 // Enable coast mode
-                //m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
-                //m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Set speed on arm motor
                 m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAgitateSpeed );
@@ -235,6 +235,10 @@ void Intake::Execute()
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
+                // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
                 m_eCommand = intake::eCommand::COMMAND_NONE;
@@ -262,6 +266,10 @@ void Intake::Execute()
             {
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
+
+                // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -295,6 +303,10 @@ void Intake::Execute()
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
+                // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
+
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
                 m_eCommand = intake::eCommand::COMMAND_NONE;
@@ -323,6 +335,10 @@ void Intake::Execute()
             {
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
+
+                // Enable brake mode
+                m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Brake;
+                m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
@@ -353,6 +369,8 @@ void Intake::Execute()
                 // Stop arm motors
                 m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
+                //-GMS - Do not transition into coast mode - let it fall
+
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
                 m_eCommand = intake::eCommand::COMMAND_NONE;
@@ -371,11 +389,23 @@ void Intake::Execute()
                 bIsTimedOut = true;
             }
 
+            // Check if arm is up - BLC
+            if ( !m_pRobotIO->IsIntakeLowered() )
+            {
+                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dManualLowerSpeed );
+            } else 
+            {
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
+            }
+
 
             if ( m_eCommand == intake::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
                 // Stop intake/outtake motors
                 m_pRobotIO->m_IntakeRunMotor.Set( 0 );
+
+                // Stop arm
+                m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
 
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;

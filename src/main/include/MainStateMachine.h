@@ -24,6 +24,8 @@
                                        //    definition
 #include "Magazine.h"                  // Magazine state machine class
                                        //    definition
+#include "BasicTurret.h"               // Turret state machine class
+                                       //    definition
 #include "Shooter.h"                   // Shooter state machine class
                                        //    definition
 
@@ -47,6 +49,8 @@ namespace RobotMain
       STATE_SHOOTING_RAMP_UP = 9,
       STATE_SHOOTING = 10,
       STATE_MAGAZINE_MANUAL_OUT = 11,
+      STATE_MANUAL_TURRET_ROTATING_LEFT = 12,
+      STATE_MANUAL_TURRET_ROTATING_RIGHT = 13,
       STATE_ERROR = 99
    };
 
@@ -54,6 +58,25 @@ namespace RobotMain
    {
       STATE_NORMAL = 0,
    };
+
+   // Joystick Threshold Values. Defines the value at which the forward
+   // push of the joystick triggers an event when a joystick is being
+   // used as a button trigger 
+
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_FORWARD_UPPER_THRESHOLD = -0.8;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_FORWARD_LOWER_THRESHOLD = -0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_BACKWARD_LOWER_THRESHOLD = 0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_BACKWARD_UPPER_THRESHOLD = 0.8;
+
+   static constexpr double SETPOINT_LEFT_JOYSTICK_FORWARD_UPPER_THRESHOLD = -0.8;
+   static constexpr double SETPOINT_LEFT_JOYSTICK_FORWARD_LOWER_THRESHOLD = -0.4;
+   static constexpr double SETPOINT_LEFT_JOYSTICK_BACKWARD_LOWER_THRESHOLD = 0.4;
+   static constexpr double SETPOINT_LEFT_JOYSTICK_BACKWARD_UPPER_THRESHOLD = 0.8;
+
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_LEFT_UPPER_THRESHOLD = -0.8;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_LEFT_LOWER_THRESHOLD = -0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_RIGHT_LOWER_THRESHOLD = 0.4;
+   static constexpr double SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD = 0.8;
 }
 
 class MainStateMachine
@@ -72,8 +95,9 @@ class MainStateMachine
       void UpdateStatus();
       void Execute();
 
+      Drivetrain m_Drivetrain;
+      Intake m_Intake;
    private:
-
       RobotMain::eState m_eState;      // Current main state
       RobotIO *m_pRobotIO;             // Pointer to Robot I/O Class Instance
       RobotMain::eDriveState m_eDriveState;      // Current Drive state
@@ -82,9 +106,8 @@ class MainStateMachine
       frc::Timer *m_pAgitateTimer;
 
       // State Machine Object Instances.
-      Drivetrain m_Drivetrain;
-      Intake m_Intake;
       Magazine m_Magazine;
+      BasicTurret m_Turret;
       Shooter m_Shooter;
 };
 

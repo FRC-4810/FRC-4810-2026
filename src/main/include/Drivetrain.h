@@ -72,23 +72,30 @@ public:
     // * Odometry *
     // ************
     
-    inline void ResetOdometry()
-       { m_poseEstimator.ResetPose( frc::Pose2d{ 0_m, 0_m, frc::Rotation2d(0_deg) } ); }
+    inline void ResetOdometry( const frc::Pose2d& pose = frc::Pose2d{ 0_m, 0_m, frc::Rotation2d(0_deg) } )
+       { m_poseEstimator.ResetPose( pose ); }
 
     void GoToPosition(const frc::Pose2d& targetPose);
+
+    /**
+     * Cory addition
+     * You need to call this function periodically regardless of if you're enabled or not
+     */
+    void CallPeriodic();
+    bool Initialized() { return initialized; }
 
 
     // ***************
     // * PathPlanner *
     // ***************
-    void LoadPath(std::string pathName, bool resetPose = false);
+    void LoadPath(std::string pathName, bool resetPose = true);
     void FollowPath();
     bool IsPathFinished();
     
     void DriveRobotRelative(const frc::ChassisSpeeds& speeds);
     frc::ChassisSpeeds GetRobotRelativeSpeeds();
-    inline frc::Pose2d GetBotPose()
-       { return( m_poseEstimator.GetEstimatedPosition() ); }
+    frc::Pose2d GetBotPose() // Cannot be inline, if it is it'll optimize into a constant
+       { return m_poseEstimator.GetEstimatedPosition(); }
 
     // Class Methods.
 
@@ -163,6 +170,26 @@ private:
     bool m_bLockOnStop; //Lock on stop bool - turn wheels to 45s
 
     double m_dGyroOffset;
+    bool initialized = false;
+
+    frc::PIDController m_XController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+    frc::PIDController m_YController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
+    frc::PIDController m_RotController{
+        0.0,    //Kp
+        0.0,    //Ki
+        0.0     //Kd
+    };
+
 
     frc::PIDController m_XController{
         0.0,    //Kp
@@ -225,7 +252,7 @@ private:
 
     frc::SwerveDrivePoseEstimator<4> m_poseEstimator{
         m_kinematics,
-        GetGyroRotation2d(),
+        GetGyroRotation2d().RotateBy(180_deg),
         {
             m_frontLeft.GetPosition(),
             m_frontRight.GetPosition(),
@@ -248,14 +275,16 @@ private:
     frc::Timer *m_pathTimer;
     // Controller for following the path
     pathplanner::PPHolonomicDriveController m_pathController{
+        //Linear PID Controller
         pathplanner::PIDConstants{
-            5.0,    //Kp
+            0.5,    //Kp
             0.0,    //Ki
             0.0,    //Kd
             0.0     //I-Range
         },
+        //Rotational PID Controller
         pathplanner::PIDConstants{
-            5.0,    //Kp
+            2,    //Kp
             0.0,    //Ki
             0.0,    //Kd
             0.0     //I-Range

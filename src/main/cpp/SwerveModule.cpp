@@ -227,6 +227,15 @@ frc::SwerveModulePosition SwerveModule::GetPosition() {
         -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)}
     };
 }
+frc::SwerveModulePosition SwerveModule::GetPositionOdometry() {
+    
+    /* Your positions are wrong, so I'm hacking the inversions to make them align. */
+    /* With more time I'd make sure forward is actually forward so there's no offsets/inversions */
+    return {
+        -units::meter_t{m_driveMotor.GetPosition().GetValueAsDouble() * 2.0 * std::numbers::pi * swerveModule::kWheelRadius},
+        -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)}
+    };
+}
 
 void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
 {
