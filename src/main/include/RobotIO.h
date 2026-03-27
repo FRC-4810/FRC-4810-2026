@@ -21,7 +21,7 @@
 
 //#include "ctre/Phoenix.h"              //-GMS - Old Phoenix 5 controls
 #include <ctre/phoenix6/TalonFX.hpp>
-#include <ctre/phoenix6/TalonFXS.hpp>  //-GMS - For Minion
+#include <ctre/phoenix6/TalonFXS.hpp>
 
 //-JJB #include <units/units.h>        // Catch-all.  Use individual headers
 #include "units/velocity.h"            // For velocity calculations
@@ -60,6 +60,27 @@ class RobotIO
       inline bool IsHopperFull()
          { return( m_FullPhotoeye.Get() ); }
 
+      // *------------------* -GMS
+      // * Intake Accessors *
+      // *------------------*
+      inline bool IsIntakeLowered()
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.5 ); }
+      
+         //-GMS - for now, with no limits, check if close to 0
+      inline bool IsIntakeRaised()
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= 0.05 ); }
+      //   { return( m_IntakeLeftLimit.Get() || m_IntakeRightLimit.Get() ); }
+
+
+
+
+      // *-------------------* -GMS
+      // * Shooter Accessors *
+      // *-------------------*
+      inline double GetShooterSpeed()
+      {
+         return( m_LeftShooterMotor_Master.GetVelocity().GetValueAsDouble() );
+      }
       
 
       // Xbox Controllers
@@ -67,13 +88,32 @@ class RobotIO
       frc::XboxController m_DriveController{ 0 };
       frc::XboxController m_OperatorController{ 1 };
 
+      // *******************
+      // * Intake Hardware *
+      // *******************
+      hardware::TalonFX m_IntakeMoveMotor{ 13 };   //TODO - Check Can ID's
+      hardware::TalonFX m_IntakeRunMotor{ 14 };
+
+      frc::DigitalInput m_IntakeLeftLimit{ 8 };
+      frc::DigitalInput m_IntakeRightLimit{ 9 };
+
+
       // *********************
       // * Magazine Hardware *
       // *********************
-      hardware::TalonFXS m_FeederMotor{ 16 };   //-GMS TODO - CHECK THIS. TalonFXS? TalonSRX? Other?
-      hardware::TalonFXS m_KickerMotor{ 17 };
+      hardware::TalonFXS m_KickerMotor{ 18 };
+      hardware::TalonFXS m_FeederMotor{ 19 };
 
+      //-GMS - not yet implemented
       frc::DigitalInput m_EmptyPhotoeye{ 2 };   //Bottom of hopper Photoeye
       frc::DigitalInput m_FullPhotoeye{ 3 };    //Top of hopper Photoeye
+
+      hardware::TalonFXS m_TurretRotationMotor{ 17 };
+
+      // ******************************  -GMS
+      // * Shooter Subsystem Hardware *
+      // ******************************
+      hardware::TalonFX m_LeftShooterMotor_Master{ 15 };       // Check CAN ID's with rest of Robot Hardware
+      hardware::TalonFX m_RightShooterMotor_Follower{ 16 };    // Check CAN ID's with rest of Robot Hardware
       
 };

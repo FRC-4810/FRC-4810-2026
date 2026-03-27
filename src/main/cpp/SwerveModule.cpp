@@ -92,9 +92,7 @@ void SwerveModule::ConfigModule()
 //-JJB - CAN ID 5: Back Left Drive
 
 
-    //-GMS - TODO CHECK THIS, should be 1 and 5
-    //if(m_driveMotor.GetDeviceID() == 3 || m_driveMotor.GetDeviceID() == 7)
-    if(m_driveMotor.GetDeviceID() == 1 || m_driveMotor.GetDeviceID() == 5)
+    if(m_driveMotor.GetDeviceID() == 3 || m_driveMotor.GetDeviceID() == 7)
     {
         driveConfig.MotorOutput.Inverted = signals::InvertedValue::Clockwise_Positive;
     }
@@ -180,6 +178,15 @@ frc::SwerveModulePosition SwerveModule::GetPosition() {
         -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)}
     };
 }
+frc::SwerveModulePosition SwerveModule::GetPositionOdometry() {
+    
+    /* Your positions are wrong, so I'm hacking the inversions to make them align. */
+    /* With more time I'd make sure forward is actually forward so there's no offsets/inversions */
+    return {
+        -units::meter_t{m_driveMotor.GetPosition().GetValueAsDouble() * 2.0 * std::numbers::pi * swerveModule::kWheelRadius},
+        -units::radian_t{m_turningEncoder.GetAbsolutePosition().GetValueAsDouble() * (std::numbers::pi * 2.0)}
+    };
+}
 
 void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
 {
@@ -209,9 +216,8 @@ void SwerveModule::SetDesiredState(const frc::SwerveModuleState& desiredState)
         units::turn_t{(double)state.angle.Radians() / (2 * std::numbers::pi)}));*/
 
 
+    state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians())); // -- Removed; CS
 
-    //-GMS - TODO - why was this removed??
-    //state.speed *= cos((double)(state.angle.Radians() - currentAngle.Radians())); -- Removed; CS
 
     units::turns_per_second_t driveTps =
         units::turns_per_second_t{(double)(state.speed /

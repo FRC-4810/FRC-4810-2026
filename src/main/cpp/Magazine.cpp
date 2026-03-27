@@ -73,8 +73,6 @@ void Magazine::Execute()
             }
         }
 
-        //TODO - Add your state processing here
-
         else if(m_eState == magazine::eState::STATE_RUN_IN)
         {
             bool bIsTimedOut = false;

@@ -1,0 +1,431 @@
+[
+  {
+    "name": "linuxathena",
+    "architecture": "arm-v7",
+    "operatingSystem": "linux",
+    "flavor": "default",
+    "buildType": "debug",
+    "cppPath": "C:\\Users\\Public\\wpilib\\2026\\roborio\\bin\\arm-frc2025-linux-gnueabi-g++.exe",
+    "cPath": "C:\\Users\\Public\\wpilib\\2026\\roborio\\bin\\arm-frc2025-linux-gnueabi-gcc.exe",
+    "msvc": false,
+    "gcc": true,
+    "systemCppMacros": [],
+    "systemCppArgs": [],
+    "systemCMacros": [],
+    "systemCArgs": [],
+    "allLibFiles": [
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\cc5a397b2b9638ddbac8f52b04cd4e55\\transformed\\PathplannerLib-cpp-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\11f90a6193e23b037deb046b3dcf68b8\\transformed\\wpiapi-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7f6043f0bbeed00149284637f75d4f9d\\transformed\\api-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d4434480dd2bb3c821605787bd12ab36\\transformed\\cci-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f5247a7d2d9250e1ba93e09abf6a9c8e\\transformed\\wpiapi-cpp-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\1bed7625793ff0ac0a9eaa262569032f\\transformed\\tools-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\77b6cb740bc53373d3744185ccc28428\\transformed\\wpilibc-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4a0290dae97ddb020dbe627eff96a71f\\transformed\\ntcore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\9a4aef4f4115f46e2f358ffe687ecb04\\transformed\\hal-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\381358e41e14b3f55bd72f782fa62330\\transformed\\wpimath-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d10e09f6a07aa3e133e1d437ac04cda2\\transformed\\wpinet-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b80db61cb3ae076c6374a1265b06d1f9\\transformed\\wpiutil-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7299678dc54974e3643c9a30cf4cd1b3\\transformed\\netcomm-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4c8979dedb9b522af20fb6589a05bee2\\transformed\\chipobject-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7687181441f22839c39944b9186fd408\\transformed\\visa-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\81d7a769808745ec981ffb5721b73401\\transformed\\cameraserver-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
+      "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\31c54e9fa8e830a347b89bd1a2c85bd8\\transformed\\wpilibNewCommands-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2994580e4e8a81b3da645a367636557b\\transformed\\wpilibc-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\c90d6106e89d8eae3ee51676a1ed6344\\transformed\\ntcore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\e136a77571633a782cebb7e25ed2cabe\\transformed\\hal-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5a4900a5f9fa96675b42ce9fa36a5440\\transformed\\wpimath-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\016b03a752c14d5f015069b1fed41c47\\transformed\\wpinet-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2822e7ad3ebabe4f9085874b76b2c711\\transformed\\wpiutil-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f76cdab909ae3800ba7901a63a69f456\\transformed\\cameraserver-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f204c938895c45968cb1b4617448adc4\\transformed\\cscore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b057d6dd9d6841476772ef408ddb147d\\transformed\\apriltag-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\57ac20a539bd7f5d3d0704623fa8ec56\\transformed\\opencv-cpp-4.10.0-3-sources\\"
+    ],
+    "allLibSources": [
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\31c54e9fa8e830a347b89bd1a2c85bd8\\transformed\\wpilibNewCommands-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2994580e4e8a81b3da645a367636557b\\transformed\\wpilibc-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\c90d6106e89d8eae3ee51676a1ed6344\\transformed\\ntcore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\e136a77571633a782cebb7e25ed2cabe\\transformed\\hal-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5a4900a5f9fa96675b42ce9fa36a5440\\transformed\\wpimath-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\016b03a752c14d5f015069b1fed41c47\\transformed\\wpinet-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2822e7ad3ebabe4f9085874b76b2c711\\transformed\\wpiutil-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f76cdab909ae3800ba7901a63a69f456\\transformed\\cameraserver-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f204c938895c45968cb1b4617448adc4\\transformed\\cscore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b057d6dd9d6841476772ef408ddb147d\\transformed\\apriltag-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\57ac20a539bd7f5d3d0704623fa8ec56\\transformed\\opencv-cpp-4.10.0-3-sources\\"
+    ],
+    "allLibHeaders": [
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\cc5a397b2b9638ddbac8f52b04cd4e55\\transformed\\PathplannerLib-cpp-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\11f90a6193e23b037deb046b3dcf68b8\\transformed\\wpiapi-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7f6043f0bbeed00149284637f75d4f9d\\transformed\\api-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d4434480dd2bb3c821605787bd12ab36\\transformed\\cci-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f5247a7d2d9250e1ba93e09abf6a9c8e\\transformed\\wpiapi-cpp-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\1bed7625793ff0ac0a9eaa262569032f\\transformed\\tools-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\77b6cb740bc53373d3744185ccc28428\\transformed\\wpilibc-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4a0290dae97ddb020dbe627eff96a71f\\transformed\\ntcore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\9a4aef4f4115f46e2f358ffe687ecb04\\transformed\\hal-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\381358e41e14b3f55bd72f782fa62330\\transformed\\wpimath-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d10e09f6a07aa3e133e1d437ac04cda2\\transformed\\wpinet-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b80db61cb3ae076c6374a1265b06d1f9\\transformed\\wpiutil-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7299678dc54974e3643c9a30cf4cd1b3\\transformed\\netcomm-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4c8979dedb9b522af20fb6589a05bee2\\transformed\\chipobject-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7687181441f22839c39944b9186fd408\\transformed\\visa-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\81d7a769808745ec981ffb5721b73401\\transformed\\cameraserver-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
+      "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+    ],
+    "binaries": [
+      {
+        "componentName": "frcUserProgram",
+        "sourceSets": [
+          {
+            "source": {
+              "srcDirs": [
+                "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
+              ],
+              "includes": [
+                "**/*.cpp",
+                "**/*.cc"
+              ],
+              "excludes": []
+            },
+            "exportedHeaders": {
+              "srcDirs": [
+                "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+              ],
+              "includes": [],
+              "excludes": []
+            },
+            "cpp": true,
+            "args": [
+              "-Wall",
+              "-Wextra",
+              "-std=c++20",
+              "-Wformat=2",
+              "-pedantic",
+              "-Wno-psabi",
+              "-Wno-unused-parameter",
+              "-Wno-error=deprecated-enum-enum-conversion",
+              "-fPIC",
+              "-pthread",
+              "-Og",
+              "-g"
+            ],
+            "macros": []
+          }
+        ],
+        "libHeaders": [
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\cc5a397b2b9638ddbac8f52b04cd4e55\\transformed\\PathplannerLib-cpp-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\11f90a6193e23b037deb046b3dcf68b8\\transformed\\wpiapi-cpp-5.36.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7f6043f0bbeed00149284637f75d4f9d\\transformed\\api-cpp-5.36.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d4434480dd2bb3c821605787bd12ab36\\transformed\\cci-5.36.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f5247a7d2d9250e1ba93e09abf6a9c8e\\transformed\\wpiapi-cpp-26.1.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\1bed7625793ff0ac0a9eaa262569032f\\transformed\\tools-26.1.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\77b6cb740bc53373d3744185ccc28428\\transformed\\wpilibc-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4a0290dae97ddb020dbe627eff96a71f\\transformed\\ntcore-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\9a4aef4f4115f46e2f358ffe687ecb04\\transformed\\hal-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\381358e41e14b3f55bd72f782fa62330\\transformed\\wpimath-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d10e09f6a07aa3e133e1d437ac04cda2\\transformed\\wpinet-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b80db61cb3ae076c6374a1265b06d1f9\\transformed\\wpiutil-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7299678dc54974e3643c9a30cf4cd1b3\\transformed\\netcomm-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4c8979dedb9b522af20fb6589a05bee2\\transformed\\chipobject-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7687181441f22839c39944b9186fd408\\transformed\\visa-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\81d7a769808745ec981ffb5721b73401\\transformed\\cameraserver-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
+          "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+        ],
+        "sharedLibrary": false,
+        "executable": true
+      }
+    ],
+    "sourceBinaries": [
+      {
+        "source": {
+          "srcDirs": [
+            "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
+          ],
+          "includes": [
+            "**/*.cpp",
+            "**/*.cc"
+          ],
+          "excludes": []
+        },
+        "componentName": "frcUserProgram",
+        "cpp": true,
+        "args": [
+          "-Wall",
+          "-Wextra",
+          "-std=c++20",
+          "-Wformat=2",
+          "-pedantic",
+          "-Wno-psabi",
+          "-Wno-unused-parameter",
+          "-Wno-error=deprecated-enum-enum-conversion",
+          "-fPIC",
+          "-pthread",
+          "-Og",
+          "-g"
+        ],
+        "macros": [],
+        "sharedLibrary": false,
+        "executable": true
+      },
+      {
+        "source": {
+          "srcDirs": [
+            "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+          ],
+          "includes": [],
+          "excludes": []
+        },
+        "componentName": "frcUserProgram",
+        "cpp": true,
+        "args": [
+          "-Wall",
+          "-Wextra",
+          "-std=c++20",
+          "-Wformat=2",
+          "-pedantic",
+          "-Wno-psabi",
+          "-Wno-unused-parameter",
+          "-Wno-error=deprecated-enum-enum-conversion",
+          "-fPIC",
+          "-pthread",
+          "-Og",
+          "-g"
+        ],
+        "macros": [],
+        "sharedLibrary": false,
+        "executable": true
+      }
+    ],
+    "nameBinaryMap": {
+      "frcUserProgram": 0
+    }
+  },
+  {
+    "name": "linuxathena",
+    "architecture": "arm-v7",
+    "operatingSystem": "linux",
+    "flavor": "default",
+    "buildType": "release",
+    "cppPath": "C:\\Users\\Public\\wpilib\\2026\\roborio\\bin\\arm-frc2025-linux-gnueabi-g++.exe",
+    "cPath": "C:\\Users\\Public\\wpilib\\2026\\roborio\\bin\\arm-frc2025-linux-gnueabi-gcc.exe",
+    "msvc": false,
+    "gcc": true,
+    "systemCppMacros": [],
+    "systemCppArgs": [],
+    "systemCMacros": [],
+    "systemCArgs": [],
+    "allLibFiles": [
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\cc5a397b2b9638ddbac8f52b04cd4e55\\transformed\\PathplannerLib-cpp-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\11f90a6193e23b037deb046b3dcf68b8\\transformed\\wpiapi-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7f6043f0bbeed00149284637f75d4f9d\\transformed\\api-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d4434480dd2bb3c821605787bd12ab36\\transformed\\cci-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f5247a7d2d9250e1ba93e09abf6a9c8e\\transformed\\wpiapi-cpp-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\1bed7625793ff0ac0a9eaa262569032f\\transformed\\tools-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\77b6cb740bc53373d3744185ccc28428\\transformed\\wpilibc-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4a0290dae97ddb020dbe627eff96a71f\\transformed\\ntcore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\9a4aef4f4115f46e2f358ffe687ecb04\\transformed\\hal-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\381358e41e14b3f55bd72f782fa62330\\transformed\\wpimath-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d10e09f6a07aa3e133e1d437ac04cda2\\transformed\\wpinet-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b80db61cb3ae076c6374a1265b06d1f9\\transformed\\wpiutil-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7299678dc54974e3643c9a30cf4cd1b3\\transformed\\netcomm-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4c8979dedb9b522af20fb6589a05bee2\\transformed\\chipobject-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7687181441f22839c39944b9186fd408\\transformed\\visa-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\81d7a769808745ec981ffb5721b73401\\transformed\\cameraserver-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
+      "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\31c54e9fa8e830a347b89bd1a2c85bd8\\transformed\\wpilibNewCommands-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2994580e4e8a81b3da645a367636557b\\transformed\\wpilibc-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\c90d6106e89d8eae3ee51676a1ed6344\\transformed\\ntcore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\e136a77571633a782cebb7e25ed2cabe\\transformed\\hal-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5a4900a5f9fa96675b42ce9fa36a5440\\transformed\\wpimath-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\016b03a752c14d5f015069b1fed41c47\\transformed\\wpinet-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2822e7ad3ebabe4f9085874b76b2c711\\transformed\\wpiutil-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f76cdab909ae3800ba7901a63a69f456\\transformed\\cameraserver-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f204c938895c45968cb1b4617448adc4\\transformed\\cscore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b057d6dd9d6841476772ef408ddb147d\\transformed\\apriltag-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\57ac20a539bd7f5d3d0704623fa8ec56\\transformed\\opencv-cpp-4.10.0-3-sources\\"
+    ],
+    "allLibSources": [
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\31c54e9fa8e830a347b89bd1a2c85bd8\\transformed\\wpilibNewCommands-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2994580e4e8a81b3da645a367636557b\\transformed\\wpilibc-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\c90d6106e89d8eae3ee51676a1ed6344\\transformed\\ntcore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\e136a77571633a782cebb7e25ed2cabe\\transformed\\hal-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5a4900a5f9fa96675b42ce9fa36a5440\\transformed\\wpimath-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\016b03a752c14d5f015069b1fed41c47\\transformed\\wpinet-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\2822e7ad3ebabe4f9085874b76b2c711\\transformed\\wpiutil-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f76cdab909ae3800ba7901a63a69f456\\transformed\\cameraserver-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f204c938895c45968cb1b4617448adc4\\transformed\\cscore-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b057d6dd9d6841476772ef408ddb147d\\transformed\\apriltag-cpp-2026.2.1-sources\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\57ac20a539bd7f5d3d0704623fa8ec56\\transformed\\opencv-cpp-4.10.0-3-sources\\"
+    ],
+    "allLibHeaders": [
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\cc5a397b2b9638ddbac8f52b04cd4e55\\transformed\\PathplannerLib-cpp-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\11f90a6193e23b037deb046b3dcf68b8\\transformed\\wpiapi-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7f6043f0bbeed00149284637f75d4f9d\\transformed\\api-cpp-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d4434480dd2bb3c821605787bd12ab36\\transformed\\cci-5.36.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f5247a7d2d9250e1ba93e09abf6a9c8e\\transformed\\wpiapi-cpp-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\1bed7625793ff0ac0a9eaa262569032f\\transformed\\tools-26.1.0-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\77b6cb740bc53373d3744185ccc28428\\transformed\\wpilibc-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4a0290dae97ddb020dbe627eff96a71f\\transformed\\ntcore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\9a4aef4f4115f46e2f358ffe687ecb04\\transformed\\hal-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\381358e41e14b3f55bd72f782fa62330\\transformed\\wpimath-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d10e09f6a07aa3e133e1d437ac04cda2\\transformed\\wpinet-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b80db61cb3ae076c6374a1265b06d1f9\\transformed\\wpiutil-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7299678dc54974e3643c9a30cf4cd1b3\\transformed\\netcomm-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4c8979dedb9b522af20fb6589a05bee2\\transformed\\chipobject-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7687181441f22839c39944b9186fd408\\transformed\\visa-2026.1.2-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\81d7a769808745ec981ffb5721b73401\\transformed\\cameraserver-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
+      "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
+      "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+    ],
+    "binaries": [
+      {
+        "componentName": "frcUserProgram",
+        "sourceSets": [
+          {
+            "source": {
+              "srcDirs": [
+                "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
+              ],
+              "includes": [
+                "**/*.cpp",
+                "**/*.cc"
+              ],
+              "excludes": []
+            },
+            "exportedHeaders": {
+              "srcDirs": [
+                "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+              ],
+              "includes": [],
+              "excludes": []
+            },
+            "cpp": true,
+            "args": [
+              "-Wall",
+              "-Wextra",
+              "-std=c++20",
+              "-Wformat=2",
+              "-pedantic",
+              "-Wno-psabi",
+              "-Wno-unused-parameter",
+              "-Wno-error=deprecated-enum-enum-conversion",
+              "-fPIC",
+              "-pthread",
+              "-O2"
+            ],
+            "macros": []
+          }
+        ],
+        "libHeaders": [
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\cc5a397b2b9638ddbac8f52b04cd4e55\\transformed\\PathplannerLib-cpp-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\11f90a6193e23b037deb046b3dcf68b8\\transformed\\wpiapi-cpp-5.36.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7f6043f0bbeed00149284637f75d4f9d\\transformed\\api-cpp-5.36.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d4434480dd2bb3c821605787bd12ab36\\transformed\\cci-5.36.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\f5247a7d2d9250e1ba93e09abf6a9c8e\\transformed\\wpiapi-cpp-26.1.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\1bed7625793ff0ac0a9eaa262569032f\\transformed\\tools-26.1.0-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\77b6cb740bc53373d3744185ccc28428\\transformed\\wpilibc-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4a0290dae97ddb020dbe627eff96a71f\\transformed\\ntcore-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\9a4aef4f4115f46e2f358ffe687ecb04\\transformed\\hal-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\381358e41e14b3f55bd72f782fa62330\\transformed\\wpimath-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\d10e09f6a07aa3e133e1d437ac04cda2\\transformed\\wpinet-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\b80db61cb3ae076c6374a1265b06d1f9\\transformed\\wpiutil-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7299678dc54974e3643c9a30cf4cd1b3\\transformed\\netcomm-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\4c8979dedb9b522af20fb6589a05bee2\\transformed\\chipobject-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\7687181441f22839c39944b9186fd408\\transformed\\visa-2026.1.2-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\81d7a769808745ec981ffb5721b73401\\transformed\\cameraserver-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
+          "C:\\Users\\gmans\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
+          "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+        ],
+        "sharedLibrary": false,
+        "executable": true
+      }
+    ],
+    "sourceBinaries": [
+      {
+        "source": {
+          "srcDirs": [
+            "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
+          ],
+          "includes": [
+            "**/*.cpp",
+            "**/*.cc"
+          ],
+          "excludes": []
+        },
+        "componentName": "frcUserProgram",
+        "cpp": true,
+        "args": [
+          "-Wall",
+          "-Wextra",
+          "-std=c++20",
+          "-Wformat=2",
+          "-pedantic",
+          "-Wno-psabi",
+          "-Wno-unused-parameter",
+          "-Wno-error=deprecated-enum-enum-conversion",
+          "-fPIC",
+          "-pthread",
+          "-O2"
+        ],
+        "macros": [],
+        "sharedLibrary": false,
+        "executable": true
+      },
+      {
+        "source": {
+          "srcDirs": [
+            "C:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
+          ],
+          "includes": [],
+          "excludes": []
+        },
+        "componentName": "frcUserProgram",
+        "cpp": true,
+        "args": [
+          "-Wall",
+          "-Wextra",
+          "-std=c++20",
+          "-Wformat=2",
+          "-pedantic",
+          "-Wno-psabi",
+          "-Wno-unused-parameter",
+          "-Wno-error=deprecated-enum-enum-conversion",
+          "-fPIC",
+          "-pthread",
+          "-O2"
+        ],
+        "macros": [],
+        "sharedLibrary": false,
+        "executable": true
+      }
+    ],
+    "nameBinaryMap": {
+      "frcUserProgram": 0
+    }
+  }
+]

@@ -63,6 +63,7 @@ public:
      *      and the distance the wheel traveld (m)
     */
     frc::SwerveModulePosition GetPosition();
+    frc::SwerveModulePosition GetPositionOdometry();
   
     /**
      * Sets the state for the Swerve Module. This is the main function for driving the module
