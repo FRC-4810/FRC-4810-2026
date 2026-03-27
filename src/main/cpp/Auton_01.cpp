@@ -50,15 +50,22 @@ void Auton01::Execute()
         } else if (m_pTimeoutTimer->Get() < 11_s) {
             /* Stop running the intake */
             m_intake->Stop();
-        } else if (m_pTimeoutTimer->Get() < 12_s) {
+        } else if (m_pTimeoutTimer->Get() > 12_s) {
             /* Run the shooter to score the balls */
             m_Shooter.LowPowerShoot();
             m_Shooter.Execute();
-        } else if (m_pTimeoutTimer->Get() < 12.5_s) {
+        } else if (m_pTimeoutTimer->Get() > 12.5_s) {
             // run magazine after shooter reaches speed
             m_Magazine.RunIn();
             m_Magazine.Execute();
+        } else if (m_pTimeoutTimer->Get() > 18_s) {
+            // stop magazine and shooter after 6 seconds of shooting
+            m_Magazine.Stop();
+            m_Magazine.Execute();
+            m_Shooter.Stop();
+            m_Shooter.Execute();
         }
+
         m_intake->Execute();
 
         if ( m_eState == auton01::eState::STATE_START )
