@@ -40,18 +40,18 @@ namespace intake
     constexpr double dAutoLowerTimeout = 1.0;
     constexpr double dAgitateTimeout = 1.0;
 
-    constexpr double dManualIntakeTimeout = 30.0;
-    constexpr double dManualOuttakeTimeout = 30.0;
+    constexpr double dManualIntakeTimeout = 5.0;
+    constexpr double dManualOuttakeTimeout = 5.0;
 
     // Motor Speed Constants TODO
-    constexpr double dManualLowerSpeed = 0.2;
-    constexpr double dManualRaiseSpeed = -0.2;
+    constexpr double dManualLowerSpeed = 0.4;
+    constexpr double dManualRaiseSpeed = -0.4;
     constexpr double dAutoLowerSpeed = 0.4;
     constexpr double dAutoRaiseSpeed = -0.4;
     constexpr double dAgitateSpeed = -0.4;
 
-    constexpr double dManualIntakeSpeed = 0.3;
-    constexpr double dManualOuttakeSpeed = -0.3;
+    constexpr double dManualIntakeSpeed = 1;
+    constexpr double dManualOuttakeSpeed = -1;
 
     // Setpoint Constants TODO
     constexpr double dUpperLimitSetpoint = 0.0;
@@ -116,4 +116,5 @@ class Intake
 
         RobotIO *m_pRobotIO;
 
+        configs::MotorOutputConfigs m_MotorConfigs;
 };

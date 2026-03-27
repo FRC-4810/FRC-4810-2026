@@ -30,10 +30,14 @@ void Robot::RobotInit()
 {
    m_chooser.SetDefaultOption( AUTON_ROUTINE_01, AUTON_ROUTINE_01 );
    m_chooser.AddOption( AUTON_ROUTINE_01, AUTON_ROUTINE_01 );
+   m_chooser.AddOption( AUTON_ROUTINE_02, AUTON_ROUTINE_02 );
 
    frc::SmartDashboard::PutData( "Auton Modes", &m_chooser );
 
    m_RobotIO.RobotInit();
+
+   m_Auton01 = new Auton01(&m_MainStateMachine.m_Drivetrain, &m_MainStateMachine.m_Intake);
+   m_MainStateMachine.Initialize( &m_RobotIO );
 }
 
 //-------------------------------------------------------------------
@@ -90,7 +94,8 @@ void Robot::AutonomousInit()
       "Selected Auton Routine",             // Key name
       m_autoSelected );                     // Value
 
-   if(m_autoSelected == AUTON_ROUTINE_01 ) { /*Initialize*/ }
+   if(m_autoSelected == AUTON_ROUTINE_01 ) { m_Auton01->Initialize(&m_RobotIO); }
+   else if(m_autoSelected == AUTON_ROUTINE_02 ) { m_Auton02.Initialize(&m_RobotIO); }
 }
 
 //-------------------------------------------------------------------
@@ -101,7 +106,11 @@ void Robot::AutonomousPeriodic()
 
    if ( m_autoSelected == AUTON_ROUTINE_01 )
    {
-      //execute
+      m_Auton01->Execute();
+   }
+   else if ( m_autoSelected == AUTON_ROUTINE_02 )
+   {
+      m_Auton02.Execute();
    }
 }
 
@@ -114,7 +123,6 @@ void Robot::TeleopInit()
 {
    // printf( "\nEnter Robot::TeleopInit\n" );
 
-   m_MainStateMachine.Initialize( &m_RobotIO );
    frc::Shuffleboard::SelectTab("Tele-Op");
 }
 
