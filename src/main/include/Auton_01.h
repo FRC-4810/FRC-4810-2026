@@ -5,6 +5,8 @@
 #include <string>
 #include "Drivetrain.h"
 #include "Intake.h"
+#include "Magazine.h"
+#include "Shooter.h"
 
 namespace auton01 
 {
@@ -46,4 +48,6 @@ class Auton01
 
         Drivetrain *m_Drivetrain;
         Intake *m_intake;
+        Magazine m_Magazine;
+        Shooter m_Shooter;
 };
