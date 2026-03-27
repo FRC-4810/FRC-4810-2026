@@ -323,7 +323,7 @@ void MainStateMachine::Execute()
       // ***********************
       else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_IN)
       {
-         if(!m_pRobotIO->m_DriveController.GetRightTriggerAxis() > 0.8)
+         if((!m_pRobotIO->m_DriveController.GetRightTriggerAxis()) > 0.8)
          {
             m_Intake.Stop();
          }
@@ -341,7 +341,7 @@ void MainStateMachine::Execute()
       // ***********************
       else if(m_eState == RobotMain::eState::STATE_INTAKE_RUN_OUT)
       {
-         if(!m_pRobotIO->m_DriveController.GetLeftTriggerAxis() > 0.8)
+         if((!m_pRobotIO->m_DriveController.GetLeftTriggerAxis()) > 0.8)
          {
             m_Intake.Stop();
             m_Magazine.Stop();
