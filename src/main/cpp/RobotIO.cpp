@@ -147,6 +147,8 @@ void RobotIO::RobotInit()
    turretRotationMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable( true );
    turretRotationMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
+   turretRotationMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
+
    m_TurretRotationMotor.GetConfigurator().Apply( turretRotationMotorConfigs );
 
    // *---------------------------------*
