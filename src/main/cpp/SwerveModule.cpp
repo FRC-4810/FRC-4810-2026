@@ -146,6 +146,55 @@ void SwerveModule::ConfigModule()
 
 
 
+//-JJB - None of this is necessary if using the FusedCANcoder setup:
+/*
+    // CANcoder Configurations
+    // Need to flip based on CCW or CW
+    //-JJB CANcoderConfiguration config = new CANcoderConfiguration();
+    //-JJB config.SensorDirection = true; // flip if necessary
+    //-JJB encoder.getConfigurator().apply(config);
+
+    // “When you read this angle, treat it as 0°.”
+
+    //-JJB double absolutePosition = encoder.getAbsolutePosition().getValue();
+    //-JJB CANcoderConfiguration config = new CANcoderConfiguration();
+    //-JJB config.MagnetSensor.MagnetOffset = -absolutePosition;
+    //-JJB encoder.getConfigurator().apply(config);
+
+
+    // Once CANcoders are zeroed, tell Talon FX integrated encoders to match the CANcoder:
+
+    // Get absolute position from CANcoder (0 to 1 rotations)
+//-JJB     double absolutePosition = m_turningEncoder.GetAbsolutePosition().GetValueAsDouble();
+    units::angle::turn_t absolutePosition = m_turningEncoder.GetAbsolutePosition().GetValue();
+
+    // Convert to motor rotations (adjust for gear ratio!)
+    double motorRotations = absolutePosition * swerveModule::kTurnGearRatio;
+
+    // Set TalonFX integrated encoder position
+    m_turningMotor.SetPosition(motorRotations);
+//-JJB     ctre::phoenix::StatusCode SetPosition(units::angle::turn_t newValue) final
+*/
+/*
+ void SyncIntegratedToAbsolute() {
+        // Get absolute position from CANcoder (0 to 1 rotations)
+        auto absolutePosition = m_canCoder.GetAbsolutePosition().GetValue();
+
+        // Convert to motor rotations (adjust for gear ratio!)
+        constexpr double kAngleGearRatio = 12.8;  // Example SDS Mk4i L2
+        double motorRotations = absolutePosition * kAngleGearRatio;
+
+        // Set TalonFX integrated encoder position
+        m_angleMotor.SetPosition(motorRotations);
+    }
+*/
+
+
+
+
+
+
+
     m_driveMotor.GetConfigurator().Apply(driveConfig);
     m_turningMotor.GetConfigurator().Apply(turnConfig);
 
