@@ -50,20 +50,27 @@ void Auton03::Execute()
         } else if (m_pTimeoutTimer->Get() < 11_s) {
             /* Stop running the intake */
             m_intake->Stop();
-        }
-        m_intake->Execute();
-        
+        }        
 
         //Shooting logic - backwards because we are using greater rather than less
-        if (m_pTimeoutTimer->Get() > 18_s) {
-            // stop magazine and shooter after 6 seconds of shooting
+        if (m_pTimeoutTimer->Get() > 19.8_s) {
+            // stop magazine and shooter just before end of auton period
             m_Magazine.Stop();
             m_Magazine.Execute();
             m_Shooter.Stop();
             m_Shooter.Execute();
+            m_intake->Stop();
         }
         
-        //-GMS - TODO - consider adding Intake Agitate logic here
+        //TODO test agitate logic
+        else if (m_pTimeoutTimer->Get() > 14_s) {
+            // Agitate intake 1.5s after shooting starts
+            if(m_pRobotIO->IsIntakeLowered())
+            {
+                m_intake->Agitate();
+                //don't need to call execute, done at bottom
+            }
+        }
 
         else if (m_pTimeoutTimer->Get() > 12.5_s) {
             // run magazine after shooter reaches speed
@@ -74,7 +81,9 @@ void Auton03::Execute()
             /* Run the shooter to score the balls */
             m_Shooter.HighPowerShoot(); //-GMS - TODO: tune high-power shoot to shoot from corner
             m_Shooter.Execute();
-        }   
+        }
+
+        m_intake->Execute();
 
 
         if ( m_eState == auton03::eState::STATE_START )

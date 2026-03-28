@@ -45,6 +45,7 @@
 #include "MainStateMachine.h"          // Main State Machine class definition
 #include "Auton_01.h"                  // Auton 01 State Machine class definition
 #include "Auton_02.h"                  // Auton 02 State Machine class definition
+#include "Auton_03.h"                  // Auton 03 State Machine class definition
 
 using namespace ctre::phoenix6;
 
@@ -72,10 +73,13 @@ class Robot : public frc::TimedRobot
       // Autonomous Mode.
       Auton01 *m_Auton01;
       Auton02 m_Auton02;
+      Auton03 *m_Auton03;
+
 
       frc::SendableChooser<std::string> m_chooser;
       const std::string AUTON_ROUTINE_01 = "01 - Test Path";
       const std::string AUTON_ROUTINE_02 = "02 - Safety Auton";
+      const std::string AUTON_ROUTINE_03 = "03 - Right Side Path";
       // Add more auton names
       std::string m_autoSelected;
 };
