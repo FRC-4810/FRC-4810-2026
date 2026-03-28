@@ -15,7 +15,7 @@
 
 BasicTurret::BasicTurret()
 {
-   //printf( "Enter Turret Constructor\n" );
+   printf( "Enter Turret Constructor\n" );
 
    // Initialize Class Member Variables
 
@@ -29,7 +29,7 @@ BasicTurret::BasicTurret()
 void BasicTurret::Initialize(
    RobotIO *p_pRobotIO )
 {
-   //printf( ">>> Enter - Turret::Initialize\n" );
+   printf( ">>> Enter - Turret::Initialize\n" );
 
    m_pRobotIO = p_pRobotIO;
 
@@ -57,9 +57,9 @@ void BasicTurret::Execute()
 
       if ( m_eState == turret::eState::STATE_START )
       {
-         //printf( ">>> Turret - Enter Start State\n" );
+         printf( ">>> Turret - Enter Start State\n" );
 
-         //printf( ">>> Turret - Moving To Idle State\n" );
+         printf( ">>> Turret - Moving To Idle State\n" );
          m_eState = turret::eState::STATE_IDLE;
       }
 
@@ -88,11 +88,11 @@ void BasicTurret::Execute()
 
          if ( m_eCommand == turret::COMMAND_MANUAL_ROTATE_RIGHT )
          {
-            //printf( "Turret - Manual Rotate Right Command\n" );
+            printf( "Turret - Manual Rotate Right Command\n" );
 //-JJB - Check Position Before Rotating
 
             double dSpeed = turret::SETPOINT_TURN_RIGHT_SPEED;
-            //printf( "Turret - Rotating Right Speed: [%f]\n", dSpeed );
+            printf( "Turret - Rotating Right Speed: [%f]\n", dSpeed );
 
             // Set the timeout timer to the current time so that all
             // timer reads are relative to the time right now.
@@ -102,7 +102,7 @@ void BasicTurret::Execute()
 
             m_pRobotIO->m_TurretRotationMotor.Set( dSpeed );
 
-            //printf( "Turret - Moving To Manual Rotating Right State\n" );
+            printf( "Turret - Moving To Manual Rotating Right State\n" );
             m_eState = turret::eState::STATE_MANUAL_ROTATING_RIGHT;
          }
 
@@ -112,11 +112,11 @@ void BasicTurret::Execute()
 
          else if ( m_eCommand == turret::COMMAND_MANUAL_ROTATE_LEFT )
          {
-            //printf( "Turret - Manual Turret Rotate Left Command\n" );
+            printf( "Turret - Manual Turret Rotate Left Command\n" );
 //-JJB - Check Position Before Rotating
 
             double dSpeed = turret::SETPOINT_TURN_LEFT_SPEED;
-            //printf( "Turret - Rotating Left Speed: [%f]\n", dSpeed );
+            printf( "Turret - Rotating Left Speed: [%f]\n", dSpeed );
 
             // Set the timeout timer to the current time so that all
             // timer reads are relative to the time right now.
@@ -126,7 +126,7 @@ void BasicTurret::Execute()
 
             m_pRobotIO->m_TurretRotationMotor.Set( dSpeed );
 
-            //printf( "Turret - Moving To Manual Rotating Left State\n" );
+            printf( "Turret - Moving To Manual Rotating Left State\n" );
             m_eState = turret::eState::STATE_MANUAL_ROTATING_LEFT;
          }
 
@@ -163,7 +163,7 @@ void BasicTurret::Execute()
          if ( dCurrentTime >= (units::time::second_t)turret::MANUAL_TURN_RIGHT_TIMEOUT )
          {
             bOperationTimeout = true;
-            //printf( "Turret - Rotating Right Timeout: [%f]\n", (double)dCurrentTime );
+            printf( "Turret - Rotating Right Timeout: [%f]\n", (double)dCurrentTime );
          }
 
          // If the turret has received a stop command, the command
@@ -178,7 +178,7 @@ void BasicTurret::Execute()
          if ( ( m_eCommand == turret::COMMAND_STOP ) ||
               ( bOperationTimeout ) )
          {
-            //printf( "Turret - Stopping Manual Rotating Right\n" );
+            printf( "Turret - Stopping Manual Rotating Right\n" );
 
             // Stop the motor until set is called again.
 
@@ -189,7 +189,7 @@ void BasicTurret::Execute()
 
             m_pTimeoutTimer->Stop();
             m_eCommand = turret::COMMAND_NONE;
-            //printf( "Turret - Returning To Idle State\n" );
+            printf( "Turret - Returning To Idle State\n" );
             m_eState = turret::eState::STATE_IDLE;
          }
       }
@@ -216,7 +216,7 @@ void BasicTurret::Execute()
          if ( dCurrentTime >= (units::time::second_t)turret::MANUAL_TURN_LEFT_TIMEOUT )
          {
             bOperationTimeout = true;
-            //printf( "Turret - Rotating Left Timeout: [%f]\n", (double)dCurrentTime );
+            printf( "Turret - Rotating Left Timeout: [%f]\n", (double)dCurrentTime );
          }
 
          // If the turret has received a stop command, the command
@@ -231,7 +231,7 @@ void BasicTurret::Execute()
          if ( ( m_eCommand == turret::COMMAND_STOP ) ||
               ( bOperationTimeout ) )
          {
-            //printf( "Turret - Stopping Manual Rotating Left\n" );
+            printf( "Turret - Stopping Manual Rotating Left\n" );
 
             // Stop the motor until set is called again.
 
@@ -242,7 +242,7 @@ void BasicTurret::Execute()
 
             m_pTimeoutTimer->Stop();
             m_eCommand = turret::COMMAND_NONE;
-            //printf( "Turret - Returning To Idle State\n" );
+            printf( "Turret - Returning To Idle State\n" );
             m_eState = turret::eState::STATE_IDLE;
          }
       }
