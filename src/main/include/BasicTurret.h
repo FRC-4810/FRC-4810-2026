@@ -61,8 +61,8 @@ namespace turret
 
    // Operation Speed Percentage Setpoints.
 
-   static constexpr double SETPOINT_TURN_RIGHT_SPEED = 0.80;         // Turn Right Speed
-   static constexpr double SETPOINT_TURN_LEFT_SPEED = -0.80;         // Turn Left Speed
+   static constexpr double SETPOINT_TURN_RIGHT_SPEED = 0.10;         // Turn Right Speed
+   static constexpr double SETPOINT_TURN_LEFT_SPEED = -0.10;         // Turn Left Speed
 
    static constexpr double SETPOINT_MIN_ANGLE = -90.0;               // 
    static constexpr double SETPOINT_MAX_ANGLE = 90.0;                // 
