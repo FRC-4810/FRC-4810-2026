@@ -206,7 +206,7 @@ void Intake::Execute()
             // Handle unrecognized command
             else if ( m_eCommand != intake::eCommand::COMMAND_NONE && m_eCommand != intake::eCommand::COMMAND_STOP )
             {
-                printf("Intake.cpp: Unrecognized command");
+             //   printf("Intake.cpp: Unrecognized command");
             }
         }
 
@@ -443,6 +443,6 @@ void Intake::Execute()
     } 
     else
     {
-        printf("Intake.cpp: m_pRobotIO is nullptr \n");
+     //   printf("Intake.cpp: m_pRobotIO is nullptr \n");
     }
 }

@@ -128,6 +128,6 @@ void Auton03::Execute()
     // m_pRobotIO is nullptr
     else
     {
-        printf("Auton_03.cpp: m_pRobotIO is nullptr\n");
+       // printf("Auton_03.cpp: m_pRobotIO is nullptr\n");
     }
 }

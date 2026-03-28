@@ -187,6 +187,6 @@ void Shooter::Execute()
     // m_pRobotIO is nullptr
     else
     {
-        printf("Shooter.cpp: m_pRobotIO is nullptr\n");
+    //    printf("Shooter.cpp: m_pRobotIO is nullptr\n");
     }
 }
