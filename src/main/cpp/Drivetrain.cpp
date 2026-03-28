@@ -36,7 +36,7 @@ void Drivetrain::Initialize ( RobotIO *p_pRobotIO )
         m_pathTimer->Reset();
         m_pathTimer->Start();
 
-        printf("Drivetrain Initialize\n");
+        //printf("Drivetrain Initialize\n");
 
         // Set gyrp offset at start (change m_dGyroOffset depending on what direction the bot should be facing at start)
         m_gyro.SetYaw(units::degree_t{m_dGyroOffset});
@@ -180,7 +180,7 @@ void Drivetrain::LoadPath(std::string pathName, bool resetPose)
 {
     try {
         auto path = pathplanner::PathPlannerPath::fromPathFile(pathName);
-        printf("Loaded path");
+        //printf("Loaded path");
         
         // Handle Alliance Flipping
         // CWS - Commenting out alliance flipping for now, as it can be easily handled by flipping the path in the PathPlanner GUI. If we want to add it back in, we should also add a "preventFlipping" boolean to the PathPlannerPath class, and check that here before flipping the path.
@@ -195,7 +195,7 @@ void Drivetrain::LoadPath(std::string pathName, bool resetPose)
         
         pathplanner::RobotConfig robotConfig = pathplanner::RobotConfig::fromGUISettings(); // Load config from deploy/pathplanner/settings.json
 
-        printf("Loaded settings");
+        //printf("Loaded settings");
 
         m_currentTrajectory = path->generateTrajectory(
             frc::ChassisSpeeds{}, 
@@ -205,7 +205,7 @@ void Drivetrain::LoadPath(std::string pathName, bool resetPose)
 
         if (resetPose) {
             ResetOdometry(startPose);
-            printf("Reset Odometry");
+            //printf("Reset Odometry");
         }
 
         m_pathTimer->Reset();
@@ -258,7 +258,7 @@ bool Drivetrain::IsPathFinished()
 
     if ( m_pathTimer->Get() >= m_currentTrajectory.getTotalTime() )
     {
-        printf("Path Finished\n");
+        //printf("Path Finished\n");
         return true;
     }
     return false;
@@ -379,7 +379,7 @@ void Drivetrain::UpdatePoseMegatag1()
             mt1_pose.pose,
             mt1_pose.timestampSeconds
         );
-        printf("Pose Added: X: [%f], Y: [%f], Rot: [%f]\n", (double)mt1_pose.pose.X(), (double)mt1_pose.pose.Y(), (double)mt1_pose.pose.Rotation().Degrees());
+        //printf("Pose Added: X: [%f], Y: [%f], Rot: [%f]\n", (double)mt1_pose.pose.X(), (double)mt1_pose.pose.Y(), (double)mt1_pose.pose.Rotation().Degrees());
     }
 }
 
@@ -429,6 +429,6 @@ void Drivetrain::UpdatePoseMegatag2()
             mt2Pose.pose,
             mt2Pose.timestampSeconds
         );
-        printf("Pose Added: X: [%f], Y: [%f], Rot: [%f]\n", (double)mt2Pose.pose.X(), (double)mt2Pose.pose.Y(), (double)mt2Pose.pose.Rotation().Degrees());
+        //printf("Pose Added: X: [%f], Y: [%f], Rot: [%f]\n", (double)mt2Pose.pose.X(), (double)mt2Pose.pose.Y(), (double)mt2Pose.pose.Rotation().Degrees());
     }
 }

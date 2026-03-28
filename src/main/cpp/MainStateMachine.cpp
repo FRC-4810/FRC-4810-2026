@@ -281,12 +281,12 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() > 
               RobotMain::SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD )
          {
-            printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Right\n" );
+            //printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Right\n" );
 
             m_Turret.ManualRotateRight();
             m_Turret.Execute();
 
-            printf( "Main - Advancing To Manual Rotating Turret Right\n" );
+            //printf( "Main - Advancing To Manual Rotating Turret Right\n" );
             m_eState = RobotMain::eState::STATE_MANUAL_TURRET_ROTATING_RIGHT;
          }
 
@@ -300,12 +300,12 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() <
               RobotMain::SETPOINT_RIGHT_JOYSTICK_LEFT_UPPER_THRESHOLD )
          {
-            printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Left\n" );
+            //printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Left\n" );
 
             m_Turret.ManualRotateLeft();
             m_Turret.Execute();
 
-            printf( "Main - Advancing To Manual Rotating Turret Left\n" );
+            //printf( "Main - Advancing To Manual Rotating Turret Left\n" );
             m_eState = RobotMain::eState::STATE_MANUAL_TURRET_ROTATING_LEFT;
          }
       }
@@ -537,7 +537,7 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() <
                  RobotMain::SETPOINT_RIGHT_JOYSTICK_RIGHT_LOWER_THRESHOLD )
          {
-            printf( "Main - Manual Turret Rotating Right Stop\n" );
+            //printf( "Main - Manual Turret Rotating Right Stop\n" );
             m_Turret.Stop();
          }
 
@@ -566,7 +566,7 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() >
                  RobotMain::SETPOINT_RIGHT_JOYSTICK_LEFT_LOWER_THRESHOLD )
          {
-            printf( "Main - Manual Turret Rotating Left Stop\n" );
+            //printf( "Main - Manual Turret Rotating Left Stop\n" );
             m_Turret.Stop();
          }
 
