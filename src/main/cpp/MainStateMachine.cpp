@@ -459,9 +459,10 @@ void MainStateMachine::Execute()
       else if(m_eState == RobotMain::eState::STATE_SHOOTING)
       {
 
-         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 1.5) //TODO - tune this - 1.5s
+         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 0.5) //TODO - tune this - 1s
          {
             m_Intake.Agitate();
+            m_pAgitateTimer->Reset();
          }
          
          if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
@@ -469,11 +470,78 @@ void MainStateMachine::Execute()
             m_Magazine.Stop();
             m_Shooter.Stop();
             m_Intake.Stop();
+            m_Turret.Stop();
+         } 
+         else 
+         {
+            // *------------------------------------------------------------*
+            // * Operator Right Joystick Right - Manual Rotate Turret Right *
+            // *------------------------------------------------------------*
+
+            // Pushing right on the joystick (Y+) produces a positive X value.
+            // (it is a CCW rotation around the X axis)
+
+            if ( m_pRobotIO->m_OperatorController.GetRightX() > 
+                 RobotMain::SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD )
+            {
+               //  printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Right\n" );
+               m_Turret.ManualRotateRight();
+               m_Turret.Execute();
+            }
+
+            // *----------------------------------------------------------*
+            // * Operator Right Joystick Left - Manual Rotate Turret Left *
+            // *----------------------------------------------------------*
+
+            // Pushing left on the joystick (Y-) produces a negative X value.
+            // (it is a CW rotation around the X axis)
+
+            else if ( m_pRobotIO->m_OperatorController.GetRightX() <
+              RobotMain::SETPOINT_RIGHT_JOYSTICK_LEFT_UPPER_THRESHOLD )
+            {
+               //  printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Left\n" );
+
+               m_Turret.ManualRotateLeft();
+               m_Turret.Execute();
+
+            }
+            // Stop if no input
+            else
+            {
+               m_Turret.Stop();
+               m_Turret.Execute();
+            }
+            
+            // *-------------------------------------------------* - BLc
+         // * Operator Left Joystick Up - Manual Intake Raise *
+         // *-------------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetLeftY() < -0.8)   //-TODO - Check this
+         {
+            m_Intake.ManualRaise();
+            m_Intake.Execute();
+
+         }
+
+         // *---------------------------------------------------*
+         // * Operator Left Joystick Down - Manual Intake Lower *
+         // *---------------------------------------------------*
+         else if(m_pRobotIO->m_OperatorController.GetLeftY() > 0.8)   //-TODO - Check this
+         {
+            m_Intake.ManualLower();
+            m_Intake.Execute();
+         }
+         else 
+         {
+            m_Intake.Stop();
+            m_Intake.Execute();
+         }
          }
 
          m_Shooter.Execute();
          m_Magazine.Execute();
          m_Intake.Execute();
+         m_Turret.Execute();
+         
 
          if(m_Magazine.IsIdle() && m_Shooter.isIdle() && m_Intake.IsIdle())
          {
@@ -498,6 +566,7 @@ void MainStateMachine::Execute()
 
                m_eState = RobotMain::eState::STATE_INTAKE_AUTO_LOWER;
             }
+            m_pAgitateTimer->Reset();
          }
       }
 

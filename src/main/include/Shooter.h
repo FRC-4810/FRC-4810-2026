@@ -29,7 +29,7 @@ namespace shooter
 
     // Motor Speed Constants
     static constexpr double dLowPowerRampUpSpeed = 0.625;
-    static constexpr double dHighPowerRampUpSpeed = 0.80;
+    static constexpr double dHighPowerRampUpSpeed = 0.85;
     static constexpr double dFeederSpeed = 0.2;
 
     // Shooter Velocity Setpoints

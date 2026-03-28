@@ -78,7 +78,7 @@ void Auton01::Execute()
             m_Magazine.RunIn();
             m_Magazine.Execute();
         }
-        else if (m_pTimeoutTimer->Get() > 12_s) {
+        else if (m_pTimeoutTimer->Get() > 14_s) {
             /* Run the shooter to score the balls */
             m_Shooter.LowPowerShoot();
             m_Shooter.Execute();
@@ -101,15 +101,17 @@ void Auton01::Execute()
         // ****************
         else if ( m_eState == auton01::eState::STATE_MOVE_1 )
         {
-            // Move path Logic
-            m_Drivetrain->FollowPath();
 
-            // Check if path done
-            if(m_Drivetrain->IsPathFinished() || (double)m_pTimeoutTimer->Get() >= auton01::dMove1Timer)
-            {
-                m_Drivetrain->Stop();
-                m_eState = auton01::eState::STATE_DONE;
-            }
+                // Move path Logic
+                m_Drivetrain->FollowPath();
+
+                // Check if path done
+                if(m_Drivetrain->IsPathFinished() || (double)m_pTimeoutTimer->Get() >= auton01::dMove1Timer)
+                {
+                    m_Drivetrain->Stop();
+                    m_eState = auton01::eState::STATE_DONE;
+                }
+            
         }
 
         else if ( m_eState == auton01::eState::STATE_DONE )
