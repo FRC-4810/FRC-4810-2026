@@ -62,6 +62,17 @@ void Auton01::Execute()
             m_Shooter.Stop();
             m_Shooter.Execute();
         }
+
+        //TODO test agitate logic
+        else if (m_pTimeoutTimer->Get() > 14_s) {
+            // Agitate intake 1.5s after shooting starts
+            if(m_pRobotIO->IsIntakeLowered())
+            {
+                m_intake->Agitate();
+                //don't need to call execute, done at bottom
+            }
+        }
+        
         else if (m_pTimeoutTimer->Get() > 12.5_s) {
             // run magazine after shooter reaches speed
             m_Magazine.RunIn();
