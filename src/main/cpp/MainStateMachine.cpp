@@ -122,7 +122,7 @@ void MainStateMachine::UpdateStatus()
 {
    static int i = 0;
    if(m_Drivetrain.Initialized()) {
-      frc::SmartDashboard::PutNumber("iterator", i++);
+      //frc::SmartDashboard::PutNumber("iterator", i++);
       m_Drivetrain.CallPeriodic();
    }
 }
