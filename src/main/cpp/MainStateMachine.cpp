@@ -441,8 +441,6 @@ void MainStateMachine::Execute()
             m_Intake.ManualIntake();
             m_Intake.Execute();
 
-            m_pAgitateTimer->Reset();
-            m_pAgitateTimer->Start();
 
             m_eState = RobotMain::eState::STATE_SHOOTING;
          }
@@ -459,11 +457,11 @@ void MainStateMachine::Execute()
       else if(m_eState == RobotMain::eState::STATE_SHOOTING)
       {
 
-         if(m_pRobotIO->IsIntakeLowered() && (double)m_pAgitateTimer->Get() >= 0.5) //TODO - tune this - 1s
-         {
-            m_Intake.Agitate();
-            m_pAgitateTimer->Reset();
-         }
+         //if(m_pRobotIO->IsIntakeLowered())
+         //{
+           // m_Intake.Agitate();
+
+         //}
          
          if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
          {
@@ -511,8 +509,9 @@ void MainStateMachine::Execute()
                m_Turret.Stop();
                m_Turret.Execute();
             }
-            
-            // *-------------------------------------------------* - BLc
+         }  
+         
+         // *-------------------------------------------------* - BLc
          // * Operator Left Joystick Up - Manual Intake Raise *
          // *-------------------------------------------------*
          if(m_pRobotIO->m_OperatorController.GetLeftY() < -0.8)   //-TODO - Check this
@@ -535,7 +534,7 @@ void MainStateMachine::Execute()
             m_Intake.Stop();
             m_Intake.Execute();
          }
-         }
+         
 
          m_Shooter.Execute();
          m_Magazine.Execute();
