@@ -103,7 +103,7 @@ class RobotIO
       frc::DigitalInput m_EmptyPhotoeye{ 2 };   //Bottom of hopper Photoeye
       frc::DigitalInput m_FullPhotoeye{ 3 };    //Top of hopper Photoeye
 
-      hardware::TalonFXS m_TurretRotationMotor{ 17 }; //Change to FX
+      hardware::TalonFXS m_TurretRotationMotor{ 17 };
 
       // ******************************  -GMS
       // * Shooter Subsystem Hardware *
