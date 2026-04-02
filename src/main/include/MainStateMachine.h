@@ -24,7 +24,7 @@
                                        //    definition
 #include "Magazine.h"                  // Magazine state machine class
                                        //    definition
-#include "BasicTurret.h"               // Turret state machine class
+#include "Turret.h"                    // Turret state machine class
                                        //    definition
 #include "Shooter.h"                   // Shooter state machine class
                                        //    definition
@@ -55,6 +55,9 @@ namespace RobotMain
       STATE_MAGAZINE_MANUAL_OUT = 11,
       STATE_MANUAL_TURRET_ROTATING_LEFT = 12,
       STATE_MANUAL_TURRET_ROTATING_RIGHT = 13,
+      STATE_TRACKING_HUB_TEST = 14,
+      STATE_TRACK_HUB_SHOOT = 15,
+      STATE_TRACK_CORNER_SHOOT = 16,
       STATE_ERROR = 99
    };
 
@@ -109,9 +112,12 @@ class MainStateMachine
       //-GMS - Intake agitate timer
       frc::Timer *m_pAgitateTimer;
 
+      // BLC - Tracking ramp up timer
+      frc::Timer *m_pTrackingRampUpTimer;
+
       // State Machine Object Instances.
       Magazine m_Magazine;
-      BasicTurret m_Turret;
+      Turret m_Turret;
       Shooter m_Shooter;
 };
 

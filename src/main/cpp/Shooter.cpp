@@ -75,7 +75,23 @@ void Shooter::Execute()
                 m_eState = shooter::eState::STATE_HIGH_POWER_RAMP_UP;
 
             }
+            // *------------------------*
+            // * Tracking Shoot Command *
+            // *------------------------*
 
+            else if ( m_eCommand == shooter::eCommand::COMMAND_TRACKING_SHOOT )
+            {
+
+                // Set speed on shooter motors in the state
+
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                // Set state to high power ramp up
+                m_eState = shooter::eState::STATE_TRACKING_SHOOT;
+
+            }
             // Unrecognized command
 
             //else if ( m_eCommand != shooter::eCommand::COMMAND_NONE || m_eCommand != shooter::eCommand::COMMAND_STOP ) < -GMS This should be AND, not OR
@@ -175,6 +191,40 @@ void Shooter::Execute()
                 // Reset State and Command
                 m_eState = shooter::eState::STATE_IDLE;
                 m_eCommand = shooter::eCommand::COMMAND_NONE;
+            }
+        }
+        
+        // ************************
+        // * Tracking Shoot State *
+        // ************************
+        
+        else if ( m_eState == shooter::eState::STATE_TRACKING_SHOOT )
+        {
+            // Check Timeout Timer
+            bool bIsTimedOut = false;
+            if ( (double)m_pTimeoutTimer->Get() >= shooter::dShootTimeout )
+            {
+                bIsTimedOut = true;
+            }
+
+            if ( m_eCommand == shooter::eCommand::COMMAND_STOP || bIsTimedOut == true )
+            {
+                /// Stop shooter motors
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( 0 );
+
+                // Reset State and Command
+                m_eState = shooter::eState::STATE_IDLE;
+                m_eCommand = shooter::eCommand::COMMAND_NONE;
+            }
+            // Shoot power logic for tracking
+            else 
+            {
+                // interpolates between the pre determined low power and high power shoot settings and positions
+                // this will likely need to be improved upon because the distance to power ratio is very unlikely to be linear
+                double dSpeed = shooter::dMinPower;
+                double dSpeedDistanceSlope = ( shooter::dHighPowerRampUpSpeed - shooter::dLowPowerRampUpSpeed ) / ( shooter::dHighPowerDistance - shooter::dLowPowerDistance );
+                dSpeed = shooter::dLowPowerRampUpSpeed + dSpeedDistanceSlope * ( dDistanceToTarget - shooter::dLowPowerDistance );
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( std::clamp( dSpeed, shooter::dMinPower, shooter::dMaxPower ) );
             }
         }
 

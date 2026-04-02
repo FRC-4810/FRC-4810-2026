@@ -107,7 +107,7 @@ void RobotIO::RobotInit()
    // * Magazine Hardware Initialization *
    // *----------------------------------*
    
-   configs::TalonFXSConfiguration feederMotorConfigs{};
+   configs::TalonFXConfiguration feederMotorConfigs{};
    
    feederMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
@@ -117,11 +117,9 @@ void RobotIO::RobotInit()
    feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
-   feederMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
-
    m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
 
-   configs::TalonFXSConfiguration kickerMotorConfigs{};
+   configs::TalonFXConfiguration kickerMotorConfigs{};
    
    kickerMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
@@ -130,8 +128,6 @@ void RobotIO::RobotInit()
    kickerMotorConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true);
    kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
-
-   kickerMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
 
 
    m_KickerMotor.GetConfigurator().Apply(kickerMotorConfigs);
@@ -146,6 +142,11 @@ void RobotIO::RobotInit()
    turretRotationMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    turretRotationMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable( true );
    turretRotationMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   turretRotationMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
+
+   turretRotationMotorConfigs.MotorOutput.Inverted =
+      signals::InvertedValue::CounterClockwise_Positive;
 
    m_TurretRotationMotor.GetConfigurator().Apply( turretRotationMotorConfigs );
 

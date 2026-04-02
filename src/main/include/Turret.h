@@ -1,125 +1,147 @@
 #pragma once
 
-#include <frc/Timer.h>
-
 #include "RobotIO.h"
 #include "Drivetrain.h"
+#include <frc/Timer.h>
+#include <numbers>
 
 namespace turret
 {
-    enum eState
+    enum eState 
     {
         STATE_START = 0,
         STATE_IDLE = 1,
-        STATE_HOMING = 2,       //Home is far left rotation
-        STATE_DEBOUNCE = 3,
-        STATE_MANUAL_LEFT = 4,  //Left is towards Home
-        STATE_MANUAL_RIGHT = 5, //Right is away from Home
-        STATE_AUTO_MOVE = 6,    //Automatically move to m_dTurretSetpoint
-        STATE_FOLLOW = 7,       // Follow the hub with the turret
+        STATE_MANUAL_LEFT = 2,
+        STATE_MANUAL_RIGHT = 3,
+        STATE_TRACK_HUB = 4,
+        STATE_TRACK_CORNER = 5,
         STATE_ERROR = 99
     };
 
-    enum eCommand
+    enum eCommand 
     {
         COMMAND_NONE,
-        COMMAND_HOME,
         COMMAND_MANUAL_LEFT,
         COMMAND_MANUAL_RIGHT,
-        COMMAND_AUTO_MOVE,
-        COMMAND_FOLLOW,
+        COMMAND_TRACK_HUB,
+        COMMAND_TRACK_CORNER,
         COMMAND_STOP
     };
 
+    // PID Constants - TODO tune this
+    static constexpr double Kp = 0.04;
+    static constexpr double Ki = 0.0;
+    static constexpr double Kd = 0.0;
+
     // Timeout Constants
-    static constexpr double dHomingTimeout = 10.0;
-    static constexpr double dManualMoveTimeout = 10.0;
-    static constexpr double dAutoMoveTimeout = 10.0;    //We may get rid of this when we add tracking
-    static constexpr double dFollowTimeout = 40.0;    //We may get rid of this when we add tracking
-    static constexpr double dDebounceTimeout = 2.0;
+    static constexpr double dManualTurnTimeout = 4.0;
+    static constexpr double dTrackHubTimeout = 20.0;
+    static constexpr double dTrackCornerTimeout = 20.0;
 
     // Motor Speed Constants
-    static constexpr double dHomingSpeed = -0.25;
-    static constexpr double dManualLeftSpeed = -0.25;
-    static constexpr double dManualRightSpeed = 0.25;
+    static constexpr double dManualRightSpeed = -0.1;
+    static constexpr double dManualLeftSpeed = 0.1;
 
-    static constexpr double dAutoMoveTollerance = 0.001389;    // Tollerance of plus/minus 0.5 degrees
+    static constexpr double dAutoRightMaxSpeed = -0.1; // TODO - tune this. 0.1 for now to be safe
+    static constexpr double dAutoLeftMaxSpeed = 0.1;
 
-    static constexpr double dMaxRotations = 0.5;    //-Todo - configure gear ratio to be 0.5
+    // Setpoint Constants                   - Assumes Zero is at center; This should probably change
+    static constexpr double dMinAngleRadians = -1.919; // -110 degrees
+    static constexpr double dMaxAngleRadians = 1.919;  // 110 degrees
+
+    static constexpr double dLeftLimitSetpoint = 9.0; // 108 degrees
+    static constexpr double dRightLimitSetpoint = -9.0; // -108 degrees
+
+    // Mechanical Constants
+    static constexpr double dMotorRotationsPerPiRadians = 15.0;
+
+    static constexpr double dShooterOffset = -0.216; // negative because the shooter is at the back of the robot
+                                                  // Distance from the center of the robot to the point of rotation of the turret
+                                                  // Should be in meters because Pose2d is in meters
+
+    // Position Constants - not 100% sure if we use blue relative coordinates - change this if needed
+    // These are in meters
+    static constexpr double dBlueHubX = 4.62; 
+    static constexpr double dBlueHubY = 4.02;
     
+    static constexpr double dRedHubX = 11.90;
+    static constexpr double dRedHubY = 4.02;
+
+    static constexpr double dLeftBlueCornerX = 0.5;
+    static constexpr double dLeftBlueCornerY = 1.0;
+
+    static constexpr double dRightBlueCornerX = 0.5;
+    static constexpr double dRightBlueCornerY = 7.0;
+
+    static constexpr double dLeftRedCornerX = 16.0;
+    static constexpr double dLeftRedCornerY = 1.0;
+
+    static constexpr double dRightRedCornerX = 16.0;
+    static constexpr double dRightRedCornerY = 7.0;
+
+    static constexpr double dCenterY = 4.0;
+
 }
 
 class Turret
 {
-public:
+    public:
+        // Constuctor/ Deconstructer
+        Turret();
+        ~Turret()
+            {   }
+        
+        // Accessor Methods
+        inline bool IsRotatingManualRight()
+            { return( m_eState == turret::eState::STATE_MANUAL_RIGHT ); }
+        inline bool IsRotatingManualLeft()
+            { return( m_eState == turret::eState::STATE_MANUAL_LEFT ); }
+        inline bool IsTrackingHub()
+            { return( m_eState == turret::eState::STATE_TRACK_HUB ); }
+        inline bool IsTrackingCorner()
+            { return( m_eState == turret::eState::STATE_TRACK_CORNER ); }
+        inline bool IsIdle()
+            { return( m_eState == turret::eState::STATE_IDLE ); }
+        
+        inline void ManualRight()
+            { m_eCommand = turret::eCommand::COMMAND_MANUAL_RIGHT; }
+        inline void ManualLeft()
+            { m_eCommand = turret::eCommand::COMMAND_MANUAL_LEFT; }
+        inline void TrackHub()
+            { m_eCommand = turret::eCommand::COMMAND_TRACK_HUB; }
+        inline void TrackCorner()
+            { m_eCommand = turret::eCommand::COMMAND_TRACK_CORNER; }
+        inline void Stop()
+            { m_eCommand = turret::eCommand::COMMAND_STOP; }
 
-    // Constructor/Destructor
-    Turret();
-    ~Turret()
-        {  }
+        double GetTargetDistance();
 
-    // Accessor Methods
+        // Class Methods
+        void Initialize( RobotIO *p_pRobotIO, Drivetrain *p_pDrivetrain );
+        void Execute();
 
-    inline void Home()
-        {  m_eCommand = turret::COMMAND_HOME;  }
+    private:
+        turret::eCommand m_eCommand;
+        turret::eState m_eState;
 
-    inline void ManualLeft()
-        {  m_eCommand = turret::COMMAND_MANUAL_LEFT;  }
-    
-    inline void ManualRight()
-        {  m_eCommand = turret::COMMAND_MANUAL_RIGHT;  }
+        frc::Timer *m_pTimeoutTimer;
 
-    inline void SetAutoSetpoint( double dSetpoint )
-        {  m_dTurretSetpoint = dSetpoint;  }
+        RobotIO *m_pRobotIO;
 
-    inline void AutoMove()
-        {  m_eCommand = turret::COMMAND_AUTO_MOVE;  }
+        Drivetrain *m_pDrivetrain; // Include this for Odometry data
 
-    inline void Stop()
-        {  m_eCommand = turret::COMMAND_STOP;  }
+        double dTargetX;
+        double dTargetY;
 
+        double dShooterX;
+        double dShooterY;
 
-    inline bool IsIdle()
-        { return(m_eState == turret::eState::STATE_IDLE); }
-    
-    inline bool IsHoming()
-        { return(m_eState == turret::eState::STATE_HOMING); }
+        // PID Controller
+        double PIDOutput( double dTarget, double dCurrent );
 
-    inline bool IsManualLeft()
-        { return(m_eState == turret::eState::STATE_MANUAL_LEFT); }
+        double m_dErrorSum;
+        double m_dLastTime;
+        double m_dLastError;
 
-    inline bool IsManualRight()
-        { return(m_eState == turret::eState::STATE_MANUAL_RIGHT); }
-    
-    inline bool IsAutoMoving()
-        { return(m_eState == turret::eState::STATE_AUTO_MOVE); }
-
-    //If target - curret is within tollerance 
-    inline bool IsAtTarget()
-        { return( fabs(m_pRobotIO->m_TurretMotor.GetPosition().GetValueAsDouble() - m_dTurretSetpoint) < turret::dAutoMoveTollerance ); }
-
-
-
-    // Class Methods
-    void Initialize( RobotIO *p_pRobotIO, Drivetrain *p_pDrivetrain );
-    void Execute();
-    void UpdateInputStatus();
-    
-private:
-    turret::eState m_eState;
-    turret::eCommand m_eCommand;
-
-    double m_dTurretSetpoint;
-
-    Drivetrain *m_pDrivetrain;
-    RobotIO *m_pRobotIO;
-
-    frc::Timer *m_pTimeoutTimer;
-
-    configs::MotorOutputConfigs m_MotorConfigs;
-
-    double GetTurretAngleRotations();
-
-    //Motion Magic configs
-    controls::MotionMagicVoltage m_Request{0_tr};
+        frc::Timer *m_pPIDTimer;
 };

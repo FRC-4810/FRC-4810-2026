@@ -91,8 +91,6 @@ MainStateMachine::MainStateMachine()
    m_eState = RobotMain::eState::STATE_START;
 
    m_eDriveState = RobotMain::eDriveState::STATE_NORMAL; //Default to normal drive state
-
-   m_dTurretTargetPosition = 0;
 }
 
 //-------------------------------------------------------------------
@@ -109,11 +107,11 @@ void MainStateMachine::Initialize(
    m_Drivetrain.Initialize( p_pRobotIO );
    m_Intake.Initialize( p_pRobotIO );
    m_Magazine.Initialize( p_pRobotIO );
-   m_Turret.Initialize( p_pRobotIO );
+   m_Turret.Initialize( p_pRobotIO, &m_Drivetrain );
    m_Shooter.Initialize( p_pRobotIO );
 
-   m_pAgitateTimer = new frc::Timer();
-   m_pAgitateTimer->Reset();
+   m_pTrackingRampUpTimer = new frc::Timer();
+   m_pTrackingRampUpTimer->Reset();
 }
 
 //-------------------------------------------------------------------
@@ -152,7 +150,7 @@ void MainStateMachine::Execute()
 
       if ( m_eState == RobotMain::eState::STATE_START )
       {
-         printf( "Main - Enter Start State\n" );
+         //printf( "Main - Enter Start State\n" );
 
          // Call the subsystem execute methods to allow them to advance
          // through the idle and start states.
@@ -242,27 +240,37 @@ void MainStateMachine::Execute()
             m_eState = RobotMain::eState::STATE_INTAKE_AUTO_LOWER;
          }
 
-         // *------------------------------------------* - GMS
-         // * Operator Right Trigger - Low Speed Shoot *
+         // *------------------------------------------* - BLC
+         // * Operator Right Trigger - Track Hub Shoot *
          // *------------------------------------------*
          if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
          {
-            m_Shooter.LowPowerShoot();
+            m_Turret.TrackHub();
+            m_Turret.Execute();
+            m_Shooter.TrackShoot();
             m_Shooter.Execute();
 
-            m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
+            m_pTrackingRampUpTimer->Reset();
+            m_pTrackingRampUpTimer->Start();
+
+            m_eState = RobotMain::eState::STATE_TRACK_HUB_SHOOT;
          }
 
          
-         // *------------------------------------------* - GMS
-         // * Operator Left Trigger - High Speed Shoot *
-         // *------------------------------------------*
+         // *--------------------------------------------* - BLC
+         // * Operator Left Trigger - Track Corner Shoot *
+         // *--------------------------------------------*
          if(m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8)
          {
-            m_Shooter.HighPowerShoot();
+            m_Turret.TrackCorner();
+            m_Turret.Execute();
+            m_Shooter.TrackShoot();
             m_Shooter.Execute();
 
-            m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
+            m_pTrackingRampUpTimer->Reset();
+            m_pTrackingRampUpTimer->Start();
+
+            m_eState = RobotMain::eState::STATE_TRACK_CORNER_SHOOT;
          }
 
          // *--------------------------------* - GMS
@@ -276,6 +284,39 @@ void MainStateMachine::Execute()
             m_eState = RobotMain::eState::STATE_MAGAZINE_MANUAL_OUT;
          }
 
+         // *-------------------------------* - BLC test
+         // * Operator B Button - Track Hub *
+         // *-------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetBButton())
+         {
+            m_Turret.TrackHub();
+            m_Turret.Execute();
+
+            m_eState = RobotMain::eState::STATE_TRACKING_HUB_TEST;
+         }
+
+         // *--------------------------------------* - BLC
+         // * Operator Y Button - High Power Shoot *
+         // *--------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetYButton())
+         {
+            m_Shooter.HighPowerShoot();
+            m_Shooter.Execute();
+
+            m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
+         }
+
+         // *-------------------------------------* - BLC
+         // * Operator A Button - Low Power Shoot *
+         // *-------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetAButton())
+         {
+            m_Shooter.LowPowerShoot();
+            m_Shooter.Execute();
+
+            m_eState = RobotMain::eState::STATE_SHOOTING_RAMP_UP;
+         }
+
          // *------------------------------------------------------------*
          // * Operator Right Joystick Right - Manual Rotate Turret Right *
          // *------------------------------------------------------------*
@@ -286,12 +327,12 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() > 
               RobotMain::SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD )
          {
-            printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Right\n" );
+            //printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Right\n" );
 
-            m_Turret.ManualRotateRight();
+            m_Turret.ManualRight();
             m_Turret.Execute();
 
-            printf( "Main - Advancing To Manual Rotating Turret Right\n" );
+            //printf( "Main - Advancing To Manual Rotating Turret Right\n" );
             m_eState = RobotMain::eState::STATE_MANUAL_TURRET_ROTATING_RIGHT;
          }
 
@@ -305,12 +346,12 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() <
               RobotMain::SETPOINT_RIGHT_JOYSTICK_LEFT_UPPER_THRESHOLD )
          {
-            printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Left\n" );
+            //printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Left\n" );
 
-            m_Turret.ManualRotateLeft();
+            m_Turret.ManualLeft();
             m_Turret.Execute();
 
-            printf( "Main - Advancing To Manual Rotating Turret Left\n" );
+            //printf( "Main - Advancing To Manual Rotating Turret Left\n" );
             m_eState = RobotMain::eState::STATE_MANUAL_TURRET_ROTATING_LEFT;
          }
       }
@@ -432,7 +473,7 @@ void MainStateMachine::Execute()
       // **************************
       else if(m_eState == RobotMain::eState::STATE_SHOOTING_RAMP_UP)
       {
-         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
+         if( !m_pRobotIO->m_OperatorController.GetAButton() && !m_pRobotIO->m_OperatorController.GetYButton() )
          {
             m_Shooter.Stop();
          }
@@ -443,7 +484,7 @@ void MainStateMachine::Execute()
          {
             m_Magazine.RunIn();
             m_Magazine.Execute();
-            m_Intake.ManualIntake();
+            m_Intake.Agitate();
             m_Intake.Execute();
 
             m_pAgitateTimer->Reset();
@@ -469,12 +510,80 @@ void MainStateMachine::Execute()
             m_Intake.Agitate();
          }
          
-         if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
+         if( !m_pRobotIO->m_OperatorController.GetAButton() && !m_pRobotIO->m_OperatorController.GetYButton() )
          {
             m_Magazine.Stop();
             m_Shooter.Stop();
             m_Intake.Stop();
+            m_Turret.Stop();
+         } 
+         else 
+         {
+            // *------------------------------------------------------------*
+            // * Operator Right Joystick Right - Manual Rotate Turret Right *
+            // *------------------------------------------------------------*
+
+            // Pushing right on the joystick (Y+) produces a positive X value.
+            // (it is a CCW rotation around the X axis)
+
+            if ( m_pRobotIO->m_OperatorController.GetRightX() > 
+                 RobotMain::SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD )
+            {
+               //  printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Right\n" );
+               m_Turret.ManualRight();
+               m_Turret.Execute();
+            }
+
+            // *----------------------------------------------------------*
+            // * Operator Right Joystick Left - Manual Rotate Turret Left *
+            // *----------------------------------------------------------*
+
+            // Pushing left on the joystick (Y-) produces a negative X value.
+            // (it is a CW rotation around the X axis)
+
+            else if ( m_pRobotIO->m_OperatorController.GetRightX() <
+              RobotMain::SETPOINT_RIGHT_JOYSTICK_LEFT_UPPER_THRESHOLD )
+            {
+               //  printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Left\n" );
+
+               m_Turret.ManualLeft();
+               m_Turret.Execute();
+
+            }
+            // Stop if no input
+            else
+            {
+               m_Turret.Stop();
+               m_Turret.Execute();
+            }
+         }  
+         
+         /* - BLC Removed manual raise/lower while shooting because of auto agitate 
+
+         // *-------------------------------------------------* - BLc
+         // * Operator Left Joystick Up - Manual Intake Raise *
+         // *-------------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetLeftY() < -0.8)   //-TODO - Check this
+         {
+            m_Intake.ManualRaise();
+            m_Intake.Execute();
+
          }
+
+         // *---------------------------------------------------*
+         // * Operator Left Joystick Down - Manual Intake Lower *
+         // *---------------------------------------------------*
+         else if(m_pRobotIO->m_OperatorController.GetLeftY() > 0.8)   //-TODO - Check this
+         {
+            m_Intake.ManualLower();
+            m_Intake.Execute();
+         }
+         else 
+         {
+            m_Intake.Stop();
+            m_Intake.Execute();
+         }
+         */
 
          m_Shooter.Execute();
          m_Magazine.Execute();
@@ -542,7 +651,7 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() <
                  RobotMain::SETPOINT_RIGHT_JOYSTICK_RIGHT_LOWER_THRESHOLD )
          {
-            printf( "Main - Manual Turret Rotating Right Stop\n" );
+            //printf( "Main - Manual Turret Rotating Right Stop\n" );
             m_Turret.Stop();
          }
 
@@ -571,7 +680,7 @@ void MainStateMachine::Execute()
          if ( m_pRobotIO->m_OperatorController.GetRightX() >
                  RobotMain::SETPOINT_RIGHT_JOYSTICK_LEFT_LOWER_THRESHOLD )
          {
-            printf( "Main - Manual Turret Rotating Left Stop\n" );
+            //printf( "Main - Manual Turret Rotating Left Stop\n" );
             m_Turret.Stop();
          }
 
@@ -583,6 +692,95 @@ void MainStateMachine::Execute()
             m_eState = RobotMain::eState::STATE_IDLE;
          }
       }
+
+      // ************************
+      // * Track Hub Test State *
+      // ************************
+      else if( m_eState == RobotMain::eState::STATE_TRACKING_HUB_TEST )
+      {
+         if(!m_pRobotIO->m_OperatorController.GetBButton())
+         {
+            m_Turret.Stop();
+         }
+
+         m_Turret.Execute();
+
+         if(m_Turret.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // *************************
+      // * Track Hub Shoot State *
+      // *************************
+      else if( m_eState == RobotMain::eState::STATE_TRACK_HUB_SHOOT )
+      {
+         if( m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 )
+         {
+            m_Turret.Stop();
+            m_Shooter.Stop();
+            m_Intake.Stop();
+            m_Magazine.Stop();
+         }
+
+         m_Turret.Execute();
+         double dDistance = m_Turret.GetTargetDistance();
+         m_Shooter.SetDistance( dDistance );
+         m_Shooter.Execute();
+
+         // Shooter is ramped up, feed balls
+         if ( (double)m_pTrackingRampUpTimer->Get() > 0.5 )
+         {
+            m_Magazine.RunIn();
+            m_Magazine.Execute();
+            m_Intake.Agitate();
+            m_Intake.Execute();
+         }
+
+         if(m_Turret.IsIdle() && m_Shooter.isIdle())
+         {
+            m_Intake.Stop();
+            m_Magazine.Stop();
+
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
+      // ****************************
+      // * Track Corner Shoot State *
+      // ****************************
+      else if( m_eState == RobotMain::eState::STATE_TRACK_CORNER_SHOOT )
+      {
+         if( m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8 )
+         {
+            m_Turret.Stop();
+            m_Shooter.Stop();
+         }
+
+         m_Turret.Execute();
+         double dDistance = m_Turret.GetTargetDistance();
+         m_Shooter.SetDistance( dDistance );
+         m_Shooter.Execute();
+
+         // Shooter is ramped up, feed balls
+         if ( (double)m_pTrackingRampUpTimer->Get() > 0.5 )
+         {
+            m_Magazine.RunIn();
+            m_Magazine.Execute();
+            m_Intake.Agitate();
+            m_Intake.Execute();
+         }
+
+         if(m_Turret.IsIdle() && m_Shooter.isIdle())
+         {  
+            m_Intake.Stop();
+            m_Magazine.Stop();
+
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+      //
 
       // *-------------------------*
       // * Asynchronous Operations *
@@ -635,17 +833,4 @@ void MainStateMachine::Execute()
    {
       printf( "Main - Null Robot I/O Pointer Encountered\n" );
    }
-}
-
-// Returns the bots distance to the hub in meters
-double MainStateMachine::GetHubDistance()
-{
-   frc::Pose2d pose = m_Drivetrain.GetBotPose();
-   double dHubX = 4.625594; 
-   double dHubY = 4.034536;
-
-   //-GMS - use distance formula to calculate distance from bot pose to hub
-   double dist = sqrt( pow((double)pose.X() - dHubX, 2) + pow((double)pose.Y() - dHubY, 2) );
-
-   return dist;
 }

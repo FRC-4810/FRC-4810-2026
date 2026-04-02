@@ -17,6 +17,9 @@ void Intake::Initialize( RobotIO *p_pRobotIO )
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
 
+    m_pAgitateTimer = new frc::Timer();
+    m_pAgitateTimer->Reset();
+
     // Refresh arm motor configurator with m_MotorConfigs
     m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Refresh( m_MotorConfigs );
 }
@@ -149,8 +152,9 @@ void Intake::Execute()
             // *-----------------*
             else if ( m_eCommand == intake::eCommand::COMMAND_AGITATE )
             {
-                // Check if arm is above setpoint
-                if ( m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint ) 
+                // Check upper limit
+                // No need to agitate if arm is already up
+                if ( m_pRobotIO->IsIntakeRaised() )
                 {
                     m_eCommand = intake::eCommand::COMMAND_NONE;
                     return;
@@ -160,12 +164,14 @@ void Intake::Execute()
                 m_MotorConfigs.NeutralMode = ctre::phoenix6::signals::NeutralModeValue::Coast;
                 m_pRobotIO->m_IntakeMoveMotor.GetConfigurator().Apply( m_MotorConfigs );
 
-                // Set speed on arm motor
-                m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAgitateSpeed );
+                // Arm motor speed logic will occur in the state
 
-                // Reset timer
+                // Reset timers
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
+
+                m_pAgitateTimer->Reset();
+                m_pAgitateTimer->Start();
 
                 // Set state to agitate
                 m_eState = intake::eState::STATE_AGITATE;
@@ -359,7 +365,7 @@ void Intake::Execute()
             }
 
             bool bLimitHit = false;
-            if ( m_pRobotIO->IsIntakeRaised() || m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dCenterSetpoint  )
+            if ( m_pRobotIO->IsIntakeRaised() )
             {
                 bLimitHit = true;
             }
@@ -374,6 +380,36 @@ void Intake::Execute()
                 // Reset state and command
                 m_eState = intake::eState::STATE_IDLE;
                 m_eCommand = intake::eCommand::COMMAND_NONE;
+            }
+            // Arm movement logic
+            else
+            {
+                // Agitate is on down cycle and intake isnt lowered - lower arm
+                if ( (double)m_pAgitateTimer->Get() <= 0.5 && !m_pRobotIO->IsIntakeLowered() )
+                {
+                    m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAutoLowerSpeed );
+                }
+                // Agitate is on down cycle and intake is lowered - stop arm
+                else if ( (double)m_pAgitateTimer->Get() <= 0.5 && m_pRobotIO->IsIntakeLowered() )
+                {
+                    m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
+                }
+                // Agitate is on up cycle and intake is below setpoint - raise arm
+                else if ( (double)m_pAgitateTimer->Get() >= 0.5 && m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() > intake::dAgitateSetpoint )
+                {
+                    m_pRobotIO->m_IntakeMoveMotor.Set( intake::dAutoRaiseSpeed );
+                }
+                // Agitate is on up cycle and intake is above setpoint - stop arm
+                else if ( (double)m_pAgitateTimer->Get() >= 0.5 && m_pRobotIO->m_IntakeMoveMotor.GetPosition().GetValueAsDouble() <= intake::dAgitateSetpoint )
+                {
+                    m_pRobotIO->m_IntakeMoveMotor.Set( 0 );
+                }
+                // Cycle is finished - reset timer
+                if ( (double)m_pAgitateTimer->Get() >= 1 )
+                {
+                    m_pAgitateTimer->Reset();
+                    m_pAgitateTimer->Start();
+                }
             }
         }
 

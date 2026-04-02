@@ -33,30 +33,30 @@ namespace intake
     };
 
     // Timeout Constants
-    constexpr double dManualRaiseTimeout = 4.0;
-    constexpr double dManualLowerTimeout = 2.0;
+    static constexpr double dManualRaiseTimeout = 4.0;
+    static constexpr double dManualLowerTimeout = 2.0;
 
-    constexpr double dAutoRaiseTimeout = 2.0;
-    constexpr double dAutoLowerTimeout = 1.0;
-    constexpr double dAgitateTimeout = 1.0;
+    static constexpr double dAutoRaiseTimeout = 2.0;
+    static constexpr double dAutoLowerTimeout = 1.0;
+    static constexpr double dAgitateTimeout = 15.0;
 
-    constexpr double dManualIntakeTimeout = 5.0;
-    constexpr double dManualOuttakeTimeout = 5.0;
+    static constexpr double dManualIntakeTimeout = 5.0;
+    static constexpr double dManualOuttakeTimeout = 5.0;
 
     // Motor Speed Constants TODO
-    constexpr double dManualLowerSpeed = 0.4;
-    constexpr double dManualRaiseSpeed = -0.4;
-    constexpr double dAutoLowerSpeed = 0.4;
-    constexpr double dAutoRaiseSpeed = -0.4;
-    constexpr double dAgitateSpeed = -0.4;
+    static constexpr double dManualLowerSpeed = 0.4;
+    static constexpr double dManualRaiseSpeed = -0.4;
+    static constexpr double dAutoLowerSpeed = 0.4;
+    static constexpr double dAutoRaiseSpeed = -0.4;
 
-    constexpr double dManualIntakeSpeed = 1;
-    constexpr double dManualOuttakeSpeed = -1;
+
+    static constexpr double dManualIntakeSpeed = 1;
+    static constexpr double dManualOuttakeSpeed = -1;
 
     // Setpoint Constants TODO
-    constexpr double dUpperLimitSetpoint = 0.0;
-    constexpr double dLowerLimitSetpoint = 0.5;
-    constexpr double dCenterSetpoint = 0.25;
+    static constexpr double dUpperLimitSetpoint = 0.0;
+    static constexpr double dLowerLimitSetpoint = 0.5;
+    static constexpr double dAgitateSetpoint = 0.4;
 
 }
 
@@ -113,6 +113,7 @@ class Intake
         intake::eState m_eState;
 
         frc::Timer *m_pTimeoutTimer;
+        frc::Timer *m_pAgitateTimer;
 
         RobotIO *m_pRobotIO;
 

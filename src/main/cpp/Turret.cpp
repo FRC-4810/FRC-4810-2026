@@ -4,13 +4,16 @@
 Turret::Turret()
 {
     m_eState = turret::eState::STATE_START;
-    m_eCommand = turret::COMMAND_NONE;
-    m_dTurretSetpoint = 0.0;
+    m_eCommand = turret::eCommand::COMMAND_NONE;
 
     m_pRobotIO = nullptr;
     m_pDrivetrain = nullptr;
+
+    m_dErrorSum = 0.0;
+    m_dLastTime = 0.0;
 }
 
+// Initialize turret
 void Turret::Initialize( RobotIO *p_pRobotIO, Drivetrain *p_pDrivetrain )
 {
     m_pRobotIO = p_pRobotIO;
@@ -19,291 +22,429 @@ void Turret::Initialize( RobotIO *p_pRobotIO, Drivetrain *p_pDrivetrain )
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
 
-    m_Request.WithSlot(0);
-
-    m_pRobotIO->m_TurretMotor.GetConfigurator().Refresh(m_MotorConfigs);
-}
-
-void Turret::UpdateInputStatus()
-{
-
+    m_pPIDTimer = new frc::Timer();
+    m_pPIDTimer->Reset();
 }
 
 void Turret::Execute()
 {
-    //Check if m_pRobotIO or m_pTurretSetpoint has been assigned
-    if(m_pRobotIO != nullptr && m_pDrivetrain != nullptr)
+    // Check that m_pRobotIO and m_pDrivetrain have been asigned
+    if ( m_pRobotIO != nullptr && m_pDrivetrain != nullptr )
     {
         // ***************
         // * Start State *
         // ***************
-        if(m_eState == turret::eState::STATE_START)
+        if ( m_eState == turret::eState::STATE_START )
         {
-            m_eState = turret::eState::STATE_IDLE;
+            // Go to idle state
+            m_eState == turret::eState::STATE_IDLE;
         }
 
         // **************
         // * Idle State *
         // **************
-        if(m_eState == turret::eState::STATE_IDLE)
+        if ( m_eState == turret::eState::STATE_IDLE )
         {
-            // *--------------*
-            // * Home Command *
-            // *--------------*
-            if(m_eCommand == turret::COMMAND_HOME)
-            {
-                if(m_pRobotIO->IsTurretHomed())
-                {
-                    m_pRobotIO->m_TurretMotor.SetPosition(0_tr);
-                    m_eCommand = turret::COMMAND_NONE;
-                    return;
-                }
-
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Coast;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
-                
-                m_pRobotIO->m_TurretMotor.Set(turret::dHomingSpeed);
-
-                m_pTimeoutTimer->Reset();
-                m_pTimeoutTimer->Start();
-
-                m_eState = turret::eState::STATE_HOMING;
-            }
-
-            // *---------------------*
-            // * Manual Left Command *
-            // *---------------------*
-            else if(m_eCommand == turret::COMMAND_MANUAL_LEFT)
-            {
-                if(m_pRobotIO->IsTurretMax())
-                {
-                    m_eCommand = turret::COMMAND_NONE;
-                    return;
-                }
-
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Coast;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
-                
-                m_pRobotIO->m_TurretMotor.Set(turret::dManualLeftSpeed);
-
-                m_pTimeoutTimer->Reset();
-                m_pTimeoutTimer->Start();
-
-                m_eState = turret::eState::STATE_MANUAL_LEFT;
-            }
-
             // *----------------------*
             // * Manual Right Command *
             // *----------------------*
-            else if(m_eCommand == turret::COMMAND_MANUAL_RIGHT)
-            {
-                if(m_pRobotIO->IsTurretHomed())
+            if ( m_eCommand == turret::eCommand::COMMAND_MANUAL_RIGHT )
+            {   
+                // Check limit hit
+                if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() <= turret::dRightLimitSetpoint )
                 {
-                    m_eCommand = turret::COMMAND_NONE;
+                    m_eCommand = turret::eCommand::COMMAND_NONE;
                     return;
                 }
 
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Coast;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
-                
-                m_pRobotIO->m_TurretMotor.Set(turret::dManualRightSpeed);
-
+                // Reset timer
                 m_pTimeoutTimer->Reset();
                 m_pTimeoutTimer->Start();
 
+                // Set speed on motors
+                m_pRobotIO->m_TurretRotationMotor.Set( turret::dManualRightSpeed );
+
+                // Set state to manual right
                 m_eState = turret::eState::STATE_MANUAL_RIGHT;
             }
-
-            // *-------------------*
-            // * Auto Move Command *
-            // *-------------------*
-            else if(m_eCommand == turret::COMMAND_AUTO_MOVE)
+            
+            // *---------------------*
+            // * Manual Left Command *
+            // *---------------------*
+            else if ( m_eCommand == turret::eCommand::COMMAND_MANUAL_LEFT )
             {
-                if(m_dTurretSetpoint > 0 && m_dTurretSetpoint < turret::dMaxRotations)
+                // Check limit hit
+                if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() >= turret::dLeftLimitSetpoint )
                 {
-                    if(IsAtTarget())
-                    {
-                        m_eCommand = turret::COMMAND_NONE;
-                        return;
-                    }
-
-                    m_pRobotIO->m_TurretMotor.SetControl(m_Request.WithPosition( units::angle::turn_t{m_dTurretSetpoint} ));
-
-                    m_pTimeoutTimer->Reset();
-                    m_pTimeoutTimer->Start();
-
-                    m_eState = turret::eState::STATE_AUTO_MOVE;
+                    m_eCommand = turret::eCommand::COMMAND_NONE;
+                    return;
                 }
+
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                // Set speed on motors
+                m_pRobotIO->m_TurretRotationMotor.Set( turret::dManualLeftSpeed );
+
+                // Set state to manual left
+                m_eState = turret::eState::STATE_MANUAL_LEFT;
             }
 
-            // Error - unrecognized command
-            else if(m_eCommand != turret::COMMAND_NONE && m_eCommand != turret::COMMAND_STOP)
+            // *-------------------*
+            // * Track Hub Command *
+            // *-------------------*
+            else if ( m_eCommand == turret::eCommand::COMMAND_TRACK_HUB )
             {
-                printf("ERROR in Turret.cpp - Unknown command\n");
-            }
-        }
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
 
-        // ****************
-        // * Homing State *
-        // ****************
-        else if(m_eState == turret::eState::STATE_HOMING)
-        {
-            bool bIsTimedOut = false;
-            if((double)m_pTimeoutTimer->Get() >= turret::dHomingTimeout)
-            {
-                bIsTimedOut = true;
-            }
+                // Reset PID Controller
+                m_pPIDTimer->Reset();
+                m_pPIDTimer->Start();
 
-            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut)
-            {
-                m_pRobotIO->m_TurretMotor.Set(0);
+                m_dErrorSum = 0.0;
+                m_dLastTime = 0.0;
 
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+                // Set state to track hub
+                m_eState = turret::eState::STATE_TRACK_HUB;
 
-                m_eState = turret::eState::STATE_IDLE;
-                m_eCommand = turret::COMMAND_NONE;
-            }
-            else if(m_pRobotIO->IsTurretHomed())
-            {
-                m_pRobotIO->m_TurretMotor.Set(0);
-
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
-
-                m_eState = turret::eState::STATE_DEBOUNCE;
-            }
-        }
-
-        // ******************
-        // * Debounce State *
-        // ******************
-        else if(m_eState == turret::eState::STATE_DEBOUNCE)
-        {
-            if((double)m_pTimeoutTimer->Get() >= turret::dDebounceTimeout)
-            {
-                m_pRobotIO->m_TurretMotor.SetPosition(0_tr);
-
-                m_eState = turret::eState::STATE_IDLE;
-                m_eCommand = turret::COMMAND_NONE;
-            }
-        }
-
-        
-        // *********************
-        // * Manual Left State *
-        // *********************
-        else if(m_eState == turret::eState::STATE_MANUAL_LEFT)
-        {
-            bool bIsTimedOut = false;
-            if((double)m_pTimeoutTimer->Get() >= turret::dManualMoveTimeout)
-            {
-                bIsTimedOut = true;
             }
 
-            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->IsTurretMax())
+            // *----------------------*
+            // * Track Corner Command *
+            // *----------------------*
+            else if ( m_eCommand == turret::eCommand::COMMAND_TRACK_CORNER )
             {
-                m_pRobotIO->m_TurretMotor.Set(0);
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
 
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
+                // Reset PID Controller
+                m_pPIDTimer->Reset();
+                m_pPIDTimer->Start();
 
-                m_eState = turret::eState::STATE_IDLE;
-                m_eCommand = turret::COMMAND_NONE;
+                m_dErrorSum = 0.0;
+                m_dLastTime = 0.0;
+
+                // Set state to track corner
+                m_eState = turret::eState::STATE_TRACK_CORNER;
+            }
+            // Handle unrecognized command error
+            else if ( m_eCommand != turret::eCommand::COMMAND_NONE && m_eCommand != turret::eCommand::COMMAND_STOP )
+            {
+                printf("Turret.cpp: Unrecognized command");
             }
         }
 
         // **********************
         // * Manual Right State *
+        // **********************        
+        else if ( m_eState == turret::eState::STATE_MANUAL_RIGHT )
+        {
+            // Check timeout timer
+            bool bIsTimedOut = false;
+            if ( (double)m_pTimeoutTimer->Get() >= turret::dManualTurnTimeout )
+            {
+                bIsTimedOut = true;
+            }
+
+            // Check limit hit
+            bool bLimitHit = false;
+            if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() <= turret::dRightLimitSetpoint )
+            {
+                bLimitHit = true;
+            }
+
+            if ( m_eCommand == turret::eCommand::COMMAND_STOP || bLimitHit == true || bIsTimedOut == true )
+            {
+                // Stop turn motors
+                m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+
+                // Reset state and command
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::eCommand::COMMAND_NONE;
+            }
+        }
+
+        // *********************
+        // * Manual Left State *
+        // *********************        
+        else if ( m_eState == turret::eState::STATE_MANUAL_LEFT )
+        {
+            // Check timeout timer
+            bool bIsTimedOut = false;
+            if ( (double)m_pTimeoutTimer->Get() >= turret::dManualTurnTimeout )
+            {
+                bIsTimedOut = true;
+            }
+
+            // Check limit hit
+            bool bLimitHit = false;
+            if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() >= turret::dLeftLimitSetpoint )
+            {
+                bLimitHit = true;
+            }
+
+            if ( m_eCommand == turret::eCommand::COMMAND_STOP || bLimitHit == true || bIsTimedOut == true )
+            {
+                // Stop turn motors
+                m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+
+                // Reset state and command
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::eCommand::COMMAND_NONE;
+            }
+        }
+
+        // *******************
+        // * Track Hub State *
+        // *******************        
+        else if ( m_eState == turret::eState::STATE_TRACK_HUB )
+        {
+            // Check timeout timer
+            bool bIsTimedOut = false;
+            if ( (double)m_pTimeoutTimer->Get() >= turret::dTrackHubTimeout )
+            {
+                bIsTimedOut = true;
+            }
+
+            if ( m_eCommand == turret::eCommand::COMMAND_STOP || bIsTimedOut == true )
+            {
+                // Stop turn motors
+                m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+
+                // Reset state and command
+                m_eState = turret::eState::STATE_IDLE;
+                m_eCommand = turret::eCommand::COMMAND_NONE;
+            }
+            // Tracking logic
+            else
+            {
+                // Get bot position
+                frc::Pose2d BotPose = m_pDrivetrain->GetBotPose();
+                double dBotX = BotPose.X().value();
+                double dBotY = BotPose.Y().value();
+                double dBotAngle = BotPose.Rotation().Radians().value();
+
+                // Get shooter position
+                dShooterX = dBotX + ( turret::dShooterOffset * cos( dBotAngle ) );
+                dShooterY = dBotY + ( turret::dShooterOffset * sin( dBotAngle ) );
+
+                // Determine target position
+                dTargetX = 0.0;
+                dTargetY = 0.0;
+                if ( frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue ) // Blue alliance
+                {
+                    dTargetX = turret::dBlueHubX;
+                    dTargetY = turret::dBlueHubY;
+                }
+                else // red alliance
+                {
+                    dTargetX = turret::dRedHubX;
+                    dTargetY = turret::dRedHubY;
+                }
+
+                // Determine shooter angle needed (radians)
+                double dXdistance = dTargetX - dShooterX;
+                double dYdistance = dTargetY - dShooterY;
+                double dTargetAngle = atan2( dYdistance, dXdistance ) + ( dBotAngle - std::numbers::pi ); // flip bot angle because shooter is at the back of the robot
+
+                // Determine motor turn count for angle
+                double dTargetAngleTurns = std::clamp( turret::dMotorRotationsPerPiRadians * ( dTargetAngle / std::numbers::pi ), turret::dRightLimitSetpoint, turret::dLeftLimitSetpoint );
+                
+                // Dont run if close enough to target
+                if ( fabs( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() - dTargetAngleTurns ) < 0.2 )
+                {
+                    // Stop Motors
+                    m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+                }
+                else
+                {
+                    // Get motor speed
+                    double dMotorSpeed = -PIDOutput( dTargetAngleTurns, m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() ); // negated to make CCW positive
+                    double dSpeed = std::clamp( dMotorSpeed, turret::dAutoRightMaxSpeed, turret::dAutoLeftMaxSpeed );
+
+                    // Prevent Running past limits
+                    if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() >= turret::dLeftLimitSetpoint && dSpeed > 0 )
+                    {
+                        // Stop Motors
+                        m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+                    }
+                    else if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() <= turret::dRightLimitSetpoint && dSpeed < 0 )
+                    {
+                        // Stop Motors
+                        m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+                    }
+                    else 
+                    {
+                        m_pRobotIO->m_TurretRotationMotor.Set( dSpeed );
+                    }
+                }                
+            }
+        }
+
         // **********************
-        else if(m_eState == turret::eState::STATE_MANUAL_RIGHT)
+        // * Track Corner State *
+        // **********************        
+        else if ( m_eState == turret::eState::STATE_TRACK_CORNER )
         {
+            // Check timeout timer
             bool bIsTimedOut = false;
-            if((double)m_pTimeoutTimer->Get() >= turret::dManualMoveTimeout)
+            if ( (double)m_pTimeoutTimer->Get() >= turret::dTrackCornerTimeout )
             {
                 bIsTimedOut = true;
             }
 
-            if(m_eCommand == turret::COMMAND_STOP || bIsTimedOut || m_pRobotIO->IsTurretHomed())
+            if ( m_eCommand == turret::eCommand::COMMAND_STOP || bIsTimedOut == true )
             {
-                m_pRobotIO->m_TurretMotor.Set(0);
+                // Stop turn motors
+                m_pRobotIO->m_TurretRotationMotor.Set( 0 );
 
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
-
+                // Reset state and command
                 m_eState = turret::eState::STATE_IDLE;
-                m_eCommand = turret::COMMAND_NONE;
+                m_eCommand = turret::eCommand::COMMAND_NONE;
+            }
+            // Tracking logic
+            else
+            {
+                // Get bot position
+                frc::Pose2d BotPose = m_pDrivetrain->GetBotPose();
+                double dBotX = BotPose.X().value();
+                double dBotY = BotPose.Y().value();
+                double dBotAngle = BotPose.Rotation().Radians().value();
+
+                // Get shooter position
+                dShooterX = dBotX + ( turret::dShooterOffset * cos( dBotAngle ) );
+                dShooterY = dBotY + ( turret::dShooterOffset * sin( dBotAngle ) );
+
+                // Determine target position
+                dTargetX = 0.0;
+                dTargetY = 0.0;
+                if ( frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue ) // Blue alliance
+                {
+                    // Pick best corner
+                    if ( dShooterY < turret::dCenterY )
+                    {
+                        dTargetX = turret::dLeftBlueCornerX;
+                        dTargetY = turret::dLeftBlueCornerY;
+                    }
+                    else
+                    {
+                        dTargetX = turret::dRightBlueCornerX;
+                        dTargetY = turret::dRightBlueCornerY;
+                    }
+                }
+                else // red alliance
+                {
+                    // Pick best corner
+                    if ( dShooterY < turret::dCenterY )
+                    {
+                        dTargetX = turret::dLeftRedCornerX;
+                        dTargetY = turret::dLeftRedCornerY;
+                    }
+                    else
+                    {
+                        dTargetX = turret::dRightRedCornerX;
+                        dTargetY = turret::dRightRedCornerY;
+                    }
+                }
+
+                // Determine shooter angle needed (radians)
+                double dXdistance = dTargetX - dShooterX;
+                double dYdistance = dTargetY - dShooterY;
+                double dTargetAngle = atan2( dYdistance, dXdistance ) + dBotAngle;
+
+                // Determine motor turn count for angle
+                double dTargetAngleTurns = std::clamp( turret::dMotorRotationsPerPiRadians * ( dTargetAngle / std::numbers::pi ), turret::dRightLimitSetpoint, turret::dLeftLimitSetpoint );
+                
+                // Dont run if close enough to target
+                if ( fabs( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() - dTargetAngleTurns ) < 0.2 )
+                {
+                    // Stop Motors
+                    m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+                }
+                else
+                {
+                    // Get motor speed
+                    double dMotorSpeed = -PIDOutput( dTargetAngleTurns, m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() ); // negated to make CCW positive
+                    double dSpeed = std::clamp( dMotorSpeed, turret::dAutoRightMaxSpeed, turret::dAutoLeftMaxSpeed );
+
+                    // Prevent Running past limits
+                    if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() >= turret::dLeftLimitSetpoint && dSpeed > 0 )
+                    {
+                        // Stop Motors
+                        m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+                    }
+                    else if ( m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble() <= turret::dRightLimitSetpoint && dSpeed < 0 )
+                    {
+                        // Stop Motors
+                        m_pRobotIO->m_TurretRotationMotor.Set( 0 );
+                    }
+                    else 
+                    {
+                        m_pRobotIO->m_TurretRotationMotor.Set( dSpeed );
+                    }
+                }                
             }
         }
-
-        // *******************
-        // * Auto Move State *
-        // *******************
-        else if(m_eState == turret::eState::STATE_AUTO_MOVE)
-        {
-            bool bIsTimedOut = false;
-            if((double)m_pTimeoutTimer->Get() >= turret::dAutoMoveTimeout)
-            {
-                bIsTimedOut = true;
-            }
-
-            if(IsAtTarget() || bIsTimedOut || m_eCommand == turret::COMMAND_STOP)
-            {
-                m_pRobotIO->m_TurretMotor.Set(0);
-
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
-
-                m_eState = turret::eState::STATE_IDLE;
-                m_eCommand = turret::COMMAND_NONE;
-            }
-        }
-
-        // ********************
-        // * Follow Hub State *
-        // ********************
-        else if(m_eState == turret::eState::STATE_FOLLOW)
-        {
-            bool bIsTimedOut = false;
-            if((double)m_pTimeoutTimer->Get() >= turret::dFollowTimeout)
-            {
-                bIsTimedOut = true;
-            }
-
-            //Update Motor Control
-            m_pRobotIO->m_TurretMotor.SetControl(m_Request.WithPosition(units::angle::turn_t{ GetTurretAngleRotations() }));
-
-            if(bIsTimedOut || m_eCommand == turret::COMMAND_STOP)
-            {
-                m_pRobotIO->m_TurretMotor.Set(0);
-
-                m_MotorConfigs.NeutralMode = signals::NeutralModeValue::Brake;
-                m_pRobotIO->m_TurretMotor.GetConfigurator().Apply(m_MotorConfigs);
-
-                m_eState = turret::eState::STATE_IDLE;
-                m_eCommand = turret::COMMAND_NONE;
-            }
-        }
-
-        // Handle Error State or unknown state
+        // Handle unknown or error state
         else
         {
-            // Error Logic Here if needed
-            printf("ERROR in Turret.cpp - Error or unknown state\n");
+            printf("Turret.cpp: Unknown state or error state \n");
         }
+
     }
+    // handle m_pRobotIO nullptr error
     else
     {
-        // Handle RobotIO nullptr error
-        printf("ERROR in Turret.cpp - Robot IO Pointer Null or Turret Setpoint Pointer Null\n");
+        printf("Turret.cpp: m_pRobotIO is nullptr \n");
     }
 }
 
-double Turret::GetTurretAngleRotations()
+// Get Shooter Distance Accessor Method
+double Turret::GetTargetDistance()
 {
-    //Todo Calculate turret target rotations based on drivetrain location
+    double dXDistance = dTargetX - dShooterX;
+    double dYDistance = dTargetY - dShooterY;
 
+    double dShooterDistance = sqrt( ( dXDistance * dXDistance ) + ( dYDistance * dYDistance ) );
+
+    return( dShooterDistance );
+}
+
+
+// PID Controller 
+double Turret::PIDOutput( double dTarget, double dCurrent )
+{
+    // Proportional
+    double dError = dTarget - dCurrent;
+
+    double dProportional = turret::Kp * dError;
+
+    //Integral
+    double dt = (double)m_pPIDTimer->Get() - m_dLastTime;
+
+    if ( dError < 2.0 )
+    {
+        m_dErrorSum += dError * std::clamp( dt, 0.0, 1.0 );
+    }
+    else
+    {
+        m_dErrorSum = 0.0;
+    }
     
+    double dIntegral = turret::Ki * m_dErrorSum;
 
-    return 0.0;
+    m_dLastTime = (double)m_pPIDTimer->Get();
+
+    //Derivative
+    double dE = dError - m_dLastError;
+
+    double dDerivative = turret::Kd * ( dE / dt );
+
+    m_dLastError = dError;
+
+    return ( std::clamp( ( dProportional + dIntegral + dDerivative ), turret::dAutoLeftMaxSpeed, turret::dAutoRightMaxSpeed ) );
 }
