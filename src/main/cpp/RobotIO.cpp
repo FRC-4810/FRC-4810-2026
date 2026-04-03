@@ -107,7 +107,7 @@ void RobotIO::RobotInit()
    // * Magazine Hardware Initialization *
    // *----------------------------------*
    
-   configs::TalonFXSConfiguration feederMotorConfigs{};
+   configs::TalonFXConfiguration feederMotorConfigs{};
    
    feederMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
@@ -117,7 +117,6 @@ void RobotIO::RobotInit()
    feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
-   feederMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
 
    m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
 
