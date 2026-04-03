@@ -3,17 +3,17 @@ compiling Magazine.cpp successful.
 
 compiling BasicTurret.cpp successful.
 
+compiling Shooter.cpp successful.
+
 compiling Intake.cpp successful.
 
 compiling RobotIO.cpp successful.
 
-compiling Shooter.cpp successful.
+compiling Auton_03.cpp successful.
 
-compiling SwerveModule.cpp successful.
+compiling Auton_02.cpp successful.
 
 compiling Auton_01.cpp successful.
-
-compiling Auton_03.cpp successful.
 
 compiling MainStateMachine.cpp successful.
 C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
@@ -22,8 +22,6 @@ C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:
       |               ^
 C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: At global scope:
 C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:123:15: warning: 'i' defined but not used [-Wunused-variable]
-
-compiling Auton_02.cpp successful.
 
 compiling Robot.cpp successful.
 

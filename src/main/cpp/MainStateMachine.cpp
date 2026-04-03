@@ -462,7 +462,6 @@ void MainStateMachine::Execute()
            // m_Intake.Agitate();
 
          //}
-         printf("Shooting State\n");
          
          if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() < 0.8 && m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() < 0.8)
          {

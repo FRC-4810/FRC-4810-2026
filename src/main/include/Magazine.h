@@ -31,8 +31,8 @@ namespace magazine
     static constexpr double dKickerMotorInSpeed = 0.8;
     static constexpr double dKickerMotorOutSpeed = -0.8;
 
-    static constexpr double dFeederMotorInSpeed = 1.0;
-    static constexpr double dFeederMotorOutSpeed = -1.0;
+    static constexpr double dFeederMotorInSpeed = 0.8;
+    static constexpr double dFeederMotorOutSpeed = -0.8;
     
 }
 
