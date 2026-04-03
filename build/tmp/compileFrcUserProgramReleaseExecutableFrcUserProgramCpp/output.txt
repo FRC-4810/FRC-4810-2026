@@ -1,19 +1,19 @@
 See file:///C:/Users/scram/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling Shooter.cpp successful.
+
 compiling BasicTurret.cpp successful.
 
 compiling Magazine.cpp successful.
 
-compiling Auton_01.cpp successful.
-
-compiling Auton_02.cpp successful.
-
-compiling Auton_03.cpp successful.
-
-compiling Shooter.cpp successful.
+compiling Intake.cpp successful.
 
 compiling RobotIO.cpp successful.
 
-compiling Intake.cpp successful.
+compiling Auton_01.cpp successful.
+
+compiling Auton_03.cpp successful.
+
+compiling Auton_02.cpp successful.
 
 compiling MainStateMachine.cpp successful.
 C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
