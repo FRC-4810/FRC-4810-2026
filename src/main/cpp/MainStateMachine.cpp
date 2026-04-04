@@ -664,6 +664,12 @@ void MainStateMachine::Execute()
          m_Drivetrain.ToggleFieldRelative();
       }
 
+      if ( m_pRobotIO->m_DriveController.GetBackButtonPressed() )
+      {
+         m_Drivetrain.ResetGyro();
+      }
+
+
       // If driver controller disconects, stop drivetrain and don't run anything else
 
       if ( ! m_pRobotIO->m_DriveController.IsConnected() )

@@ -59,7 +59,7 @@ class RobotIO
       // * Intake Accessors *
       // *------------------*
       inline bool IsIntakeLowered()
-         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.5 ); }
+         { return( m_IntakeMoveMotor.GetPosition().GetValueAsDouble() >= 0.614 ); }
       
          //-GMS - for now, with no limits, check if close to 0
       inline bool IsIntakeRaised()

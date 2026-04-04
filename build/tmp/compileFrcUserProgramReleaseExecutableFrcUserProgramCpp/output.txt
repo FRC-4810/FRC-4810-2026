@@ -1,4 +1,4 @@
-See file:///C:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling MainStateMachine.cpp successful.
+See file:///C:/Users/scram/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling Auton_01.cpp successful.
 
-Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/scram/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

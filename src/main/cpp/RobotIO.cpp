@@ -117,7 +117,7 @@ void RobotIO::RobotInit()
    feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
-
+   
    m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
 
    configs::TalonFXSConfiguration kickerMotorConfigs{};

@@ -78,7 +78,7 @@ void Auton01::Execute()
             m_Magazine.RunIn();
             m_Magazine.Execute();
         }
-        else if (m_pTimeoutTimer->Get() > 14_s) {
+        else if (m_pTimeoutTimer->Get() > 12_s) {
             /* Run the shooter to score the balls */
             m_Shooter.LowPowerShoot();
             m_Shooter.Execute();

@@ -34,8 +34,8 @@ namespace shooter
 
     // Shooter Velocity Setpoints
     static constexpr double dMediumPowerVelocitySetpoint = 0.0;
-    static constexpr double dLowPowerVelocitySetpoint = 25.0;
-    static constexpr double dHighPowerVelocitySetpoint = 30.0;
+    static constexpr double dLowPowerVelocitySetpoint = 20.0;
+    static constexpr double dHighPowerVelocitySetpoint = 25.0;
 }
 
 

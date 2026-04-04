@@ -328,12 +328,13 @@ void Drivetrain::TryAddVisionMeasurement()
 
     //-GMS - Pick which one works best
     //UpdatePoseMegatag1();
-    UpdatePoseMegatag2();
+    UpdatePoseMegatag1();
 
 }
 
 void Drivetrain::UpdatePoseMegatag1()
 {
+    printf("Setting Orientation\n");
     LimelightHelpers::SetRobotOrientation("limelight", (double)GetBotPose().Rotation().Degrees(), 0, 0, 0, 0, 0);  //Other 5 values are optional, ommitted for simplicity sake
     
     // ******************
@@ -389,8 +390,9 @@ void Drivetrain::UpdatePoseMegatag2()
     // ******************
     // * Megatag 2 code *
     // ******************
+    printf("Setting Orientation %f\n", m_gyro.GetYaw().GetValueAsDouble(), 0, 0, 0, 0, 0);
 
-    LimelightHelpers::SetRobotOrientation("limelight", m_gyro.GetYaw().GetValueAsDouble(), 0, 0, 0, 0, 0);
+    LimelightHelpers::SetRobotOrientation("limelight", 180-GetGyroRotation2d().Degrees().value(), 0, 0, 0, 0, 0);
     LimelightHelpers::PoseEstimate mt2Pose;
     if(frc::DriverStation::GetAlliance() == frc::DriverStation::Alliance::kBlue)    //-GMS - Blue alliance
     {

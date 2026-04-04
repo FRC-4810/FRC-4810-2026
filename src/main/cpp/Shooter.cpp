@@ -31,13 +31,14 @@ void Shooter::Execute()
         {
             // Go to idle state
             m_eState = shooter::eState::STATE_IDLE;
+            
         }
 
         // **************
         // * Idle State *
         // **************
         
-        else if ( m_eState == shooter::eState::STATE_IDLE )
+        if ( m_eState == shooter::eState::STATE_IDLE )
         {
             // *-------------------------*
             // * Low Power Shoot Command *

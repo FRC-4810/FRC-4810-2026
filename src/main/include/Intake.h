@@ -55,8 +55,8 @@ namespace intake
 
     // Setpoint Constants TODO
     constexpr double dUpperLimitSetpoint = 0.0;
-    constexpr double dLowerLimitSetpoint = 0.5;
-    constexpr double dCenterSetpoint = 0.25;
+    constexpr double dLowerLimitSetpoint = 0.614;
+    constexpr double dCenterSetpoint = 0.37;
 
 }
 

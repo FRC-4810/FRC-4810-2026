@@ -91,6 +91,10 @@ public:
     void LoadPath(std::string pathName, bool resetPose = true);
     void FollowPath();
     bool IsPathFinished();
+
+    inline void ResetGyro() {
+        m_gyro.SetYaw(0_deg);
+    }
     
     void DriveRobotRelative(const frc::ChassisSpeeds& speeds);
     frc::ChassisSpeeds GetRobotRelativeSpeeds();
@@ -162,7 +166,7 @@ public:
 
 private:
     RobotIO *m_pRobotIO;    //Pointer to RobotIO
-
+    
     hardware::Pigeon2 m_gyro{13,canbus};
 
     bool m_bIsFieldRelative;    //Field Relative bool (true: field centric; false: bot centric)
