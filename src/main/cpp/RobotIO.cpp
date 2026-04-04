@@ -117,9 +117,10 @@ void RobotIO::RobotInit()
    feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
 
+
    m_FeederMotor.GetConfigurator().Apply(feederMotorConfigs);
 
-   configs::TalonFXConfiguration kickerMotorConfigs{};
+   configs::TalonFXSConfiguration kickerMotorConfigs{};
    
    kickerMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
@@ -128,6 +129,8 @@ void RobotIO::RobotInit()
    kickerMotorConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true);
    kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
+
+   kickerMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
 
 
    m_KickerMotor.GetConfigurator().Apply(kickerMotorConfigs);
