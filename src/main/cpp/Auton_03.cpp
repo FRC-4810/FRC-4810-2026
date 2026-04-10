@@ -3,7 +3,7 @@
 // Constructor
 // Drivetrain pointer is an ugly hack by Cory so we don't have multiple instances of drivetrain floating around.
 // We create a new odometry for each drivetrain which really screws with autos
-Auton03::Auton03(Drivetrain * drivetrain, Intake *intake)
+Auton03::Auton03(subsystems::CommandSwerveDrivetrain * drivetrain, Intake *intake)
 {
     m_eState = auton03::eState::STATE_START;
 
@@ -18,9 +18,9 @@ void Auton03::Initialize( RobotIO *p_pRobotIO )
 {
     m_pRobotIO = p_pRobotIO;
 
-    if(m_Drivetrain->Initialized() == false) {
-        m_Drivetrain->Initialize( p_pRobotIO );
-    }
+    // if(m_Drivetrain->Initialized() == false) {
+    //     m_Drivetrain->Initialize( p_pRobotIO );
+    // }
     m_Magazine.Initialize( p_pRobotIO );
     m_Shooter.Initialize( p_pRobotIO );
     m_pTimeoutTimer = new frc::Timer();
@@ -39,7 +39,7 @@ void Auton03::Execute()
 
 
         /* Cheap and dirty way to run other subsystems while the robot is following its path */
-        if (m_pTimeoutTimer->Get() < 0.75_s) {
+        if (m_pTimeoutTimer->Get() < 0.75_s) { //Changed temp 0.75
             /* Lower the intake */
             m_intake->Stop();
         }else if (m_pTimeoutTimer->Get() < 1.5_s) {
@@ -53,7 +53,7 @@ void Auton03::Execute()
         }        
 
         //Shooting logic - backwards because we are using greater rather than less
-        if (m_pTimeoutTimer->Get() > 19.8_s) {
+        if (m_pTimeoutTimer->Get() > 19.8_s) { // Changing for testing only; should be 19.8
             // stop magazine and shooter just before end of auton period
             m_Magazine.Stop();
             m_Magazine.Execute();
@@ -63,7 +63,7 @@ void Auton03::Execute()
         }
         
         //TODO test agitate logic
-        else if (m_pTimeoutTimer->Get() > 14_s) {
+        else if (m_pTimeoutTimer->Get() > 13.5_s) {
             // Agitate intake 1.5s after shooting starts
             if(m_pRobotIO->IsIntakeLowered())
             {
@@ -72,12 +72,12 @@ void Auton03::Execute()
             }
         }
 
-        else if (m_pTimeoutTimer->Get() > 12.5_s) {
+        else if (m_pTimeoutTimer->Get() > 12.5_s) { //Slow down change; should be 12.5
             // run magazine after shooter reaches speed
             m_Magazine.RunIn();
             m_Magazine.Execute();
         }
-        else if (m_pTimeoutTimer->Get() > 12_s) {
+        else if (m_pTimeoutTimer->Get() > 12_s) { //Slow down change; should be 12
             /* Run the shooter to score the balls */
             m_Shooter.HighPowerShoot(); //-GMS - TODO: tune high-power shoot to shoot from corner
             m_Shooter.Execute();

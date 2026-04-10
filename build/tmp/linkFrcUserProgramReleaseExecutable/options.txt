@@ -1,54 +1,56 @@
 -o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\exe\\frcUserProgram\\release\\frcUserProgram
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\1q3nmz23eyq7mv8szac7tikov\\Intake.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\2bzeyvkc5skz4t5n9zkco7x7s\\SwerveModule.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\35d6vxaw7ingp8ta1lgqizvyz\\Shooter.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\3bg5a77l7vd4edmrxq5jco6ri\\Robot.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\40nwv8aw2gd3cb3rxxxjjga2u\\Auton_01.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\5iqtgy8yuo68pyyb03clmsycq\\Magazine.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6in1nirm1pv47mrkvqybrzvjn\\Auton_02.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6nsvqfctethfz1e0q6sy8e6t4\\MainStateMachine.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\9f8xm4bajos527m35vq40a7w4\\Auton_03.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\bv8allmn53jp7hrwetrf7id8i\\Drivetrain.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\cp256hdw289si491hn1e4iveq\\BasicTurret.o
-C:\\Users\\scram\\Documents\\GitHub\\FRC-4810-2026\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\df41ht19jcwuybb5qpsl0l42r\\RobotIO.o
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\b06a058ca1917628abbc0d96837e83b3\\transformed\\wpilibNewCommands-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpilibNewCommands.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\298a714fd2458bad5c7307814c09acfc\\transformed\\PathplannerLib-cpp-2026.1.2-linuxathenastatic\\linux\\athena\\static\\libPathplannerLib.a
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\9e0d59bac2e9c5904a1f363b1d28ace8\\transformed\\wpiapi-cpp-5.36.0-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix_WPI.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\879b397a5cc868be6437e04aacb36de6\\transformed\\api-cpp-5.36.0-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\d4387661d8c0e88907e9b94ac3cdd9ae\\transformed\\cci-5.36.0-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixCCI.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\f080dc3e8a96aa943171b97b37ac12e9\\transformed\\wpiapi-cpp-26.1.0-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix6_WPI.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\de7812c27b7301f4578c1ff961039902\\transformed\\tools-26.1.0-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixTools.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0343c5f31c8cacba4d95bc8fb992fe62\\transformed\\wpilibc-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpilibc.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\fb71b0702ebcfd22436d77e2084d68e9\\transformed\\ntcore-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libntcore.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0b17d3d2d0cd5fa970ea42e0b5c31907\\transformed\\hal-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpiHal.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\ddd868e6fca8cce78876f9fff6b2f248\\transformed\\wpimath-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpimath.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\e361c3b533c72ca67331a59412799a33\\transformed\\wpinet-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpinet.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\598609eeedafcda7edd30331cc69ee4c\\transformed\\wpiutil-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpiutil.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\25b540c1538bf10745b211fdd2dbfeac\\transformed\\netcomm-2026.1.2-linuxathena\\linux\\athena\\shared\\libFRC_NetworkCommunication.so.26.0.0
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\d1b12a0df9e38e6420b3f4af56ea140e\\transformed\\chipobject-2026.1.2-linuxathena\\linux\\athena\\shared\\libRoboRIO_FRC_ChipObject.so.26.0.0
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\16384a34cbdf690b74f4bc205cc328d7\\transformed\\visa-2026.1.2-linuxathena\\linux\\athena\\shared\\libvisa.so.23.3.0
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\799ea2e5e7599800a0c5020a2ab023ac\\transformed\\runtime-2026.1.2-linuxathena\\linux\\athena\\shared\\libembcanshim.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\799ea2e5e7599800a0c5020a2ab023ac\\transformed\\runtime-2026.1.2-linuxathena\\linux\\athena\\shared\\libfpgalvshim.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\c2517db9081e7e9a9e7f0ec1c37da2bd\\transformed\\cameraserver-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libcameraserver.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\78a59238f0d80ee23764e634c00f0d24\\transformed\\cscore-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libcscore.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\fd1e7663b74e10765220a2dd15d2cba0\\transformed\\apriltag-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libapriltag.so
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_aruco.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_calib3d.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_core.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_dnn.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_features2d.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_flann.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_gapi.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_highgui.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_imgcodecs.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_imgproc.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_ml.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_objdetect.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_photo.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_stitching.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_video.so.4.10
-C:\\Users\\scram\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_videoio.so.4.10
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\exe\\frcUserProgram\\release\\frcUserProgram"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\1q3nmz23eyq7mv8szac7tikov\\Intake.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\35d6vxaw7ingp8ta1lgqizvyz\\Shooter.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\3bg5a77l7vd4edmrxq5jco6ri\\Robot.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\40nwv8aw2gd3cb3rxxxjjga2u\\Auton_01.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\5iqtgy8yuo68pyyb03clmsycq\\Magazine.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6in1nirm1pv47mrkvqybrzvjn\\Auton_02.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\6nsvqfctethfz1e0q6sy8e6t4\\MainStateMachine.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\7djsbfcplu1bdbt3bln17747e\\Auton_04.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\9f8xm4bajos527m35vq40a7w4\\Auton_03.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\cfzzwbsvsrzo72b6ql96mzz5i\\Auton_05.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\cj5mwyqyaa7r59ouqlt8309jx\\CommandSwerveDrivetrain.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\cp256hdw289si491hn1e4iveq\\BasicTurret.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\df41ht19jcwuybb5qpsl0l42r\\RobotIO.o"
+"C:\\Users\\iamro\\Downloads\\FRC-4810-2026-main (1)\\FRC-4810-2026-main\\build\\objs\\frcUserProgram\\release\\frcUserProgramCpp\\spwbyg1pufvfi098ovxrg2rz\\TunerConstants.o"
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\b06a058ca1917628abbc0d96837e83b3\\transformed\\wpilibNewCommands-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpilibNewCommands.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\ff27182bbc5dcc944aefbe6fe07bfda0\\transformed\\PathplannerLib-cpp-2026.1.2-linuxathenastatic\\linux\\athena\\static\\libPathplannerLib.a
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\976ca84eb530280968ebb6757a85426c\\transformed\\wpiapi-cpp-5.36.0-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix_WPI.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\5b755ceb8eb926809ff09240642d4ded\\transformed\\api-cpp-5.36.0-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\f9e0ff64a0f5f42283bdddb9fb83f82c\\transformed\\cci-5.36.0-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixCCI.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\24fe527889bf0b4868a86a1b4aea6906\\transformed\\wpiapi-cpp-26.1.0-linuxathena\\linux\\athena\\shared\\libCTRE_Phoenix6_WPI.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\fe0c9f8e311d2f445f8886fdd9717b6b\\transformed\\tools-26.1.0-linuxathena\\linux\\athena\\shared\\libCTRE_PhoenixTools.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0343c5f31c8cacba4d95bc8fb992fe62\\transformed\\wpilibc-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpilibc.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\fb71b0702ebcfd22436d77e2084d68e9\\transformed\\ntcore-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libntcore.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0b17d3d2d0cd5fa970ea42e0b5c31907\\transformed\\hal-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpiHal.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\ddd868e6fca8cce78876f9fff6b2f248\\transformed\\wpimath-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpimath.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\e361c3b533c72ca67331a59412799a33\\transformed\\wpinet-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpinet.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\598609eeedafcda7edd30331cc69ee4c\\transformed\\wpiutil-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libwpiutil.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\25b540c1538bf10745b211fdd2dbfeac\\transformed\\netcomm-2026.1.2-linuxathena\\linux\\athena\\shared\\libFRC_NetworkCommunication.so.26.0.0
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\d1b12a0df9e38e6420b3f4af56ea140e\\transformed\\chipobject-2026.1.2-linuxathena\\linux\\athena\\shared\\libRoboRIO_FRC_ChipObject.so.26.0.0
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\16384a34cbdf690b74f4bc205cc328d7\\transformed\\visa-2026.1.2-linuxathena\\linux\\athena\\shared\\libvisa.so.23.3.0
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\799ea2e5e7599800a0c5020a2ab023ac\\transformed\\runtime-2026.1.2-linuxathena\\linux\\athena\\shared\\libembcanshim.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\799ea2e5e7599800a0c5020a2ab023ac\\transformed\\runtime-2026.1.2-linuxathena\\linux\\athena\\shared\\libfpgalvshim.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\c2517db9081e7e9a9e7f0ec1c37da2bd\\transformed\\cameraserver-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libcameraserver.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\78a59238f0d80ee23764e634c00f0d24\\transformed\\cscore-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libcscore.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\fd1e7663b74e10765220a2dd15d2cba0\\transformed\\apriltag-cpp-2026.2.1-linuxathena\\linux\\athena\\shared\\libapriltag.so
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_aruco.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_calib3d.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_core.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_dnn.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_features2d.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_flann.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_gapi.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_highgui.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_imgcodecs.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_imgproc.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_ml.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_objdetect.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_photo.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_stitching.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_video.so.4.10
+C:\\Users\\iamro\\.gradle\\caches\\8.11\\transforms\\0c74d7f3e1a0dec233fffd0d650ad65e\\transformed\\opencv-cpp-4.10.0-3-linuxathena\\linux\\athena\\shared\\libopencv_videoio.so.4.10
 -rdynamic
 -pthread
 -ldl

@@ -18,7 +18,8 @@
 
 #include "RobotIO.h"
 
-#include "Drivetrain.h"                // Drivetrain state machine class
+#include "subsystems/CommandSwerveDrivetrain.h"                // Drivetrain state machine class
+#include "generated/TunerConstants.h"
                                        //    definition
 #include "Intake.h"                    // Intake state machine class
                                        //    definition
@@ -81,6 +82,9 @@ namespace RobotMain
 
 class MainStateMachine
 {
+    units::meters_per_second_t MaxSpeed = 1.0 * TunerConstants::kSpeedAt12Volts; // kSpeedAt12Volts desired top speed
+    units::radians_per_second_t MaxAngularRate = 0.75_tps; // 3/4 of a rotation per second max angular velocity
+
    public:
 
       // Constructor/Destructor.
@@ -95,7 +99,7 @@ class MainStateMachine
       void UpdateStatus();
       void Execute();
 
-      Drivetrain m_Drivetrain;
+      subsystems::CommandSwerveDrivetrain m_Drivetrain{TunerConstants::CreateDrivetrain()};
       Intake m_Intake;
    private:
       RobotMain::eState m_eState;      // Current main state
@@ -109,6 +113,8 @@ class MainStateMachine
       Magazine m_Magazine;
       BasicTurret m_Turret;
       Shooter m_Shooter;
+
+      bool driveIsFieldRelative = true;
 };
 
 #endif // MAIN_STATE_MACHINE_H_

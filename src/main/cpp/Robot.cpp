@@ -32,14 +32,18 @@ void Robot::RobotInit()
    m_chooser.AddOption( AUTON_ROUTINE_01, AUTON_ROUTINE_01 );
    m_chooser.AddOption( AUTON_ROUTINE_02, AUTON_ROUTINE_02 );
    m_chooser.AddOption( AUTON_ROUTINE_03, AUTON_ROUTINE_03 );
+   m_chooser.AddOption( AUTON_ROUTINE_05, AUTON_ROUTINE_05 );
 
    frc::SmartDashboard::PutData( "Auton Modes", &m_chooser );
 
    m_RobotIO.RobotInit();
 
    m_Auton01 = new Auton01(&m_MainStateMachine.m_Drivetrain, &m_MainStateMachine.m_Intake);
+   m_Auton02 = new Auton02(&m_MainStateMachine.m_Drivetrain);
    m_Auton03 = new Auton03(&m_MainStateMachine.m_Drivetrain, &m_MainStateMachine.m_Intake);
    m_Auton04 = new Auton04(&m_MainStateMachine.m_Drivetrain, &m_MainStateMachine.m_Intake);
+   m_Auton05 = new Auton05(&m_MainStateMachine.m_Drivetrain, &m_MainStateMachine.m_Intake);
+
    m_MainStateMachine.Initialize( &m_RobotIO );
 }
 
@@ -98,9 +102,10 @@ void Robot::AutonomousInit()
       m_autoSelected );                     // Value
 
    if(m_autoSelected == AUTON_ROUTINE_01 ) { m_Auton01->Initialize(&m_RobotIO); }
-   else if(m_autoSelected == AUTON_ROUTINE_02 ) { m_Auton02.Initialize(&m_RobotIO); }
+   else if(m_autoSelected == AUTON_ROUTINE_02 ) { m_Auton02->Initialize(&m_RobotIO); }
    else if(m_autoSelected == AUTON_ROUTINE_03 ) { m_Auton03->Initialize(&m_RobotIO); }
    else if(m_autoSelected == AUTON_ROUTINE_04 ) { m_Auton04->Initialize(&m_RobotIO); }
+   else if(m_autoSelected == AUTON_ROUTINE_05 ) { m_Auton05->Initialize(&m_RobotIO); }
 }
 
 //-------------------------------------------------------------------
@@ -115,7 +120,7 @@ void Robot::AutonomousPeriodic()
    }
    else if ( m_autoSelected == AUTON_ROUTINE_02 )
    {
-      m_Auton02.Execute();
+      m_Auton02->Execute();
    }
    else if ( m_autoSelected == AUTON_ROUTINE_03 )
    {
@@ -124,6 +129,10 @@ void Robot::AutonomousPeriodic()
    else if ( m_autoSelected == AUTON_ROUTINE_04 )
    {
       m_Auton04->Execute();
+   }
+   else if ( m_autoSelected == AUTON_ROUTINE_05 )
+   {
+      m_Auton05->Execute();
    }
 }
 

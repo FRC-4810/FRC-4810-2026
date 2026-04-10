@@ -28,8 +28,8 @@ namespace shooter
     static constexpr double dShootTimeout = 15.0; //Bring down temperaroly
 
     // Motor Speed Constants
-    static constexpr double dLowPowerRampUpSpeed = 0.67;
-    static constexpr double dHighPowerRampUpSpeed = 0.8;
+    static constexpr double dLowPowerRampUpSpeed = 0.66;
+    static constexpr double dHighPowerRampUpSpeed = 0.84;
     static constexpr double dFeederSpeed = 0.2;
 
     // Shooter Velocity Setpoints

@@ -1,18 +1,19 @@
 #include "Auton_02.h"
 
 // Constructor
-Auton02::Auton02()
+Auton02::Auton02(subsystems::CommandSwerveDrivetrain *m_Drivetrain)
 {
     m_eState = auton02::eState::STATE_START;
 
     m_pRobotIO = nullptr;
+    this->m_Drivetrain = m_Drivetrain;
 }
 
 // Initialize Shooter
 void Auton02::Initialize( RobotIO *p_pRobotIO )
 {
     m_pRobotIO = p_pRobotIO;
-    m_Drivetrain.Initialize( p_pRobotIO );
+    // m_Drivetrain->Initialize( p_pRobotIO );
     m_Intake.Initialize( p_pRobotIO );
     m_Magazine.Initialize( p_pRobotIO );
     m_Shooter.Initialize( p_pRobotIO );
@@ -32,8 +33,8 @@ void Auton02::Execute()
 
         if ( m_eState == auton02::eState::STATE_START )
         {
-            double rotSpeed = m_RotationPIDController.Calculate((double)m_Drivetrain.GetGyroRotation2d().Radians(), auton02::dTargetGyro);
-            m_Drivetrain.DriveFieldRelative(auton02::xMoveSpeed, auton02::yMoveSpeed, rotSpeed);
+            double rotSpeed = m_RotationPIDController.Calculate((double)m_Drivetrain->GetState().Pose.Rotation().Radians(), auton02::dTargetGyro);
+            m_Drivetrain->SetControl(ctre::phoenix6::swerve::requests::RobotCentric{}.WithVelocityX(auton02::xMoveSpeed * 1_mps).WithVelocityY(auton02::yMoveSpeed * 1_mps).WithRotationalRate(rotSpeed * 1_tps));
 
             m_pTimeoutTimer->Reset();
             m_pTimeoutTimer->Start();
@@ -47,15 +48,15 @@ void Auton02::Execute()
         else if ( m_eState == auton02::eState::STATE_MOVE_1 )
         {
             // Standard Move Logic
-            double rotSpeed = m_RotationPIDController.Calculate((double)m_Drivetrain.GetGyroRotation2d().Radians(), auton02::dTargetGyro);
-            m_Drivetrain.DriveFieldRelative(auton02::xMoveSpeed, auton02::yMoveSpeed, rotSpeed);
+            double rotSpeed = m_RotationPIDController.Calculate((double)m_Drivetrain->GetState().Pose.Rotation().Radians(), auton02::dTargetGyro);
+            m_Drivetrain->SetControl(ctre::phoenix6::swerve::requests::FieldCentric{}.WithVelocityX(auton02::xMoveSpeed * 1_mps).WithVelocityY(auton02::yMoveSpeed * 1_mps).WithRotationalRate(rotSpeed * 1_tps));
 
             m_Intake.AutoLower();
 
             // Check if timed out
             if((double)m_pTimeoutTimer->Get() >= auton02::dMove1Timer)
             {
-                m_Drivetrain.Stop();
+                m_Drivetrain->Stop();
 
                 m_Shooter.LowPowerShoot();
                 m_Shooter.Execute();

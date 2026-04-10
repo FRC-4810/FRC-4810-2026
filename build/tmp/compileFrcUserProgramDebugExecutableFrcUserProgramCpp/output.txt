@@ -1,20 +1,4 @@
-See file:///C:/Users/scram/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling Auton_03.cpp successful.
+See file:///C:/Users/iamro/Downloads/FRC-4810-2026-main%20(1)/FRC-4810-2026-main/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
+compiling Auton_05.cpp successful.
 
-compiling Auton_01.cpp successful.
-
-compiling Auton_02.cpp successful.
-
-compiling MainStateMachine.cpp successful.
-C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
-C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:123:15: warning: unused variable 'i' [-Wunused-variable]
-  123 |    static int i = 0;
-      |               ^
-C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: At global scope:
-C:\Users\scram\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:123:15: warning: 'i' defined but not used [-Wunused-variable]
-
-compiling Robot.cpp successful.
-
-compiling Drivetrain.cpp successful.
-
-Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/scram/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///C:/Users/iamro/Downloads/FRC-4810-2026-main%20(1)/FRC-4810-2026-main/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

@@ -3,10 +3,11 @@
 #include "RobotIO.h"
 #include <frc/Timer.h>
 #include <string>
-#include "Drivetrain.h"
+#include "subsystems/CommandSwerveDrivetrain.h"
 #include "Intake.h"
 #include "Magazine.h"
 #include "Shooter.h"
+#include <frc/controller/PIDController.h>
 
 namespace auton02 
 {
@@ -37,7 +38,7 @@ class Auton02
 {
     public:
         // Constructor / Deconstructor
-        Auton02();
+        Auton02(subsystems::CommandSwerveDrivetrain *m_Drivetrain);
         ~Auton02()
             {  }
         
@@ -61,7 +62,7 @@ class Auton02
             0.0     //Kd
         };
 
-        Drivetrain m_Drivetrain;
+        subsystems::CommandSwerveDrivetrain *m_Drivetrain;
         Intake m_Intake;
         Magazine m_Magazine;
         Shooter m_Shooter;

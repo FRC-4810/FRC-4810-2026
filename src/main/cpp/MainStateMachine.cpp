@@ -80,7 +80,9 @@
 //==================================================================
 
 #include "MainStateMachine.h"          // Main State Machine class definition
+#include <frc/filter/SlewRateLimiter.h>
 
+using namespace ctre::phoenix6::swerve::requests;
 
 MainStateMachine::MainStateMachine()
 {
@@ -104,7 +106,7 @@ void MainStateMachine::Initialize(
    // the individual state machines so they can save it as well.
 
    m_pRobotIO = p_pRobotIO;
-   m_Drivetrain.Initialize( p_pRobotIO );
+   // m_Drivetrain.Initialize( p_pRobotIO );
    m_Intake.Initialize( p_pRobotIO );
    m_Magazine.Initialize( p_pRobotIO );
    m_Turret.Initialize( p_pRobotIO );
@@ -121,10 +123,10 @@ void MainStateMachine::Initialize(
 void MainStateMachine::UpdateStatus()
 {
    static int i = 0;
-   if(m_Drivetrain.Initialized()) {
+   // if(m_Drivetrain.Initialized()) {
       //frc::SmartDashboard::PutNumber("iterator", i++);
-      m_Drivetrain.CallPeriodic();
-   }
+   m_Drivetrain.Periodic();
+   // }
 }
 
 //-------------------------------------------------------------------
@@ -661,12 +663,13 @@ void MainStateMachine::Execute()
 
       if ( m_pRobotIO->m_DriveController.GetStartButtonPressed() )
       {
-         m_Drivetrain.ToggleFieldRelative();
+         driveIsFieldRelative = !driveIsFieldRelative;
+         // m_Drivetrain.ToggleFieldRelative();
       }
 
       if ( m_pRobotIO->m_DriveController.GetBackButtonPressed() )
       {
-         m_Drivetrain.ResetGyro();
+         m_Drivetrain.SeedFieldCentric();
       }
 
 
@@ -674,22 +677,47 @@ void MainStateMachine::Execute()
 
       if ( ! m_pRobotIO->m_DriveController.IsConnected() )
       {
-         m_Drivetrain.Execute(0, 0, 0);
+         m_Drivetrain.Stop();
       }
       else if(m_eDriveState == RobotMain::eDriveState::STATE_NORMAL) // Normal drive state/drive by joysticks
       {
       
          if(m_pRobotIO->m_DriveController.GetXButton()) // Swapped X and B buttons - BLC
          {
-            m_Drivetrain.DriveBotRelative(0, 0.1, 0);
+            m_Drivetrain.SetControl(RobotCentric{}.WithVelocityX(0_mps).WithVelocityY(0.1_mps));
          }
          else if(m_pRobotIO->m_DriveController.GetBButton())
          {
-            m_Drivetrain.DriveBotRelative(0, -0.1, 0);
+            m_Drivetrain.SetControl(RobotCentric{}.WithVelocityX(0_mps).WithVelocityY(-0.1_mps));
          }
          else
          {
-            m_Drivetrain.Execute(m_pRobotIO->m_DriveController.GetLeftY(), m_pRobotIO->m_DriveController.GetLeftX(), m_pRobotIO->m_DriveController.GetRightX());
+            /*Drive speeds                                                 1 / Higher is smoother */
+            static frc::SlewRateLimiter<units::scalar> xLimiter{1 / 0.5_s}; //Changed from 0.4
+            static frc::SlewRateLimiter<units::scalar> yLimiter{1 / 0.5_s};
+
+            double requestedX = xLimiter.Calculate(-m_pRobotIO->m_DriveController.GetLeftY());
+            double requestedY = yLimiter.Calculate(-m_pRobotIO->m_DriveController.GetLeftX());
+            double requestedOmega = -m_pRobotIO->m_DriveController.GetRightX();
+            if (driveIsFieldRelative) {
+               m_Drivetrain.SetControl(
+                  FieldCentric{}
+                     .WithVelocityX(requestedX * MaxSpeed)
+                     .WithVelocityY(requestedY * MaxSpeed)
+                     .WithRotationalRate(requestedOmega * MaxAngularRate)
+                     .WithDeadband(0.16 * MaxSpeed) //accounts for drift
+                     .WithRotationalDeadband(0.16 * MaxAngularRate)
+               );
+            } else {
+               m_Drivetrain.SetControl(
+                  RobotCentric{}
+                     .WithVelocityX(requestedX * MaxSpeed)
+                     .WithVelocityY(requestedY * MaxSpeed)
+                     .WithRotationalRate(requestedOmega * MaxAngularRate)
+                     .WithDeadband(0.1 * MaxSpeed)
+                     .WithRotationalDeadband(0.1 * MaxAngularRate)
+               );
+            }
          }
       }
    }

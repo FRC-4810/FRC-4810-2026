@@ -3,7 +3,7 @@
 // Constructor
 // Drivetrain pointer is an ugly hack by Cory so we don't have multiple instances of drivetrain floating around.
 // We create a new odometry for each drivetrain which really screws with autos
-Auton04::Auton04(Drivetrain * drivetrain, Intake *intake)
+Auton04::Auton04(subsystems::CommandSwerveDrivetrain * drivetrain, Intake *intake)
 {
     m_eState = auton04::eState::STATE_START;
 
@@ -18,9 +18,9 @@ void Auton04::Initialize( RobotIO *p_pRobotIO )
 {
     m_pRobotIO = p_pRobotIO;
 
-    if(m_Drivetrain->Initialized() == false) {
-        m_Drivetrain->Initialize( p_pRobotIO );
-    }
+    // if(m_Drivetrain->Initialized() == false) {
+    //     m_Drivetrain->Initialize( p_pRobotIO );
+    // }
     m_Magazine.Initialize( p_pRobotIO );
     m_Shooter.Initialize( p_pRobotIO );
     m_pTimeoutTimer = new frc::Timer();

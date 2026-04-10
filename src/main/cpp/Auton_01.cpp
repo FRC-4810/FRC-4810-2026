@@ -1,9 +1,10 @@
 #include "Auton_01.h"
+#include <iostream>
 
 // Constructor
 // Drivetrain pointer is an ugly hack by Cory so we don't have multiple instances of drivetrain floating around.
 // We create a new odometry for each drivetrain which really screws with autos
-Auton01::Auton01(Drivetrain * drivetrain, Intake *intake)
+Auton01::Auton01(subsystems::CommandSwerveDrivetrain * drivetrain, Intake *intake)
 {
     m_eState = auton01::eState::STATE_START;
 
@@ -16,11 +17,12 @@ Auton01::Auton01(Drivetrain * drivetrain, Intake *intake)
 // Initialize Shooter
 void Auton01::Initialize( RobotIO *p_pRobotIO )
 {
+    std::cout << "Initializing auto 1" << std::endl;
     m_pRobotIO = p_pRobotIO;
 
-    if(m_Drivetrain->Initialized() == false) {
-        m_Drivetrain->Initialize( p_pRobotIO );
-    }
+    // if(m_Drivetrain->Initialized() == false) {
+    //     m_Drivetrain->Initialize( p_pRobotIO );
+    // }
     m_Magazine.Initialize( p_pRobotIO );
     m_Shooter.Initialize( p_pRobotIO );
     m_pTimeoutTimer = new frc::Timer();
@@ -42,12 +44,12 @@ void Auton01::Execute()
         if (m_pTimeoutTimer->Get() < 0.75_s) {
             /* Lower the intake */
             m_intake->Stop();
-        }else if (m_pTimeoutTimer->Get() < 1.5_s) {
+        }else if (m_pTimeoutTimer->Get() < 1.25_s) {
             m_intake->AutoLower();
-        } else if (m_pTimeoutTimer->Get() < 10_s) {
+        } else if (m_pTimeoutTimer->Get() < 8_s) {
             /* Run the intake between 2 and 10 seconds into auto */
             m_intake->ManualIntake();
-        } else if (m_pTimeoutTimer->Get() < 11_s) {
+        } else if (m_pTimeoutTimer->Get() < 14_s) {
             /* Stop running the intake */
             m_intake->Stop();
         }
@@ -64,7 +66,7 @@ void Auton01::Execute()
         }
 
         //TODO test agitate logic
-        else if (m_pTimeoutTimer->Get() > 14_s) {
+        else if (m_pTimeoutTimer->Get() > 12_s) {
             // Agitate intake 1.5s after shooting starts
             if(m_pRobotIO->IsIntakeLowered())
             {
@@ -73,12 +75,12 @@ void Auton01::Execute()
             }
         }
         
-        else if (m_pTimeoutTimer->Get() > 12.5_s) {
+        else if (m_pTimeoutTimer->Get() > 10.5_s) {
             // run magazine after shooter reaches speed
             m_Magazine.RunIn();
             m_Magazine.Execute();
         }
-        else if (m_pTimeoutTimer->Get() > 12_s) {
+        else if (m_pTimeoutTimer->Get() > 10_s) {
             /* Run the shooter to score the balls */
             m_Shooter.LowPowerShoot();
             m_Shooter.Execute();

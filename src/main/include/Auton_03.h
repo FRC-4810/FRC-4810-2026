@@ -3,7 +3,7 @@
 #include "RobotIO.h"
 #include <frc/Timer.h>
 #include <string>
-#include "Drivetrain.h"
+#include "subsystems/CommandSwerveDrivetrain.h"
 #include "Intake.h"
 #include "Magazine.h"
 #include "Shooter.h"
@@ -30,7 +30,7 @@ class Auton03
 {
     public:
         // Constructor / Deconstructor
-        Auton03(Drivetrain * drivetrain, Intake *intake);
+        Auton03(subsystems::CommandSwerveDrivetrain * drivetrain, Intake *intake);
         ~Auton03()
             {  }
         
@@ -46,7 +46,7 @@ class Auton03
         RobotIO *m_pRobotIO;
         frc::Timer *m_pTimeoutTimer;
 
-        Drivetrain *m_Drivetrain;
+        subsystems::CommandSwerveDrivetrain *m_Drivetrain;
         Intake *m_intake;
         Magazine m_Magazine;
         Shooter m_Shooter;
