@@ -1,24 +1,53 @@
-See file:///C:/Users/Shiv/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
-compiling Shooter.cpp successful.
+See file:///T:/FRC%204810/FRC-4810-2026-MERGE-NEW/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling BasicTurret.cpp successful.
+
+compiling Magazine.cpp successful.
+
+compiling Auton_03.cpp successful.
 
 compiling Auton_04.cpp successful.
 
 compiling Auton_05.cpp successful.
 
-compiling Auton_03.cpp successful.
+compiling Shooter.cpp successful.
 
 compiling Auton_02.cpp successful.
 
-compiling Auton_01.cpp successful.
+compiling RobotIO.cpp successful.
+
+compiling Intake.cpp successful.
+
+compiling TunerConstants.cpp successful.
 
 compiling MainStateMachine.cpp successful.
-C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
-C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:127:15: warning: unused variable 'i' [-Wunused-variable]
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:127:15: warning: unused variable 'i' [-Wunused-variable]
   127 |    static int i = 0;
       |               ^
-C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: At global scope:
-C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:127:15: warning: 'i' defined but not used [-Wunused-variable]
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::Execute()':
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:72: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+  356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
+      |                                                                        ^
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:17: note: add parentheses around left hand side expression to silence this warning
+  356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                 (                                                     )
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:137: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+  356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
+      |                                                                                                                                         ^
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:81: note: add parentheses around left hand side expression to silence this warning
+  356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
+      |                                                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                                                                 (                                                      )
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: At global scope:
+T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:127:15: warning: 'i' defined but not used [-Wunused-variable]
+  127 |    static int i = 0;
+      |               ^
+
+compiling Auton_01.cpp successful.
 
 compiling Robot.cpp successful.
 
-Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/Shiv/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
+compiling CommandSwerveDrivetrain.cpp successful.
+
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///T:/FRC%204810/FRC-4810-2026-MERGE-NEW/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

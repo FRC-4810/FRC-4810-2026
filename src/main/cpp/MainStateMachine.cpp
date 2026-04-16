@@ -332,11 +332,56 @@ void MainStateMachine::Execute()
          {
             m_Intake.Stop();
          }
+         else
+         {
+            // *------------------------------------------*
+            // * Operator Right Trigger - Low Speed Shoot *
+            // *------------------------------------------*
+            if(m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
+            {
+               m_Shooter.LowPowerShoot();
+               m_Shooter.Execute();
+            }
+
+         
+            // *------------------------------------------*
+            // * Operator Left Trigger - High Speed Shoot *
+            // *------------------------------------------*
+            if(m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8)
+            {
+               m_Shooter.HighPowerShoot();
+               m_Shooter.Execute();
+            }
+
+            if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
+            {
+               m_Shooter.Stop();
+               m_Shooter.Execute();
+               m_Magazine.Stop();
+               m_Magazine.Execute();
+            }
+            else
+            {
+               m_Shooter.Execute();
+               m_Magazine.Execute();
+
+               if(m_Shooter.isShooting())
+               {
+                  //m_pRobotIO->m_OperatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.3); //Added Rumble
+                  m_Magazine.RunIn();
+                  m_Magazine.Execute();
+               }
+            }
+         }
 
          m_Intake.Execute();
 
          if(m_Intake.IsIdle())
          {
+            m_Shooter.Stop();
+            m_Shooter.Execute();
+            m_Magazine.Stop();
+            m_Magazine.Execute();
             m_eState = RobotMain::eState::STATE_IDLE;
          }
       }
