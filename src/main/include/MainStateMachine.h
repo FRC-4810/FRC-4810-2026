@@ -82,8 +82,8 @@ namespace RobotMain
 
 class MainStateMachine
 {
-    units::meters_per_second_t MaxSpeed = 1.0 * TunerConstants::kSpeedAt12Volts; // kSpeedAt12Volts desired top speed
-    units::radians_per_second_t MaxAngularRate = 0.75_tps; // 3/4 of a rotation per second max angular velocity
+    units::meters_per_second_t MaxSpeed = 0.70 * TunerConstants::kSpeedAt12Volts; // kSpeedAt12Volts desired top speed
+    units::radians_per_second_t MaxAngularRate = 0.65_tps; // 3/4 of a rotation per second max angular velocity -- .75 to .6 changed
 
    public:
 

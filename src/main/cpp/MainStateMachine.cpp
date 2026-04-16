@@ -81,6 +81,8 @@
 
 #include "MainStateMachine.h"          // Main State Machine class definition
 #include <frc/filter/SlewRateLimiter.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+
 
 using namespace ctre::phoenix6::swerve::requests;
 
@@ -126,6 +128,7 @@ void MainStateMachine::UpdateStatus()
    // if(m_Drivetrain.Initialized()) {
       //frc::SmartDashboard::PutNumber("iterator", i++);
    m_Drivetrain.Periodic();
+   frc::SmartDashboard::PutBoolean("Drive field relative", driveIsFieldRelative);
    // }
 }
 
@@ -438,6 +441,7 @@ void MainStateMachine::Execute()
 
          if(m_Shooter.isShooting())
          {
+            //m_pRobotIO->m_OperatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.3); //Added Rumble
             m_Magazine.RunIn();
             m_Magazine.Execute();
             m_Intake.ManualIntake();
@@ -450,6 +454,7 @@ void MainStateMachine::Execute()
          if(m_Shooter.isIdle())
          {
             m_eState = RobotMain::eState::STATE_IDLE;
+            //m_pRobotIO->m_OperatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.0); //Added Rumble
          }
       }
 
@@ -474,6 +479,7 @@ void MainStateMachine::Execute()
          } 
          else 
          {
+            //m_pRobotIO->m_OperatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.3); //Added Rumble
             // *------------------------------------------------------------*
             // * Operator Right Joystick Right - Manual Rotate Turret Right *
             // *------------------------------------------------------------*
@@ -568,6 +574,8 @@ void MainStateMachine::Execute()
                m_eState = RobotMain::eState::STATE_INTAKE_AUTO_LOWER;
             }
             m_pAgitateTimer->Reset();
+
+            //m_pRobotIO->m_OperatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.0); //Added Rumble
          }
       }
 
@@ -726,4 +734,5 @@ void MainStateMachine::Execute()
    {
       //   printf( "Main - Null Robot I/O Pointer Encountered\n" );
    }
+   
 }

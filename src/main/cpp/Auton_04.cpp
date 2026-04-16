@@ -39,50 +39,84 @@ void Auton04::Execute()
 
 
         /* Cheap and dirty way to run other subsystems while the robot is following its path */
-        if (m_pTimeoutTimer->Get() < 0.75_s) {
+        if (m_pTimeoutTimer->Get() < 0.7_s) {
             /* Lower the intake */
             m_intake->Stop();
-        }else if (m_pTimeoutTimer->Get() < 1.5_s) {
+        }else if (m_pTimeoutTimer->Get() < 0.9_s) {
             m_intake->AutoLower();
-        } else if (m_pTimeoutTimer->Get() < 10_s) {
+        } else if (m_pTimeoutTimer->Get() < 6_s) {
             /* Run the intake between 2 and 10 seconds into auto */
             m_intake->ManualIntake();
-        } else if (m_pTimeoutTimer->Get() < 11_s) {
+        } else if (m_pTimeoutTimer->Get() < 6.5_s) { //Might Need to Change Was 9.5
             /* Stop running the intake */
             m_intake->Stop();
         }
-        m_intake->Execute();
         
 
         //Shooting logic - backwards because we are using greater rather than less
-        if (m_pTimeoutTimer->Get() > 18_s) {
+        if (m_pTimeoutTimer->Get() > 19.75_s) {
             // stop magazine and shooter after 6 seconds of shooting
             m_Magazine.Stop();
             m_Magazine.Execute();
             m_Shooter.Stop();
             m_Shooter.Execute();
         }
-
-        //TODO test agitate logic
-        else if (m_pTimeoutTimer->Get() > 14_s) {
+        else if (m_pTimeoutTimer->Get() > 18.0_s) {
             // Agitate intake 1.5s after shooting starts
             if(m_pRobotIO->IsIntakeLowered())
             {
                 m_intake->Agitate();
-                //don't need to call execute, done at bottom
             }
         }
-        
-        else if (m_pTimeoutTimer->Get() > 10.5_s) {
+        else if (m_pTimeoutTimer->Get() > 16.5_s) {
             // run magazine after shooter reaches speed
             m_Magazine.RunIn();
             m_Magazine.Execute();
         }
-        else if (m_pTimeoutTimer->Get() > 10_s) {
+        else if (m_pTimeoutTimer->Get() > 16.0_s) {
             /* Run the shooter to score the balls */
-            m_Shooter.LowPowerShoot();
+            m_Shooter.AutonShoot();
             m_Shooter.Execute();
-        }   
+        }
+        else if (m_pTimeoutTimer->Get() > 14.0_s) {
+            m_intake->Stop();
+        }
+        else if (m_pTimeoutTimer->Get() > 12.5_s) {
+            m_intake->ManualIntake();
+        }
+        else if (m_pTimeoutTimer->Get() > 12.0_s) { // This will now run
+            m_intake->AutoLower();
+        }
+        else if (m_pTimeoutTimer->Get() > 9.5_s) {
+            /* Stop Shooter*/
+            m_Magazine.Stop();
+            m_Magazine.Execute();
+            m_Shooter.Stop();
+            m_Shooter.Execute();
+        }
+        //TODO test agitate logic -- Fix statement order -- fixed statement order - SSP
+        else if (m_pTimeoutTimer->Get() > 8_s) {
+            // Agitate intake 1.5s after shooting starts
+            if(m_pRobotIO->IsIntakeLowered())
+            {
+                m_intake->AutoRaise(); //Agitate to Auto Raise
+                //don't need to call execute, done at bottom
+            }
+        }
+        
+        else if (m_pTimeoutTimer->Get() > 6.5_s) {
+            // run magazine after shooter reaches speed
+            m_Magazine.RunIn();
+            m_Magazine.Execute();
+        }
+        else if (m_pTimeoutTimer->Get() > 6_s) {
+            /* Run the shooter to score the balls */
+            m_Shooter.AutonShoot();
+            m_Shooter.Execute();
+        }
+
+        m_intake->Execute();
+
 
 
         if ( m_eState == auton04::eState::STATE_START )

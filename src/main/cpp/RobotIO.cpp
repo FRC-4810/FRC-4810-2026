@@ -78,7 +78,7 @@ void RobotIO::RobotInit()
    intakeMoveConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    intakeMoveConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    intakeMoveConfigs.CurrentLimits.WithSupplyCurrentLimitEnable( true );
-   intakeMoveConfigs.CurrentLimits.WithStatorCurrentLimit( 50_A );
+   intakeMoveConfigs.CurrentLimits.WithStatorCurrentLimit( 60_A );
    intakeMoveConfigs.CurrentLimits.WithStatorCurrentLimitEnable( true );
    
    intakeMoveConfigs.MotorOutput.Inverted =
@@ -94,7 +94,7 @@ void RobotIO::RobotInit()
    intakeRunConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    intakeRunConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    intakeRunConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true);
-   intakeRunConfigs.CurrentLimits.WithStatorCurrentLimit( 80_A );
+   intakeRunConfigs.CurrentLimits.WithStatorCurrentLimit( 80_A ); //30 to 80 to 60 to 50 to 60 to 80
    intakeRunConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
    
    intakeRunConfigs.MotorOutput.Inverted =
@@ -112,7 +112,7 @@ void RobotIO::RobotInit()
    feederMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    feederMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
-   feederMotorConfigs.CurrentLimits.WithStatorCurrentLimit( 80_A );
+   feederMotorConfigs.CurrentLimits.WithStatorCurrentLimit( 50_A ); //60_a to 50_a
    feederMotorConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true); 
    feederMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    feederMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);
@@ -125,7 +125,7 @@ void RobotIO::RobotInit()
    kickerMotorConfigs.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.8_s );
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimit( 30_A );
    kickerMotorConfigs.CurrentLimits.WithSupplyCurrentLimitEnable(true);
-   kickerMotorConfigs.CurrentLimits.WithStatorCurrentLimit( 80_A );
+   kickerMotorConfigs.CurrentLimits.WithStatorCurrentLimit( 65_A );
    kickerMotorConfigs.CurrentLimits.WithStatorCurrentLimitEnable(true);
    kickerMotorConfigs.MotorOutput.WithInverted(signals::InvertedValue::Clockwise_Positive);
    kickerMotorConfigs.MotorOutput.WithNeutralMode(signals::NeutralModeValue::Coast);

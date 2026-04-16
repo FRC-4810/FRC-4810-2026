@@ -1,4 +1,24 @@
-See file:///C:/Users/iamro/Downloads/FRC-4810-2026-main%20(1)/FRC-4810-2026-main/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+See file:///C:/Users/Shiv/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+compiling Shooter.cpp successful.
+
+compiling Auton_04.cpp successful.
+
 compiling Auton_05.cpp successful.
 
-Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/iamro/Downloads/FRC-4810-2026-main%20(1)/FRC-4810-2026-main/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
+compiling Auton_03.cpp successful.
+
+compiling Auton_02.cpp successful.
+
+compiling Auton_01.cpp successful.
+
+compiling MainStateMachine.cpp successful.
+C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
+C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:127:15: warning: unused variable 'i' [-Wunused-variable]
+  127 |    static int i = 0;
+      |               ^
+C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: At global scope:
+C:\Users\Shiv\Documents\GitHub\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:127:15: warning: 'i' defined but not used [-Wunused-variable]
+
+compiling Robot.cpp successful.
+
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///C:/Users/Shiv/Documents/GitHub/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

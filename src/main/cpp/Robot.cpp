@@ -32,6 +32,7 @@ void Robot::RobotInit()
    m_chooser.AddOption( AUTON_ROUTINE_01, AUTON_ROUTINE_01 );
    m_chooser.AddOption( AUTON_ROUTINE_02, AUTON_ROUTINE_02 );
    m_chooser.AddOption( AUTON_ROUTINE_03, AUTON_ROUTINE_03 );
+   m_chooser.AddOption( AUTON_ROUTINE_04, AUTON_ROUTINE_04 );
    m_chooser.AddOption( AUTON_ROUTINE_05, AUTON_ROUTINE_05 );
 
    frc::SmartDashboard::PutData( "Auton Modes", &m_chooser );

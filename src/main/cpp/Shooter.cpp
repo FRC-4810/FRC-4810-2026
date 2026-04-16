@@ -77,6 +77,23 @@ void Shooter::Execute()
 
             }
 
+            // *---------------------------*
+            // * Auton Power Shoot Command *
+            // *---------------------------*
+
+            else if ( m_eCommand == shooter::eCommand::COMMAND_AUTON_SHOOT )
+            {
+                // Set speed on shooter motors using auton-specific constant
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( shooter::dAutonPowerRampUpSpeed );
+
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                // Set state to auton power ramp up
+                m_eState = shooter::eState::STATE_AUTON_POWER_RAMP_UP;
+            }
+
             // Unrecognized command
 
             //else if ( m_eCommand != shooter::eCommand::COMMAND_NONE || m_eCommand != shooter::eCommand::COMMAND_STOP ) < -GMS This should be AND, not OR
@@ -149,6 +166,40 @@ void Shooter::Execute()
             // *------------------------*
 
             else if ( m_pRobotIO->GetShooterSpeed()  >= shooter::dHighPowerVelocitySetpoint )
+            {
+                // Transition to shoot state
+                m_eState = shooter::eState::STATE_SHOOT;
+            }
+        }
+
+        // ****************************
+        // * Auton Power Ramp Up State *
+        // ****************************
+        
+        else if ( m_eState == shooter::eState::STATE_AUTON_POWER_RAMP_UP )
+        {
+            // Check Timeout Timer
+            bool bIsTimedOut = false;
+            if ( (double)m_pTimeoutTimer->Get() >= shooter::dRampUpTimeout )
+            {
+                bIsTimedOut = true;
+            }
+
+            if ( m_eCommand == shooter::eCommand::COMMAND_STOP || bIsTimedOut == true )
+            {
+                // Stop shooter motors
+                m_pRobotIO->m_LeftShooterMotor_Master.Set( 0 );
+
+                // Reset State and Command
+                m_eState = shooter::eState::STATE_IDLE;
+                m_eCommand = shooter::eCommand::COMMAND_NONE;
+            }
+
+            // *------------------------*
+            // * Motor Velocity Reached *
+            // *------------------------*
+
+            else if ( m_pRobotIO->GetShooterSpeed()  >= shooter::dAutonPowerVelocitySetpoint )
             {
                 // Transition to shoot state
                 m_eState = shooter::eState::STATE_SHOOT;

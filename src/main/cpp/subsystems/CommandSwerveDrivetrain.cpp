@@ -24,6 +24,8 @@ void CommandSwerveDrivetrain::Periodic()
             m_hasAppliedOperatorPerspective = true;
         }
     }
+
+    
 }
 
 void CommandSwerveDrivetrain::StartSimThread()
