@@ -370,6 +370,45 @@ void MainStateMachine::Execute()
                   //m_pRobotIO->m_OperatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.3); //Added Rumble
                   m_Magazine.RunIn();
                   m_Magazine.Execute();
+
+                  //m_pRobotIO->m_OperatorController.SetRumble(frc::GenericHID::RumbleType::kBothRumble, 0.3); //Added Rumble
+            // *------------------------------------------------------------*
+            // * Operator Right Joystick Right - Manual Rotate Turret Right *
+            // *------------------------------------------------------------*
+
+            // Pushing right on the joystick (Y+) produces a positive X value.
+            // (it is a CCW rotation around the X axis)
+
+                  if ( m_pRobotIO->m_OperatorController.GetRightX() > 
+                       RobotMain::SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD )
+                  {
+                  //  printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Right\n" );
+                     m_Turret.ManualRotateRight();
+                     m_Turret.Execute();
+                  }
+
+            // *----------------------------------------------------------*
+            // * Operator Right Joystick Left - Manual Rotate Turret Left *
+            // *----------------------------------------------------------*
+
+            // Pushing left on the joystick (Y-) produces a negative X value.
+            // (it is a CW rotation around the X axis)
+
+                  else if ( m_pRobotIO->m_OperatorController.GetRightX() <
+                    RobotMain::SETPOINT_RIGHT_JOYSTICK_LEFT_UPPER_THRESHOLD )
+                  {
+                  //  printf( "\n>>> Main - Operator Controller - Manual Rotate Turret Left\n" );
+
+                     m_Turret.ManualRotateLeft();
+                     m_Turret.Execute();
+
+                  }
+               // Stop if no input
+                  else
+                  {
+                     m_Turret.Stop();
+                     m_Turret.Execute();
+                  }  
                }
             }
          }
@@ -380,6 +419,8 @@ void MainStateMachine::Execute()
          {
             m_Shooter.Stop();
             m_Shooter.Execute();
+            m_Turret.Stop();
+            m_Turret.Execute();
             m_Magazine.Stop();
             m_Magazine.Execute();
             m_eState = RobotMain::eState::STATE_IDLE;
@@ -774,7 +815,6 @@ void MainStateMachine::Execute()
          }
       }
    }
-
    else
    {
       //   printf( "Main - Null Robot I/O Pointer Encountered\n" );

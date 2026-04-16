@@ -1,26 +1,4 @@
 See file:///T:/FRC%204810/FRC-4810-2026-MERGE-NEW/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramDebugExecutableFrcUserProgramCpp.
-compiling Shooter.cpp successful.
-
-compiling BasicTurret.cpp successful.
-
-compiling Intake.cpp successful.
-
-compiling Magazine.cpp successful.
-
-compiling RobotIO.cpp successful.
-
-compiling Auton_03.cpp successful.
-
-compiling Auton_01.cpp successful.
-
-compiling Auton_04.cpp successful.
-
-compiling Auton_02.cpp successful.
-
-compiling Auton_05.cpp successful.
-
-compiling CommandSwerveDrivetrain.cpp successful.
-
 compiling MainStateMachine.cpp successful.
 T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
 T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:127:15: warning: unused variable 'i' [-Wunused-variable]
@@ -45,9 +23,5 @@ T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: At global
 T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:127:15: warning: 'i' defined but not used [-Wunused-variable]
   127 |    static int i = 0;
       |               ^
-
-compiling TunerConstants.cpp successful.
-
-compiling Robot.cpp successful.
 
 Finished compileFrcUserProgramDebugExecutableFrcUserProgramCpp, see full log file:///T:/FRC%204810/FRC-4810-2026-MERGE-NEW/build/tmp/compileFrcUserProgramDebugExecutableFrcUserProgramCpp/output.txt.

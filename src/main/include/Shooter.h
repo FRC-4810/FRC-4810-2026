@@ -30,7 +30,7 @@ namespace shooter
     static constexpr double dShootTimeout = 15.0; //Bring down temperaroly
 
     // Motor Speed Constants
-    static constexpr double dAutonPowerRampUpSpeed = 0.78; //TODO - Need an auton state
+    static constexpr double dAutonPowerRampUpSpeed = 0.735; //TODO - Need an auton state
     static constexpr double dLowPowerRampUpSpeed = 0.66; //Brought up from .66 to .74 -- Need an auton state
     static constexpr double dHighPowerRampUpSpeed = 0.84;
     static constexpr double dFeederSpeed = 0.2;
