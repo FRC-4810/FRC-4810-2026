@@ -1,27 +1,27 @@
-See file:///T:/FRC%204810/FRC-4810-2026-MERGE-NEW/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
+See file:///T:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt for all output for compileFrcUserProgramReleaseExecutableFrcUserProgramCpp.
 compiling MainStateMachine.cpp successful.
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:127:15: warning: unused variable 'i' [-Wunused-variable]
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::UpdateStatus()':
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:127:15: warning: unused variable 'i' [-Wunused-variable]
   127 |    static int i = 0;
       |               ^
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::Execute()':
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:72: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: In member function 'void MainStateMachine::Execute()':
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:356:72: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
   356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
       |                                                                        ^
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:17: note: add parentheses around left hand side expression to silence this warning
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:356:17: note: add parentheses around left hand side expression to silence this warning
   356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
       |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |                 (                                                     )
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:137: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:356:137: warning: logical not is only applied to the left hand side of comparison [-Wlogical-not-parentheses]
   356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
       |                                                                                                                                         ^
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:356:81: note: add parentheses around left hand side expression to silence this warning
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:356:81: note: add parentheses around left hand side expression to silence this warning
   356 |             if (!m_pRobotIO->m_OperatorController.GetLeftTriggerAxis() > 0.8 && !m_pRobotIO->m_OperatorController.GetRightTriggerAxis() > 0.8)
       |                                                                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       |                                                                                 (                                                      )
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp: At global scope:
-T:\FRC 4810\FRC-4810-2026-MERGE-NEW\src\main\cpp\MainStateMachine.cpp:127:15: warning: 'i' defined but not used [-Wunused-variable]
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp: At global scope:
+T:\FRC 4810\FRC-4810-2026\src\main\cpp\MainStateMachine.cpp:127:15: warning: 'i' defined but not used [-Wunused-variable]
   127 |    static int i = 0;
       |               ^
 
-Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///T:/FRC%204810/FRC-4810-2026-MERGE-NEW/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.
+Finished compileFrcUserProgramReleaseExecutableFrcUserProgramCpp, see full log file:///T:/FRC%204810/FRC-4810-2026/build/tmp/compileFrcUserProgramReleaseExecutableFrcUserProgramCpp/output.txt.

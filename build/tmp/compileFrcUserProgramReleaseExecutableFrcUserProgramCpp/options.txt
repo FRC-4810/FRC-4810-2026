@@ -14,7 +14,7 @@ c++
 -O2
 -nostdinc
 -I
-"T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include"
+"T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include"
 -I
 C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers
 -I

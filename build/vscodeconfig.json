@@ -34,7 +34,7 @@
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\",
+      "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\31c54e9fa8e830a347b89bd1a2c85bd8\\transformed\\wpilibNewCommands-cpp-2026.2.1-sources\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\2994580e4e8a81b3da645a367636557b\\transformed\\wpilibc-cpp-2026.2.1-sources\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\c90d6106e89d8eae3ee51676a1ed6344\\transformed\\ntcore-cpp-2026.2.1-sources\\",
@@ -81,7 +81,7 @@
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+      "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
     ],
     "binaries": [
       {
@@ -90,7 +90,7 @@
           {
             "source": {
               "srcDirs": [
-                "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\cpp\\"
+                "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
               ],
               "includes": [
                 "**/*.cpp",
@@ -100,7 +100,7 @@
             },
             "exportedHeaders": {
               "srcDirs": [
-                "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+                "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
               ],
               "includes": [],
               "excludes": []
@@ -144,7 +144,7 @@
           "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
           "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
           "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
-          "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+          "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
         ],
         "sharedLibrary": false,
         "executable": true
@@ -154,7 +154,7 @@
       {
         "source": {
           "srcDirs": [
-            "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\cpp\\"
+            "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
           ],
           "includes": [
             "**/*.cpp",
@@ -185,7 +185,7 @@
       {
         "source": {
           "srcDirs": [
-            "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+            "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
           ],
           "includes": [],
           "excludes": []
@@ -250,7 +250,7 @@
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\",
+      "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\31c54e9fa8e830a347b89bd1a2c85bd8\\transformed\\wpilibNewCommands-cpp-2026.2.1-sources\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\2994580e4e8a81b3da645a367636557b\\transformed\\wpilibc-cpp-2026.2.1-sources\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\c90d6106e89d8eae3ee51676a1ed6344\\transformed\\ntcore-cpp-2026.2.1-sources\\",
@@ -297,7 +297,7 @@
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+      "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
     ],
     "binaries": [
       {
@@ -306,7 +306,7 @@
           {
             "source": {
               "srcDirs": [
-                "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\cpp\\"
+                "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
               ],
               "includes": [
                 "**/*.cpp",
@@ -316,7 +316,7 @@
             },
             "exportedHeaders": {
               "srcDirs": [
-                "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+                "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
               ],
               "includes": [],
               "excludes": []
@@ -359,7 +359,7 @@
           "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers\\",
           "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers\\",
           "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers\\",
-          "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+          "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
         ],
         "sharedLibrary": false,
         "executable": true
@@ -369,7 +369,7 @@
       {
         "source": {
           "srcDirs": [
-            "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\cpp\\"
+            "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp\\"
           ],
           "includes": [
             "**/*.cpp",
@@ -399,7 +399,7 @@
       {
         "source": {
           "srcDirs": [
-            "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include\\"
+            "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include\\"
           ],
           "includes": [],
           "excludes": []

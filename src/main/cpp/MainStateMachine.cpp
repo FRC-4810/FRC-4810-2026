@@ -610,6 +610,8 @@ void MainStateMachine::Execute()
          // *-------------------------------------------------*
          if(m_pRobotIO->m_OperatorController.GetLeftY() < -0.8)   //-TODO - Check this
          {
+            m_Intake.Stop();
+            m_Intake.Execute();
             m_Intake.ManualRaise();
             m_Intake.Execute();
 
@@ -620,13 +622,31 @@ void MainStateMachine::Execute()
          // *---------------------------------------------------*
          else if(m_pRobotIO->m_OperatorController.GetLeftY() > 0.8)   //-TODO - Check this
          {
+            m_Intake.Stop();
+            m_Intake.Execute();
             m_Intake.ManualLower();
             m_Intake.Execute();
          }
          else 
          {
-            m_Intake.Stop();
-            m_Intake.Execute();
+            // *--------------------------------------*
+            // * Driver Right Trigger - Run Intake in *
+            // *--------------------------------------*
+            if(m_pRobotIO->m_DriveController.GetRightTriggerAxis() > 0.8)
+            {
+               if (!m_Intake.IsManualIntaking() && !m_Intake.IsIdle())
+               {
+                  m_Intake.Stop();
+                  m_Intake.Execute();
+               }
+               m_Intake.ManualIntake();
+               m_Intake.Execute();
+            }
+            else 
+            {
+               m_Intake.Stop();
+               m_Intake.Execute();
+            }
          }
          
 

@@ -4,12 +4,12 @@
     "name": "frcCpp",
     "port": 8349,
     "target": "10.48.10.2",
-    "launchfile": "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\build\\exe\\frcUserProgram\\release\\frcUserProgram",
+    "launchfile": "T:\\FRC 4810\\FRC-4810-2026\\build\\exe\\frcUserProgram\\release\\frcUserProgram",
     "gdb": "C:\\Users\\Public\\wpilib\\2026\\roborio\\bin\\arm-frc2025-linux-gnueabi-gdb.exe",
     "sysroot": "C:\\Users\\Public\\wpilib\\2026\\roborio",
     "srcpaths": [
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\cpp",
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include"
+      "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\cpp",
+      "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include"
     ],
     "headerpaths": [
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\12593babe36b5e58d2c307619be83ff6\\transformed\\wpilibNewCommands-cpp-2026.2.1-headers",
@@ -32,11 +32,11 @@
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\a3084f8d29d976c3d0b77c4d365197a7\\transformed\\cscore-cpp-2026.2.1-headers",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\552b5aea3ba337d53af36910ba53f45a\\transformed\\apriltag-cpp-2026.2.1-headers",
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\5252a9a977bfef633505bccac41e905a\\transformed\\opencv-cpp-4.10.0-3-headers",
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\src\\main\\include"
+      "T:\\FRC 4810\\FRC-4810-2026\\src\\main\\include"
     ],
     "libpaths": [
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\build\\install\\frcUserProgram\\release\\lib",
-      "T:\\FRC 4810\\FRC-4810-2026-MERGE-NEW\\build\\install\\frcUserProgram\\release"
+      "T:\\FRC 4810\\FRC-4810-2026\\build\\install\\frcUserProgram\\release\\lib",
+      "T:\\FRC 4810\\FRC-4810-2026\\build\\install\\frcUserProgram\\release"
     ],
     "libsrcpaths": [
       "C:\\Users\\bench\\.gradle\\caches\\8.11\\transforms\\31c54e9fa8e830a347b89bd1a2c85bd8\\transformed\\wpilibNewCommands-cpp-2026.2.1-sources",
