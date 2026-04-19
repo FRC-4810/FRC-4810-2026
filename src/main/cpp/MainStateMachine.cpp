@@ -409,6 +409,44 @@ void MainStateMachine::Execute()
                      m_Turret.Stop();
                      m_Turret.Execute();
                   }  
+                  // *-------------------------------------------------* - BLc
+         // * Operator Left Joystick Up - Manual Intake Raise *
+         // *-------------------------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetLeftY() < -0.8)   //-TODO - Check this
+         {
+            if (m_Intake.IsManualIntaking())
+            {
+               m_Intake.Stop();
+               m_Intake.Execute();
+            }
+            m_Intake.ManualRaise();
+            m_Intake.Execute();
+
+         }
+
+         // *---------------------------------------------------*
+         // * Operator Left Joystick Down - Manual Intake Lower *
+         // *---------------------------------------------------*
+         else if(m_pRobotIO->m_OperatorController.GetLeftY() > 0.8)   //-TODO - Check this
+         {
+            
+            if (m_Intake.IsManualIntaking())
+            {
+               m_Intake.Stop();
+               m_Intake.Execute();
+            }
+            m_Intake.ManualLower();
+            m_Intake.Execute();
+         }
+         else 
+         {
+
+
+               m_Intake.Stop();
+               m_Intake.Execute();
+               m_Intake.ManualIntake();
+               m_Intake.Execute();
+         }
                }
             }
          }
@@ -610,8 +648,11 @@ void MainStateMachine::Execute()
          // *-------------------------------------------------*
          if(m_pRobotIO->m_OperatorController.GetLeftY() < -0.8)   //-TODO - Check this
          {
-            m_Intake.Stop();
-            m_Intake.Execute();
+            if (m_Intake.IsManualIntaking())
+               {
+                  m_Intake.Stop();
+                  m_Intake.Execute();
+               }
             m_Intake.ManualRaise();
             m_Intake.Execute();
 
@@ -622,8 +663,11 @@ void MainStateMachine::Execute()
          // *---------------------------------------------------*
          else if(m_pRobotIO->m_OperatorController.GetLeftY() > 0.8)   //-TODO - Check this
          {
-            m_Intake.Stop();
-            m_Intake.Execute();
+            if (m_Intake.IsManualIntaking())
+               {
+                  m_Intake.Stop();
+                  m_Intake.Execute();
+               }
             m_Intake.ManualLower();
             m_Intake.Execute();
          }
