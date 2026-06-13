@@ -32,6 +32,7 @@ namespace turret
       STATE_IDLE = 1,
       STATE_MANUAL_ROTATING_RIGHT = 2,
       STATE_MANUAL_ROTATING_LEFT = 3,
+      STATE_GO_TO_TARGET = 4,
       STATE_ERROR = 99
    };
 
@@ -48,6 +49,7 @@ namespace turret
       COMMAND_MANUAL_ROTATE_LEFT,
       COMMAND_LOW_POWER_SHOOT,
       COMMAND_HIGH_POWER_SHOOT,
+      COMMAND_GO_TO_TARGET,
       COMMAND_STOP
    };
 
@@ -68,6 +70,8 @@ namespace turret
    static constexpr double SETPOINT_MAX_ANGLE = 90.0;                // 
 
    static constexpr double ENCODER_TICKS_PER_DEGREE = 2048.0 /360.0; // TalonFX Calculation
+
+   static constexpr double TURRET_GEAR_RATIO = 28;
 }
 
 class BasicTurret
@@ -102,6 +106,15 @@ class BasicTurret
       inline bool IsRotatingLeft()
          { return( m_eState == turret::STATE_MANUAL_ROTATING_LEFT ); }
 
+      inline void SetTargetTurns(double radians)
+         { m_dTargetTurns = std::clamp(radians / (2 * std::numbers::pi) * turret::TURRET_GEAR_RATIO, -7.0, 7.0); }
+
+      inline void SetAutoTrack()
+         { m_eCommand = turret::eCommand::COMMAND_GO_TO_TARGET; }
+
+      inline bool IsAutoTracking()
+         { return(m_eState == turret::eState::STATE_GO_TO_TARGET); }
+
       // Get current turret angle (Degrees).
 
       inline double GetCurrentAngle() const {
@@ -122,6 +135,10 @@ class BasicTurret
 
       turret::eState m_eState;         // Current state
       RobotIO *m_pRobotIO;             // Pointer to Robot I/O Class Instance
+
+      double m_dTargetTurns;
+
+      controls::MotionMagicVoltage m_Request{0_tr};
 
       turret::eCommand m_eCommand;     // Command to perform
 

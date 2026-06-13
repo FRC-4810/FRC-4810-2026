@@ -813,6 +813,23 @@ void MainStateMachine::Execute()
 
       // Call the execute methods of the Asynchronous operations.
 
+      //-GMS - Turret Auto tracking
+      if(m_pRobotIO->m_DriveController.GetYButton())
+      {
+         printf("Driver y button, turret auto track\n");
+         m_Turret.SetTargetTurns(GetTurretTargetRadians());
+         printf("Turret Radians, [%f]\n", GetTurretTargetRadians());
+         m_Turret.SetAutoTrack();
+         m_Turret.Execute();
+      }
+      else if(m_Turret.IsAutoTracking())
+      {
+         m_Turret.Stop();
+         m_Turret.Execute();
+         printf("Driver y button release, turret stop\n");
+      }
+
+
       // *--------------------*
       // * Driving Operations *
       // *--------------------*
@@ -884,4 +901,32 @@ void MainStateMachine::Execute()
       //   printf( "Main - Null Robot I/O Pointer Encountered\n" );
    }
    
+}
+
+//-GMS - Tracking turret
+double MainStateMachine::GetTurretTargetRadians()
+{
+   frc::Pose2d botpose = m_Drivetrain.GetState().Pose;
+
+   double yDist = (double)(RobotMain::HUB_POSITION.Y() - botpose.Y());
+   double xDist = (double)(RobotMain::HUB_POSITION.X() - botpose.X());
+
+   // Angle from robot to hub in field coordinates
+   double fieldAngle = -atan2(yDist, xDist);
+
+   // Convert to robot-relative angle
+   double turretAngle = fieldAngle + botpose.Rotation().Radians().value();
+
+   // Turret zero points backwards
+   turretAngle += M_PI;
+
+   // Wrap to (-pi, pi]
+   while (turretAngle > M_PI)
+      turretAngle -= 2.0 * M_PI;
+
+   while (turretAngle <= -M_PI)
+      turretAngle += 2.0 * M_PI;
+
+   return turretAngle;
+
 }

@@ -78,6 +78,9 @@ namespace RobotMain
    static constexpr double SETPOINT_RIGHT_JOYSTICK_LEFT_LOWER_THRESHOLD = -0.4;
    static constexpr double SETPOINT_RIGHT_JOYSTICK_RIGHT_LOWER_THRESHOLD = 0.4;
    static constexpr double SETPOINT_RIGHT_JOYSTICK_RIGHT_UPPER_THRESHOLD = 0.8;
+
+
+   static constexpr frc::Translation2d HUB_POSITION{4.63_m, 4.04_m};
 }
 
 class MainStateMachine
@@ -108,6 +111,9 @@ class MainStateMachine
 
       //-GMS - Intake agitate timer
       frc::Timer *m_pAgitateTimer;
+
+      //-GMS - Auto Aim Turret
+      double GetTurretTargetRadians();
 
       // State Machine Object Instances.
       Magazine m_Magazine;

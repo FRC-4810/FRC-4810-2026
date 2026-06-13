@@ -148,6 +148,26 @@ void RobotIO::RobotInit()
 
    turretRotationMotorConfigs.Commutation.WithMotorArrangement(signals::MotorArrangementValue::Minion_JST);
 
+   //-Motion Magic Configs
+   turretRotationMotorConfigs.Commutation.WithAdvancedHallSupport(signals::AdvancedHallSupportValue::Enabled);
+   turretRotationMotorConfigs.Voltage.WithPeakForwardVoltage(11_V);
+   turretRotationMotorConfigs.Voltage.WithPeakReverseVoltage(-11_V);
+
+   turretRotationMotorConfigs.SoftwareLimitSwitch.WithForwardSoftLimitThreshold(7_tr);
+   turretRotationMotorConfigs.SoftwareLimitSwitch.WithReverseSoftLimitThreshold(-7_tr);
+   turretRotationMotorConfigs.SoftwareLimitSwitch.WithForwardSoftLimitEnable(true);
+   turretRotationMotorConfigs.SoftwareLimitSwitch.WithReverseSoftLimitEnable(true);
+
+   turretRotationMotorConfigs.MotionMagic.WithMotionMagicCruiseVelocity(25_tps);
+   turretRotationMotorConfigs.MotionMagic.WithMotionMagicAcceleration(150_tr_per_s_sq);
+
+   configs::Slot0Configs turretSlot0{};
+   turretSlot0.kP = 10;
+   turretSlot0.kD = 0.0;
+   turretSlot0.kV = 0.3;
+
+   turretRotationMotorConfigs.WithSlot0(turretSlot0);
+
    m_TurretRotationMotor.GetConfigurator().Apply( turretRotationMotorConfigs );
 
    // *---------------------------------*

@@ -33,6 +33,8 @@ void BasicTurret::Initialize(
 
    m_pRobotIO = p_pRobotIO;
 
+   m_Request.WithSlot(0);
+
    m_pTimeoutTimer = new frc::Timer();
    m_pTimeoutTimer->Reset();
 }
@@ -128,6 +130,13 @@ void BasicTurret::Execute()
 
             // printf( "Turret - Moving To Manual Rotating Left State\n" );
             m_eState = turret::eState::STATE_MANUAL_ROTATING_LEFT;
+         }
+
+         //-GMS - Tracking Turret
+         else if(m_eCommand == turret::COMMAND_GO_TO_TARGET)
+         {
+            printf("[TURRET] go to target received\n");
+            m_eState = turret::STATE_GO_TO_TARGET;
          }
 
          // *-----------------*
@@ -245,6 +254,19 @@ void BasicTurret::Execute()
            // printf( "Turret - Returning To Idle State\n" );
             m_eState = turret::eState::STATE_IDLE;
          }
+      }
+
+      else if (m_eState == turret::STATE_GO_TO_TARGET)
+      {
+         if(m_eCommand == turret::COMMAND_STOP)
+         {
+            m_pRobotIO->m_TurretRotationMotor.StopMotor();
+            printf("[TURRET] - Stop Command, returning\n");
+            return;
+         }
+
+         printf("[TURRET] Set motor control\n");
+         m_pRobotIO->m_TurretRotationMotor.SetControl(m_Request.WithPosition(units::angle::turn_t{m_dTargetTurns}));
       }
 
       // Error or unkown state
