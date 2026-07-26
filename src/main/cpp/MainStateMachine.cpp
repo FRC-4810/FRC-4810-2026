@@ -84,7 +84,7 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 
 
-using namespace ctre::phoenix6::swerve::requests;
+// using namespace ctre::phoenix6::swerve::requests;
 
 MainStateMachine::MainStateMachine()
 {
@@ -821,6 +821,7 @@ void MainStateMachine::Execute()
 
       if ( m_pRobotIO->m_DriveController.GetStartButtonPressed() )
       {
+         m_Drivetrain.ToggleFieldRelative(); //Change to drivetrain.toggle --CS
          driveIsFieldRelative = !driveIsFieldRelative;
          // m_Drivetrain.ToggleFieldRelative();
       }
@@ -842,40 +843,43 @@ void MainStateMachine::Execute()
       
          if(m_pRobotIO->m_DriveController.GetXButton()) // Swapped X and B buttons - BLC
          {
-            m_Drivetrain.SetControl(RobotCentric{}.WithVelocityX(0_mps).WithVelocityY(0.1_mps));
+            m_Drivetrain.BumpLeft(0.1);
          }
          else if(m_pRobotIO->m_DriveController.GetBButton())
          {
-            m_Drivetrain.SetControl(RobotCentric{}.WithVelocityX(0_mps).WithVelocityY(-0.1_mps));
+            m_Drivetrain.BumpRight(0.1);
          }
          else
          {
-            /*Drive speeds                                                 1 / Higher is smoother */
-            static frc::SlewRateLimiter<units::scalar> xLimiter{1 / 0.5_s}; //Changed from 0.4
-            static frc::SlewRateLimiter<units::scalar> yLimiter{1 / 0.5_s};
+            m_Drivetrain.Drive(m_pRobotIO->m_DriveController.GetLeftY(),
+                               m_pRobotIO->m_DriveController.GetLeftX(),
+                               m_pRobotIO->m_DriveController.GetRightX());
+            // /*Drive speeds                                                 1 / Higher is smoother */
+            // static frc::SlewRateLimiter<units::scalar> xLimiter{1 / 0.5_s}; //Changed from 0.4
+            // static frc::SlewRateLimiter<units::scalar> yLimiter{1 / 0.5_s};
 
-            double requestedX = xLimiter.Calculate(-m_pRobotIO->m_DriveController.GetLeftY());
-            double requestedY = yLimiter.Calculate(-m_pRobotIO->m_DriveController.GetLeftX());
-            double requestedOmega = -m_pRobotIO->m_DriveController.GetRightX();
-            if (driveIsFieldRelative) {
-               m_Drivetrain.SetControl(
-                  FieldCentric{}
-                     .WithVelocityX(requestedX * MaxSpeed)
-                     .WithVelocityY(requestedY * MaxSpeed)
-                     .WithRotationalRate(requestedOmega * MaxAngularRate)
-                     .WithDeadband(0.16 * MaxSpeed) //accounts for drift
-                     .WithRotationalDeadband(0.16 * MaxAngularRate)
-               );
-            } else {
-               m_Drivetrain.SetControl(
-                  RobotCentric{}
-                     .WithVelocityX(requestedX * MaxSpeed)
-                     .WithVelocityY(requestedY * MaxSpeed)
-                     .WithRotationalRate(requestedOmega * MaxAngularRate)
-                     .WithDeadband(0.1 * MaxSpeed)
-                     .WithRotationalDeadband(0.1 * MaxAngularRate)
-               );
-            }
+            // double requestedX = xLimiter.Calculate(-m_pRobotIO->m_DriveController.GetLeftY());
+            // double requestedY = yLimiter.Calculate(-m_pRobotIO->m_DriveController.GetLeftX());
+            // double requestedOmega = -m_pRobotIO->m_DriveController.GetRightX();
+            // if (driveIsFieldRelative) {
+            //    m_Drivetrain.SetControl(
+            //       FieldCentric{}
+            //          .WithVelocityX(requestedX * MaxSpeed)
+            //          .WithVelocityY(requestedY * MaxSpeed)
+            //          .WithRotationalRate(requestedOmega * MaxAngularRate)
+            //          .WithDeadband(0.16 * MaxSpeed) //accounts for drift
+            //          .WithRotationalDeadband(0.16 * MaxAngularRate)
+            //    );
+            // } else {
+            //    m_Drivetrain.SetControl(
+            //       RobotCentric{}
+            //          .WithVelocityX(requestedX * MaxSpeed)
+            //          .WithVelocityY(requestedY * MaxSpeed)
+            //          .WithRotationalRate(requestedOmega * MaxAngularRate)
+            //          .WithDeadband(0.1 * MaxSpeed)
+            //          .WithRotationalDeadband(0.1 * MaxAngularRate)
+            //    );
+            // }
          }
       }
    }
