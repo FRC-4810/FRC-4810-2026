@@ -930,3 +930,15 @@ double MainStateMachine::GetTurretTargetRadians()
    return turretAngle;
 
 }
+
+double MainStateMachine::GetTargetDistance()
+{
+   frc::Pose2d botpose = m_Drivetrain.GetState().Pose;
+
+   double yDist = (double)(RobotMain::HUB_POSITION.Y() - botpose.Y());
+   double xDist = (double)(RobotMain::HUB_POSITION.X() - botpose.X());
+
+   double dist = std::sqrt((yDist*yDist)+(xDist*xDist));
+
+   return dist;
+}

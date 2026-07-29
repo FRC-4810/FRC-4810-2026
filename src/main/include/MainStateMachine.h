@@ -29,7 +29,7 @@
                                        //    definition
 #include "Shooter.h"                   // Shooter state machine class
                                        //    definition
-
+#include <cmath>                       // Used for distance function 
 // *------------------------------------------------*
 // * Top Level (Main) State Machine Enumerated Type *
 // *------------------------------------------------*
@@ -114,6 +114,9 @@ class MainStateMachine
 
       //-GMS - Auto Aim Turret
       double GetTurretTargetRadians();
+
+      //-BLC - Get Target Distance
+      double GetTargetDistance();
 
       // State Machine Object Instances.
       Magazine m_Magazine;
