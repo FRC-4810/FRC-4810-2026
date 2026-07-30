@@ -18,8 +18,9 @@
 
 #include "RobotIO.h"
 
-#include "subsystems/CommandSwerveDrivetrain.h"                // Drivetrain state machine class
-#include "generated/TunerConstants.h"
+// #include "subsystems/CommandSwerveDrivetrain.h"                // Drivetrain state machine class
+// #include "generated/TunerConstants.h"
+#include "Drivetrain.h"
                                        //    definition
 #include "Intake.h"                    // Intake state machine class
                                        //    definition
@@ -103,7 +104,8 @@ class MainStateMachine
       void UpdateStatus();
       void Execute();
 
-      subsystems::CommandSwerveDrivetrain m_Drivetrain{TunerConstants::CreateDrivetrain()};
+      //subsystems::CommandSwerveDrivetrain m_Drivetrain{TunerConstants::CreateDrivetrain()};
+      Drivetrain m_Drivetrain;
       Intake m_Intake;
    private:
       RobotMain::eState m_eState;      // Current main state
