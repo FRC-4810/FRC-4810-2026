@@ -7,6 +7,7 @@ Shooter::Shooter()
     m_eCommand = shooter::eCommand::COMMAND_NONE;
 
     m_pRobotIO = nullptr;
+    m_dSetSpeed = 0.0;
 }
 
 // Initialize Shooter

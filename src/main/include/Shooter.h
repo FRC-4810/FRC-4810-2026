@@ -13,6 +13,7 @@ namespace shooter
         STATE_HIGH_POWER_RAMP_UP = 3,
         STATE_SHOOT = 4,
         STATE_AUTON_POWER_RAMP_UP = 5,
+        STATE_SHOOT_AT_SETPOINT = 6,
         STATE_ERROR = 99
     };
 
@@ -22,6 +23,7 @@ namespace shooter
         COMMAND_LOW_POWER_SHOOT,
         COMMAND_HIGH_POWER_SHOOT,
         COMMAND_AUTON_SHOOT,
+        COMMAND_SHOOT_AT_SETPOINT,
         COMMAND_STOP
     };
 
@@ -31,7 +33,7 @@ namespace shooter
 
     // Motor Speed Constants
     static constexpr double dAutonPowerRampUpSpeed = 0.735; //TODO - Need an auton state
-    static constexpr double dLowPowerRampUpSpeed = 0.66; //Brought up from .66 to .74 -- Need an auton state
+    static constexpr double dLowPowerRampUpSpeed = 0.74; //Brought up from .66 to .74 -- Need an auton state
     static constexpr double dHighPowerRampUpSpeed = 0.84;
     static constexpr double dFeederSpeed = 0.2;
 
@@ -69,6 +71,13 @@ public:
     inline void Stop()
         { m_eCommand = shooter::eCommand::COMMAND_STOP; }
 
+    inline void SetSpeed(double dSpeed)
+        { m_dSetSpeed = dSpeed; }
+    inline void ShootAtSetSpeed()
+        { m_eCommand = shooter::eCommand::COMMAND_SHOOT_AT_SETPOINT; }
+    inline bool IsAtSetpointSpeed()
+        { return( fabs(m_pRobotIO->GetShooterSpeed() - m_dSetSpeed) < 1.0 ); }  //-GMS - a range of +/- 1rps on the motor
+
     // Class Methods
     void Initialize( RobotIO *p_pRobotIO );
     void Execute();
@@ -81,4 +90,6 @@ private:
     frc::Timer *m_pTimeoutTimer;
     
     RobotIO *m_pRobotIO;
+
+    double m_dSetSpeed;
 };

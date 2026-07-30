@@ -313,6 +313,24 @@ void MainStateMachine::Execute()
          //   printf( "Main - Advancing To Manual Rotating Turret Left\n" );
             m_eState = RobotMain::eState::STATE_MANUAL_TURRET_ROTATING_LEFT;
          }
+
+         // *--------------------------------* - GMS
+         // * Operator A Button - Auto Shoot *
+         // *--------------------------------*
+         if(m_pRobotIO->m_OperatorController.GetXButton())
+         {
+            m_Turret.SetTargetTurns(GetTurretTargetRadians());
+            printf("Turret Radians, [%f]\n", GetTurretTargetRadians());
+            m_Turret.SetAutoTrack();
+            m_Turret.Execute();
+
+            m_Shooter.SetSpeed(GetShooterSpeedRPS());
+            printf("Shooter RPS, [%f]\n", GetShooterSpeedRPS());
+            m_Shooter.ShootAtSetSpeed();
+            m_Shooter.Execute();
+
+            m_eState = RobotMain::eState::STATE_AUTO_SHOOTING;
+         }
       }
 
       // *===================================================================*
@@ -807,6 +825,45 @@ void MainStateMachine::Execute()
          }
       }
 
+      // ********************
+      // * Auto Shoot State *
+      // ********************
+      else if(m_eState == RobotMain::eState::STATE_AUTO_SHOOTING)
+      {
+         if(m_Shooter.IsAtSetpointSpeed() && m_Turret.IsAtTarget())
+         {
+            m_Magazine.RunIn();
+            m_Intake.ManualIntake();
+         }
+         else
+         {
+            m_Intake.Stop();
+            m_Magazine.Stop();
+         }
+
+         if(!m_pRobotIO->m_OperatorController.GetAButton())
+         {
+            m_Magazine.Stop();
+            m_Shooter.Stop();
+            m_Intake.Stop();
+            m_Turret.Stop();
+         }
+
+         m_Magazine.Execute();
+         m_Intake.Execute();
+
+         m_Turret.SetTargetTurns(GetTurretTargetRadians());
+         m_Turret.Execute();
+
+         m_Shooter.SetSpeed(GetShooterSpeedRPS());
+         m_Shooter.Execute();
+
+         if(m_Magazine.IsIdle() && m_Shooter.isIdle() && m_Intake.IsIdle() && m_Turret.IsIdle())
+         {
+            m_eState = RobotMain::eState::STATE_IDLE;
+         }
+      }
+
       // *-------------------------*
       // * Asynchronous Operations *
       // *-------------------------*
@@ -941,4 +998,10 @@ double MainStateMachine::GetTargetDistance()
    double dist = std::sqrt((yDist*yDist)+(xDist*xDist));
 
    return dist;
+}
+
+double MainStateMachine::GetShooterSpeedRPS()
+{
+   double dDist = GetTargetDistance();
+   return (5.1066 * dDist + 36.88834);   //-GMS - Found from linear regression 
 }

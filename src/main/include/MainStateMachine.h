@@ -52,6 +52,7 @@ namespace RobotMain
       STATE_MAGAZINE_MANUAL_OUT = 11,
       STATE_MANUAL_TURRET_ROTATING_LEFT = 12,
       STATE_MANUAL_TURRET_ROTATING_RIGHT = 13,
+      STATE_AUTO_SHOOTING = 14,  //-GMS
       STATE_ERROR = 99
    };
 
@@ -117,6 +118,7 @@ class MainStateMachine
 
       //-BLC - Get Target Distance
       double GetTargetDistance();
+      double GetShooterSpeedRPS();
 
       // State Machine Object Instances.
       Magazine m_Magazine;

@@ -115,6 +115,9 @@ class BasicTurret
       inline bool IsAutoTracking()
          { return(m_eState == turret::eState::STATE_GO_TO_TARGET); }
 
+      inline bool IsAtTarget()
+         { return( fabs(m_dTargetTurns - m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble()) < 0.01); }
+
       // Get current turret angle (Degrees).
 
       inline double GetCurrentAngle() const {
