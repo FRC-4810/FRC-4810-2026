@@ -76,7 +76,7 @@ public:
     inline void ShootAtSetSpeed()
         { m_eCommand = shooter::eCommand::COMMAND_SHOOT_AT_SETPOINT; }
     inline bool IsAtSetpointSpeed()
-        { return( fabs(m_pRobotIO->GetShooterSpeed() - m_dSetSpeed) < 1.0 ); }  //-GMS - a range of +/- 1rps on the motor
+        { return( fabs(m_pRobotIO->GetShooterSpeed() - m_dSetSpeed) < 5.0 ); }  //-GMS - a range of +/- 5rps on the motor
 
     // Class Methods
     void Initialize( RobotIO *p_pRobotIO );
@@ -92,4 +92,7 @@ private:
     RobotIO *m_pRobotIO;
 
     double m_dSetSpeed;
+
+    controls::MotionMagicVelocityVoltage m_request{0_tps};
+
 };

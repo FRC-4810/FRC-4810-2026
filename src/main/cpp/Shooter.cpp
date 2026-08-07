@@ -17,6 +17,8 @@ void Shooter::Initialize( RobotIO *p_pRobotIO )
 
     m_pTimeoutTimer = new frc::Timer();
     m_pTimeoutTimer->Reset();
+
+   m_request.WithSlot(0);
 }
 
 void Shooter::Execute()
@@ -93,6 +95,17 @@ void Shooter::Execute()
 
                 // Set state to auton power ramp up
                 m_eState = shooter::eState::STATE_AUTON_POWER_RAMP_UP;
+            }
+            else if (m_eCommand == shooter::eCommand::COMMAND_SHOOT_AT_SETPOINT)
+            {
+                //-GMS - Motion Magic code
+                m_pRobotIO->m_LeftShooterMotor_Master.SetControl(m_request.WithVelocity(units::turns_per_second_t{m_dSetSpeed}));
+                // Reset timer
+                m_pTimeoutTimer->Reset();
+                m_pTimeoutTimer->Start();
+
+                // Set state to auton power ramp up
+                m_eState = shooter::eState::STATE_SHOOT_AT_SETPOINT;
             }
 
             // Unrecognized command
@@ -224,6 +237,32 @@ void Shooter::Execute()
             {
                 /// Stop shooter motors
                 m_pRobotIO->m_LeftShooterMotor_Master.Set( 0 );
+
+                // Reset State and Command
+                m_eState = shooter::eState::STATE_IDLE;
+                m_eCommand = shooter::eCommand::COMMAND_NONE;
+            }
+        }
+
+        // ********************
+        // * Auto Shoot State *
+        // ********************
+        
+        else if ( m_eState == shooter::eState::STATE_SHOOT_AT_SETPOINT )
+        {
+            // Check Timeout Timer
+            bool bIsTimedOut = false;
+            if ( (double)m_pTimeoutTimer->Get() >= shooter::dShootTimeout )
+            {
+                bIsTimedOut = true;
+            }
+
+            m_pRobotIO->m_LeftShooterMotor_Master.SetControl(m_request.WithVelocity(units::turns_per_second_t{m_dSetSpeed}));
+
+            if ( m_eCommand == shooter::eCommand::COMMAND_STOP || bIsTimedOut == true )
+            {
+                /// Stop shooter motors
+                m_pRobotIO->m_LeftShooterMotor_Master.StopMotor();
 
                 // Reset State and Command
                 m_eState = shooter::eState::STATE_IDLE;

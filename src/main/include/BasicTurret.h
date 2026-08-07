@@ -116,7 +116,7 @@ class BasicTurret
          { return(m_eState == turret::eState::STATE_GO_TO_TARGET); }
 
       inline bool IsAtTarget()
-         { return( fabs(m_dTargetTurns - m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble()) < 0.01); }
+         { return( fabs(m_dTargetTurns - m_pRobotIO->m_TurretRotationMotor.GetPosition().GetValueAsDouble()) < 0.06); }
 
       // Get current turret angle (Degrees).
 

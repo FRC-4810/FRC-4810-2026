@@ -261,12 +261,14 @@ void BasicTurret::Execute()
          if(m_eCommand == turret::COMMAND_STOP)
          {
             m_pRobotIO->m_TurretRotationMotor.StopMotor();
-            printf("[TURRET] - Stop Command, returning\n");
+            //printf("[TURRET] - Stop Command, returning\n");
+            m_eState = turret::eState::STATE_IDLE;
             return;
          }
 
-         printf("[TURRET] Set motor control\n");
+         //printf("[TURRET] Set motor control\n");
          m_pRobotIO->m_TurretRotationMotor.SetControl(m_Request.WithPosition(units::angle::turn_t{m_dTargetTurns}));
+
       }
 
       // Error or unkown state

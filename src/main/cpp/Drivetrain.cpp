@@ -1,6 +1,8 @@
 #include "Drivetrain.h"
 #include <frc/filter/SlewRateLimiter.h>
 
+#include "LimelightHelpers.h"
+
 using namespace ctre::phoenix6::swerve::requests;
 
 Drivetrain::Drivetrain() : subsystems::CommandSwerveDrivetrain(
@@ -11,6 +13,18 @@ Drivetrain::Drivetrain() : subsystems::CommandSwerveDrivetrain(
           TunerConstants::BackRight)
 {
     FieldRelative = true;
+}
+
+void Drivetrain::Periodic()
+{
+    subsystems::CommandSwerveDrivetrain::Periodic();
+
+    //-GMS Limelight pose estimating
+    LimelightHelpers::SetRobotOrientation("limelight", GetState().RawHeading.Degrees().value(), 0.0, 0.0, 0.0, 0.0, 0.0);
+
+    LimelightHelpers::PoseEstimate mt2 = LimelightHelpers::getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+    
+    AddVisionMeasurement(mt2.pose, mt2.timestampSeconds, {0.5, 0.5, 999999.0});
 }
 
 void Drivetrain::Drive(double joystickX, double joystickY, double joystickRot)

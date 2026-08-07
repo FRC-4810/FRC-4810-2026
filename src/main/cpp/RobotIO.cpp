@@ -175,7 +175,7 @@ void RobotIO::RobotInit()
    // *---------------------------------*
    configs::TalonFXConfiguration leftShooterMotor_MasterConfig{};
 
-   leftShooterMotor_MasterConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   //leftShooterMotor_MasterConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
    leftShooterMotor_MasterConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
    leftShooterMotor_MasterConfig.CurrentLimits.WithSupplyCurrentLimitEnable(true);
    leftShooterMotor_MasterConfig.CurrentLimits.WithStatorCurrentLimit( 40_A );
@@ -184,9 +184,24 @@ void RobotIO::RobotInit()
    leftShooterMotor_MasterConfig.MotorOutput.Inverted =
       signals::InvertedValue::CounterClockwise_Positive;
 
+
+   //-Motion Magic Configs
+   leftShooterMotor_MasterConfig.Voltage.WithPeakForwardVoltage(12_V);
+   leftShooterMotor_MasterConfig.Voltage.WithPeakReverseVoltage(-12_V);
+
+   leftShooterMotor_MasterConfig.MotionMagic.WithMotionMagicAcceleration(600_tr_per_s_sq);
+   leftShooterMotor_MasterConfig.MotionMagic.WithMotionMagicJerk(6000_tr_per_s_cu);
+
+   configs::Slot0Configs shooterSlot0{};
+   shooterSlot0.kP = 0.8;
+   shooterSlot0.kD = 0.0;
+   shooterSlot0.kV = 0.16;
+
+   leftShooterMotor_MasterConfig.WithSlot0(shooterSlot0);
+
    configs::TalonFXConfiguration rightShooterMotor_FollowerConfig{};
 
-   rightShooterMotor_FollowerConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
+   //rightShooterMotor_FollowerConfig.OpenLoopRamps.WithDutyCycleOpenLoopRampPeriod( 0.5_s );
    rightShooterMotor_FollowerConfig.CurrentLimits.WithSupplyCurrentLimit( 40_A );
    rightShooterMotor_FollowerConfig.CurrentLimits.WithSupplyCurrentLimitEnable(true);
    rightShooterMotor_FollowerConfig.CurrentLimits.WithStatorCurrentLimit( 40_A );

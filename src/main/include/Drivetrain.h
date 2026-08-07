@@ -14,6 +14,7 @@ public:
     void BumpRight(double speed);
     void BumpLeft(double speed);
     void ToggleFieldRelative();
+    void Periodic();
 
 private:
     bool FieldRelative;

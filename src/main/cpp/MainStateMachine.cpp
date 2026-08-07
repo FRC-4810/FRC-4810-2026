@@ -317,7 +317,7 @@ void MainStateMachine::Execute()
          // *--------------------------------* - GMS
          // * Operator A Button - Auto Shoot *
          // *--------------------------------*
-         if(m_pRobotIO->m_OperatorController.GetXButton())
+         if(m_pRobotIO->m_OperatorController.GetAButton())
          {
             m_Turret.SetTargetTurns(GetTurretTargetRadians());
             printf("Turret Radians, [%f]\n", GetTurretTargetRadians());
@@ -830,6 +830,8 @@ void MainStateMachine::Execute()
       // ********************
       else if(m_eState == RobotMain::eState::STATE_AUTO_SHOOTING)
       {
+         printf("Turret At target: [%s]\n", m_Turret.IsAtTarget() ? "true" : "false");
+         printf("Shooter targer: [%f]\nShooter Current: [%f]", GetShooterSpeedRPS(), m_pRobotIO->GetShooterSpeed() );
          if(m_Shooter.IsAtSetpointSpeed() && m_Turret.IsAtTarget())
          {
             m_Magazine.RunIn();
@@ -871,7 +873,7 @@ void MainStateMachine::Execute()
       // Call the execute methods of the Asynchronous operations.
 
       //-GMS - Turret Auto tracking
-      if(m_pRobotIO->m_DriveController.GetYButton())
+      /*if(m_pRobotIO->m_DriveController.GetYButton())
       {
          printf("Driver y button, turret auto track\n");
          m_Turret.SetTargetTurns(GetTurretTargetRadians());
@@ -884,7 +886,7 @@ void MainStateMachine::Execute()
          m_Turret.Stop();
          m_Turret.Execute();
          printf("Driver y button release, turret stop\n");
-      }
+      }*/
 
 
       // *--------------------*
@@ -1007,5 +1009,5 @@ double MainStateMachine::GetTargetDistance()
 double MainStateMachine::GetShooterSpeedRPS()
 {
    double dDist = GetTargetDistance();
-   return (5.1066 * dDist + 36.88834);   //-GMS - Found from linear regression 
+   return (5.1066 * dDist + 40.5);   //-GMS - Found from linear regression 
 }
